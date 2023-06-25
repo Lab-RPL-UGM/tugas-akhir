@@ -24,7 +24,9 @@ class Tugas_akhir extends BaseController
         $result = $this->Ta_model->getPengajuanTA($id, 'diterima');
         if ($result[0]->jenis == 'proyek') {
             $detail_proyek = $this->Ta_model->getProyek($result[0]->id_proyek);
-            $dosen2 = $this->Ta_model->getDosen($result[1]->id_dosen);
+            if (isset($result[1]->id_dosen)) {
+                $dosen2 = $this->Ta_model->getDosen($result[1]->id_dosen);
+            }
 
             $pilihan_ta = array(
                 'pilihan' => $result[0]->pilihan,
@@ -33,7 +35,7 @@ class Tugas_akhir extends BaseController
                 'id_pengajuan_ta' => $result[0]->id_pengajuan_ta,
                 'nama_proyek' => $detail_proyek[0]->nama_proyek,
                 'nama_dosen' => $detail_proyek[0]->nama_dosen,
-                'nama_dosen2' => $dosen2[0]->nama
+                'nama_dosen2' => (isset($result[1]->id_dosen)) ? $dosen2[0]->nama : '(Tidak Ada Dosen 2)'
             );
         } else {
             $detail_usulan = $this->Ta_model->getUsulan($result[0]->id_pengajuan_ta);
@@ -46,11 +48,15 @@ class Tugas_akhir extends BaseController
                 'pilihan' => $result[0]->pilihan,
                 'jenis' => $result[0]->jenis,
                 'id_dosen' => $detail_usulan[0]->id_dosen,
-                'id_dosen2' => $result[1]->id_dosen,
+                'id_dosen2' => (isset($result[1]->id_dosen)) ? $result[1]->id_dosen : null,
                 'id_pengajuan_ta' => $result[0]->id_pengajuan_ta
             );
             $data['dataDosen'] = $this->Ta_model->getDosen($detail_usulan[0]->id_dosen);
-            $data['dataDosen2'] = $this->Ta_model->getDosen($result[1]->id_dosen);
+            if (isset($result[1]->id_dosen)) {
+                $data['dataDosen2'] = $this->Ta_model->getDosen($result[1]->id_dosen);
+            } else {
+                $data['dataDosen2'] = [];
+            }
         }
         $data['dataPengajuanTA'] = $pilihan_ta;
         $this->global['pageTitle'] = "Elusi : Detail Tugas Akhir";
@@ -66,6 +72,8 @@ class Tugas_akhir extends BaseController
         $data['isMasaRegis'] = $this->Ta_model->isMasaRegisTA();
         /* Mendapatkan informasi tentang pilihan tugas akhir yang diambil */
         $data_pengajuan = $this->Ta_model->getPengajuanTA($id);
+
+        $data['dataDosbing'] = $this->Ta_model->getDosbing($data['dataTA'][0]->id_mahasiswa);
 
         $i = 1;
         $pilihan_ta = array();

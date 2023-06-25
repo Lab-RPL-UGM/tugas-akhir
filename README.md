@@ -1,5 +1,5 @@
-# Sistem Informasi - Tugas Akhir KOMSI
-**Tugas Akhir KOMSI using CodeIgniter + Gallantea Theme**
+# Sistem Informasi - Proyek Akhir TRPL
+**Proyek Akhir TRPL using CodeIgniter + Gallantea Theme**
 
 The code is uploaded to demonstrate the simple role based Admin Panel application using CodeIgniter(HMVC Framework)
 

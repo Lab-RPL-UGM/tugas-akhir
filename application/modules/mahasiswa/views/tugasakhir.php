@@ -88,7 +88,7 @@ if (!empty($taInfo)) {
 <div class="">
     <div class="page-title">
         <div class="title_left">
-            <h3>Pendaftaran Tugas Akhir</h3>
+            <h3>Tugas Akhir</h3>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -147,10 +147,32 @@ if (!empty($taInfo)) {
                                                     <!--proyek-->
                                                     <div class="row">
                                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan</label>
-                                                        <div style="padding-left: 0px;" class="col-md-6 col-sm-6 col-xs-12">
-                                                            <input type="text" class="form-control" value="<?php echo $record->nama ?>" readonly>
+                                                        <div class="well col-md-8">
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proyek</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <span>
+                                                                    <?php echo $record->nama ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing Proyek</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <span>
+                                                                    <?php echo $dataDosbing[0]->nama ?>
+                                                                </span>
+                                                            </div>
+                                                            <?php if (isset($dataDosbing[1]->id_dosen)) { ?>
+                                                                <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 2</label>
+                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                    <span>
+                                                                        <?php echo $dataDosbing[1]->nama ?>
+                                                                    </span>
+                                                                </div>
+                                                            <?php } ?>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
                                                         </div>
-                                                        <div class="clearfix" style="margin-bottom: 2%"></div>
                                                     </div>
                                                 <?php } else { ?>
                                                     <!--usulan-->
@@ -180,6 +202,22 @@ if (!empty($taInfo)) {
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <a target="_blank" href="<?php echo base_url(); ?>uploads/persetujuan/<?php echo $record->file_persetujuan; ?>"><?php echo $record->file_persetujuan ?></a>
                                                             </div>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 1</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <span>
+                                                                    <?php echo $dataDosbing[0]->nama ?>
+                                                                </span>
+                                                            </div>
+                                                            <?php if (isset($dataDosbing[1]->id_dosen)) { ?>
+                                                                <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 2</label>
+                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                    <span>
+                                                                        <?php echo $dataDosbing[1]->nama ?>
+                                                                    </span>
+                                                                </div>
+                                                            <?php } ?>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                         </div>
                                                     </div>
@@ -265,6 +303,33 @@ if (!empty($taInfo)) {
                                                                         <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
                                                                     </div>
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 1 <span class="required">*</span></label>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <select name="dosen" id="dosen" class="form-control">
+                                                                            <option value="">Pilih Dosen pembimbing 1..</option>
+                                                                            <?php foreach ($dataDosen as $data) { ?>
+                                                                                <option <?= ($active_usulan != 0 && isset($dataDosbing[0]->id_dosen) && $dataDosbing[0]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
+                                                                                    <?php echo $data->nama; ?>
+                                                                                </option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <select name="dosen2" id="dosen2" class="form-control">
+                                                                            <option value="">Pilih Dosen pembimbing 2..</option>
+                                                                            <?php foreach ($dataDosen as $data) { ?>
+                                                                                <option <?= ($active_usulan != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
+                                                                                    <?php echo $data->nama; ?>
+                                                                                </option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                        <small>Dosen 2 harus berbeda dengan Dosen 1</small>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="form-group col-md-9">
                                                                     <input type="submit" class="btn btn-success pull-right" value="Submit">
                                                                 </div>
@@ -278,8 +343,8 @@ if (!empty($taInfo)) {
                                                                                         echo 'active ';
                                                                                     } ?>tab-pane fade in" id="tab_content4" aria-labelledby="home-tab">
                                                             <div class="row">
-                                                                <div>
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">&nbsp;</label>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Proyek</label>
                                                                     <!-- Get Id Pengajuan TA Proyek -->
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <select name="proyektiga" class="form-control">
@@ -288,18 +353,33 @@ if (!empty($taInfo)) {
                                                                             if (!empty($proyekInfo)) {
                                                                                 foreach ($proyekInfo as $record) {
                                                                             ?>
-                                                                                    <option value="<?php echo $record->id_proyek ?>" <?php if (!empty($proyek[2])) {
-                                                                                                                                            if ($proyek[2] == $record->id_proyek) {
+                                                                                    <option value="<?php echo $record->id_proyek ?>" <?php if (!empty($proyek[0])) {
+                                                                                                                                            if ($proyek[0] == $record->id_proyek) {
                                                                                                                                                 echo "selected";
                                                                                                                                             }
-                                                                                                                                        } ?>><?php echo $record->nama ?></option>
+                                                                                                                                        } ?>><?php echo $record->nama_proyek ?> (<?php echo $record->nama ?>)</option>
                                                                             <?php
                                                                                 }
                                                                             }
                                                                             ?>
                                                                         </select>
-                                                                        <input type="submit" class="btn btn-success pull-right" style="margin-top: 3%" value="Submit">
                                                                     </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <select name="dosenProyek" id="dosen" class="form-control">
+                                                                            <option value="">Pilih Dosen pembimbing 2..</option>
+                                                                            <?php foreach ($dataDosen as $data) { ?>
+                                                                                <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
+                                                                                    <?php echo $data->nama; ?>
+                                                                                </option>
+                                                                            <?php } ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group col-md-9">
+                                                                    <input type="submit" class="btn btn-success pull-right" style="margin-top: 3%" value="Submit">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -393,9 +473,37 @@ if (!empty($taInfo)) {
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Proposal
-                                                            </label><small>Bagi yang mengajukan project dari institusi (jika ada)</small>
+                                                            </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
+                                                                <small>Bagi yang mengajukan project dari institusi (jika ada)</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 1 <span class="required">*</span></label>
+                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                <select name="dosen" id="dosen" class="form-control">
+                                                                    <option value="">Pilih Dosen pembimbing 1..</option>
+                                                                    <?php foreach ($dataDosen as $data) { ?>
+                                                                        <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
+                                                                            <?php echo $data->nama; ?>
+                                                                        </option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                <select name="dosen2" id="dosen2" class="form-control">
+                                                                    <option value="">Pilih Dosen pembimbing 2..</option>
+                                                                    <?php foreach ($dataDosen as $data) { ?>
+                                                                        <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
+                                                                            <?php echo $data->nama; ?>
+                                                                        </option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                <small>Dosen 2 harus berbeda dengan Dosen 1</small>
                                                             </div>
                                                         </div>
                                                         <div class="form-group col-md-9">
@@ -410,21 +518,40 @@ if (!empty($taInfo)) {
                                                     <!--status baru-->
                                                     <div class="row">
                                                         <div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">&nbsp;</label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <select name="proyektiga" class="form-control">
-                                                                    <option value="">Pilih ..</option>
-                                                                    <?php
-                                                                    if (!empty($proyekInfo)) {
-                                                                        foreach ($proyekInfo as $record) {
-                                                                    ?>
-                                                                            <option value="<?php echo $record->id_proyek ?>"><?php echo $record->nama ?></option>
-                                                                    <?php
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan Proyek <span class="required">*</span>
+                                                                </label>
+                                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                    <select name="proyektiga" class="form-control">
+                                                                        <option value="">Pilih ..</option>
+                                                                        <?php
+                                                                        if (!empty($proyekInfo)) {
+                                                                            foreach ($proyekInfo as $record) {
+                                                                        ?>
+                                                                                <option value="<?php echo $record->id_proyek ?>"><?php echo $record->nama_proyek ?> (<?= $record->nama ?>)</option>
+                                                                        <?php
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                                <input type="submit" class="btn btn-success pull-right" style="margin-top: 3%" value="Submit">
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                    <select name="dosenProyek" id="dosen2" class="form-control">
+                                                                        <option value="">Pilih Dosen pembimbing 2..</option>
+                                                                        <?php foreach ($dataDosen as $data) { ?>
+                                                                            <option value="<?php echo $data->id_dosen ?>">
+                                                                                <?php echo $data->nama; ?>
+                                                                            </option>
+                                                                        <?php } ?>
+                                                                    </select>
+                                                                    <small>Dosen 2 harus berbeda dengan Dosen Pemilik Proyek</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-md-9">
+                                                                <input type="submit" class="btn btn-success pull-right" value="Submit">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -440,6 +567,57 @@ if (!empty($taInfo)) {
                     <?php
                     }
                     ?>
+                </div>
+            </div>
+        </div>
+    <?php } elseif (isset($taTerplotting) && !empty($taTerplotting)) { ?>
+        <!--    end validasi berdasarkan periode-->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <center>
+                            <h3>
+                                <strong> <?= $taTerplotting['judul_ta'] ?> </strong>
+                            </h3>
+                            <h5>Dosen Pembimbing <strong><?= $taDosbing[0]->nama ?> <?= (isset($taDosbing[1]->nama)) ? " dan " . $taDosbing[1]->nama : "" ?></strong></h5>
+                            <h5>Progress <strong><?= $taTerplotting['progress'] ?>%</strong></h5>
+                        </center>
+                        <br>
+
+                        <a data-toggle="modal" data-target="#tambahBimbingan" type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Update Bimbingan</a>
+
+                        <table id="datatable-nopage" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Ke</th>
+                                    <th>Tanggal</th>
+                                    <th>Subject</th>
+                                    <th>Deskripsi</th>
+                                    <th>Catatan Dosen</th>
+                                    <th>File</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (isset($taBimbingan) && count($taBimbingan) > 0) {
+                                    foreach ($taBimbingan as $kBimbingan => $vBimbingan) { ?>
+                                        <tr>
+                                            <td><?= $kBimbingan + 1 ?></td>
+                                            <td><?= date('d-m-Y H:i', strtotime($vBimbingan->created_at)) ?></td>
+                                            <td><?= $vBimbingan->subject ?></td>
+                                            <td><?= $vBimbingan->description ?></td>
+                                            <td><?= $vBimbingan->reason ?></td>
+                                            <td>
+                                                <?php echo (isset($vBimbingan->file) ? "<a target=\"_blank\" href=\"" . base_url() . "uploads/data_bimbingan/" . $vBimbingan->file . "\">" . $vBimbingan->file . "</a>" : "Tidak ada lampiran"); ?>
+                                            </td>
+                                            <td><?= ucfirst($vBimbingan->status) ?></td>
+                                        </tr>
+                                <?php }
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -461,6 +639,53 @@ if (!empty($taInfo)) {
             </div>
         </div>
     <?php } ?>
+</div>
+<!-- Modal Update Bimbingan -->
+<div class="modal fade" id="tambahBimbingan" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ganti Tugas Akhir</h4>
+            </div>
+            <form action="<?php echo base_url(); ?>mahasiswa/pengajuan/updateBimbingan" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="x_panel">
+                        <div class="form-group row">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Subject Bimbingan <span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <input type="text" name="subject" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan subject bimbingan anda">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">File Bimbingan <small>(pdf)</small> <span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <div style="border:2px dashed #E0E0E0">
+                                    <input type="file" class="form-control-file" id="file" name="file">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">Deskripsi Bimbingan <span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea type="text" name="description" rows="4" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan deskripsi bimbingan anda"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="status" id="status" value="pengajuan">
+                    <input type="hidden" name="id_ta" id="id_ta" value=<?php echo $taTerplotting['id_ta'] ?>>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- Modal Ubah Tanggal Yudisium-->
 <div class="modal fade" id="ubahTA" role="dialog">
@@ -490,6 +715,7 @@ if (!empty($taInfo)) {
 </div>
 <script>
     $(document).ready(function() {
+
         jQuery.validator.addMethod("notEqualToGroup", function(value, element, options) {
             // get all the elements passed here with the same class
             var elems = $(element).parents('form').find(options[0]);
@@ -569,5 +795,9 @@ if (!empty($taInfo)) {
         //     $('select[name=proyektiga]').val('').change();
         // });
 
+
+        $("#datatable-nopage_filter").ready(function() {
+            $(".dataTables_filter").hide();
+        });
     });
 </script>

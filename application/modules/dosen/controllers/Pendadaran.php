@@ -34,7 +34,7 @@ class Pendadaran extends BaseController
             $data['pendadaranInfo'] = $this->pendadaran_model->getSidang($userId);
             $data['userId'] = $userId;
             $data['userRole'] = $userRole;
-            $this->global['pageTitle'] = "KOMSI-TA : Pendadaran";
+            $this->global['pageTitle'] = "TRPL-TA : Pendadaran";
 
             $this->loadViews("uji", $this->global, $data, NULL);
         }

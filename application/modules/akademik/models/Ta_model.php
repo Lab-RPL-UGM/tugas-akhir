@@ -191,6 +191,15 @@ class Ta_model extends CI_Model
         return $result;
     }
 
+    function getDosbing($id_mahasiswa)
+    {
+        $this->db->select('*');
+        $this->db->from('dosbing d');
+        $this->db->join('dosen ds', 'ds.id_dosen=d.id_dosen', 'left');
+        $this->db->where('d.id_mahasiswa', $id_mahasiswa);
+        return $this->db->get()->result();
+    }
+
     public function delete($id)
     {
         $this->db->trans_start();
@@ -253,6 +262,9 @@ class Ta_model extends CI_Model
 
         $this->db->where('id_ta', $id_ta);
         $this->db->update('tugas_akhir', $data_ta);
+
+        $this->db->where('id_mahasiswa', $id_mahasiswa);
+        $this->db->delete('dosbing');
 
         if ($id_proyek != NULL) {
             $result = $this->getProyek($id_proyek);

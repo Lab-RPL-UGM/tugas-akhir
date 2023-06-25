@@ -33,6 +33,93 @@ class Bimbingan_model extends CI_Model
         $result = $query->result();
         return $result;
     }
+    function getBimbinganMahasiswa($mahasiswaId)
+    {
+        $this->db->select('m.id_mahasiswa, m.nim, m.nama, s.id_sidang, t.id_ta, y.id_yudisium');
+        $this->db->from('dosbing ds');
+        $this->db->join('dosen d', 'd.id_dosen = ds.id_dosen');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = ds.id_mahasiswa');
+        $this->db->join('tugas_akhir t', 't.id_mahasiswa = m.id_mahasiswa');
+        $this->db->join('pengajuan_ta ta', 'ta.id_ta = t.id_ta');
+
+        $this->db->join('sidang s', 's.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
+
+        $this->db->where('m.id_mahasiswa', $mahasiswaId);
+        $this->db->where('y.id_yudisium IS NULL');
+        $this->db->where('t.status_pengambilan', 'terplotting');
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
+    function getTATerplotting($id_mahasiswa)
+    {
+        $this->db->select('*');
+        $this->db->from('tugas_akhir ta');
+        $this->db->join('pengajuan_ta pt', 'pt.id_ta=ta.id_ta', 'inner');
+        $this->db->where('ta.id_mahasiswa', $id_mahasiswa);
+        $this->db->where('ta.status_pengambilan', 'terplotting');
+        $this->db->where('pt.status', 'diterima');
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $record = $query->result();
+            if ($record[0]->id_proyek != NULL) {
+                $id_proyek = $record[0]->id_proyek;
+                $this->db->select('*,p.nama nama_proyek,d.nama nama_dosen');
+                $this->db->from('proyek p');
+                $this->db->join('dosen d', 'd.id_dosen=p.id_dosen', 'inner');
+                $this->db->where('p.id_proyek', $id_proyek);
+
+                $record_proyek = $this->db->get()->result();
+                $array_ta = [
+                    'id_ta' => $record[0]->id_ta,
+                    'judul_ta' => $record_proyek[0]->nama_proyek,
+                    'dosbing' => $record_proyek[0]->nama_dosen,
+                    'progress' => $record[0]->progress,
+                ];
+                return $array_ta;
+            } else {
+                $id_pengajuan_ta = $record[0]->id_pengajuan_ta;
+                $this->db->select('*,d.nama nama_dosen');
+                $this->db->from('usulan u');
+                $this->db->join('dosen d', 'd.id_dosen=u.id_dosen', 'inner');
+                $this->db->where('u.id_pengajuan_ta', $id_pengajuan_ta);
+
+                $record_usulan = $this->db->get()->result();
+
+                $array_ta = [
+                    'id_ta' => $record[0]->id_ta,
+                    'judul_ta' => $record_usulan[0]->judul,
+                    'dosbing' => $record_usulan[0]->nama_dosen,
+                    'progress' => $record[0]->progress,
+                    'file' => $record_usulan[0]->file_persetujuan,
+                    'mitra' => $record_usulan[0]->bisnis_rule,
+                    'deskripsi' => $record_usulan[0]->deskripsi,
+                ];
+                return $array_ta;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+    function getDosbing($id_mahasiswa)
+    {
+        $this->db->select('*');
+        $this->db->from('dosbing d');
+        $this->db->join('dosen ds', 'ds.id_dosen=d.id_dosen', 'left');
+        $this->db->where('d.id_mahasiswa', $id_mahasiswa);
+        return $this->db->get()->result();
+    }
+
+    function getBimbinganProgress($id_ta)
+    {
+        $this->db->select('*');
+        $this->db->from('bimbingan b');
+        $this->db->where('b.id_ta', $id_ta);
+        $this->db->order_by('id DESC');
+        return $this->db->get()->result();
+    }
     /**
      * This function is used to get the detail mahasiswa
      * @param number $idMhs : This is get mahasiswa by id

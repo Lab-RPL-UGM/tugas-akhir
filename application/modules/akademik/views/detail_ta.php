@@ -206,9 +206,13 @@
                                     <tr>
                                         <th style="vertical-align:middle">Dosen Pembimbing 2</th>
                                         <td>
-                                            <?php foreach ($dataDosen2 as $data) {
-                                                if (($data->id_dosen == $dataPengajuanTA['id_dosen2'])) {
-                                                    echo $data->nama;
+                                            <?php if ($dataPengajuanTA['id_dosen2'] == null) {
+                                                echo '(Tidak Ada Dosen 2)';
+                                            } else {
+                                                foreach ($dataDosen2 as $data) {
+                                                    if (($data->id_dosen == $dataPengajuanTA['id_dosen2'])) {
+                                                        echo $data->nama;
+                                                    }
                                                 }
                                             } ?>
                                         </td>

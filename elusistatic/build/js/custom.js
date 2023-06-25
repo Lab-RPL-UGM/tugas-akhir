@@ -2534,6 +2534,10 @@ if (typeof NProgress != 'undefined') {
 
 				$('#datatable-responsive').DataTable();
 
+				$('#datatable-nopage').DataTable({
+				  bPaginate: false
+				});
+
 				$('#datatable-scroller').DataTable({
 				  ajax: "js/datatables/json/scroller-demo.json",
 				  deferRender: true,

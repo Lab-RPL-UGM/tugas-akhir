@@ -54,6 +54,9 @@
                                         <center>Tahun Ajaran</center>
                                     </th>
                                     <th class="col-md-1" style="vertical-align:middle">
+                                        <center>Progress Bimbingan</center>
+                                    </th>
+                                    <th class="col-md-1" style="vertical-align:middle">
                                         <center>Status Penerimaan</center>
                                     </th>
                                     <th class="col-md-1" style="vertical-align:middle">
@@ -76,9 +79,12 @@
                                         <td style="vertical-align:middle">
                                             <?php echo $data->tahun_ajaran; ?>
                                         </td>
+                                        <td style="vertical-align:middle">
+                                            <?php echo $data->progress; ?>
+                                        </td>
                                         <td align="center" style="vertical-align:middle">
                                             <?php if ($data->status_pengambilan == 'terplotting') { ?>
-                                                <span class="label label-success">Terplotting</span>
+                                                <span class="label label-success">Terplotting Bimbingan</span>
                                             <?php } elseif ($data->status_pengambilan == 'revisi') { ?>
                                                 <span class="label label-danger">Revisi</span>
                                             <?php } elseif ($data->status_pengambilan == 'proses') { ?>

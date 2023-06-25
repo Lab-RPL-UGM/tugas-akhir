@@ -165,7 +165,7 @@ $array_usulan = [];
                                                 <select name="dosen2" id="dosen2" class="form-control">
                                                     <option value="">Pilih Dosen pembimbing..</option>
                                                     <?php foreach ($dataDosen as $data) { ?>
-                                                        <option value="<?php echo $data->id_dosen ?>">
+                                                        <option <?= (isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
                                                             <?php echo $data->nama; ?>
                                                         </option>
                                                     <?php } ?>
@@ -206,7 +206,7 @@ $array_usulan = [];
                                                 <select name="dosen" id="dosen" class="form-control">
                                                     <option value="">Pilih Dosen pembimbing..</option>
                                                     <?php foreach ($dataDosen as $data) { ?>
-                                                        <option value="<?php echo $data->id_dosen ?>">
+                                                        <option <?= (isset($dataDosbing[0]->id_dosen) && $dataDosbing[0]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
                                                             <?php echo $data->nama; ?>
                                                         </option>
                                                     <?php } ?>
@@ -217,7 +217,7 @@ $array_usulan = [];
                                                 <select name="dosen2" id="dosen2" class="form-control">
                                                     <option value="">Pilih Dosen pembimbing..</option>
                                                     <?php foreach ($dataDosen as $data) { ?>
-                                                        <option value="<?php echo $data->id_dosen ?>">
+                                                        <option <?= (isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
                                                             <?php echo $data->nama; ?>
                                                         </option>
                                                     <?php } ?>

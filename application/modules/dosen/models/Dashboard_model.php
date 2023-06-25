@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 27/03/2018
@@ -20,12 +21,13 @@ class Dashboard_model extends CI_Model
         $this->db->join('dosen ds', 'ds.id_dosen = d.id_dosen');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = d.id_mahasiswa');
         $this->db->join('tugas_akhir ta', 'ta.id_mahasiswa = m.id_mahasiswa');
-        $this->db->join('sidang s','s.id_mahasiswa = m.id_mahasiswa','left');
-        $this->db->join('yudisium y','y.id_mahasiswa = m.id_mahasiswa','left');
+        $this->db->join('sidang s', 's.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode');
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('ta.status_pengambilan', 'terplotting');
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_user', $userId);
         $query = $this->db->get();
@@ -48,9 +50,9 @@ class Dashboard_model extends CI_Model
         $this->db->join('penilaian p', 'p.id_anggota_sidang = a.id_anggota_sidang');
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
-        $this->db->where('u.id_user',$userId);
-        $this->db->where('v.id_berkas_sidang',1);
-        $this->db->where('v.isValid','2');
+        $this->db->where('u.id_user', $userId);
+        $this->db->where('v.id_berkas_sidang', 1);
+        $this->db->where('v.isValid', '2');
         $query = $this->db->get();
         return count($query->result());
     }
@@ -66,8 +68,8 @@ class Dashboard_model extends CI_Model
         $this->db->join('dosen ds', 'ds.id_dosen = d.id_dosen');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = d.id_mahasiswa');
         $this->db->join('tugas_akhir ta', 'ta.id_mahasiswa = m.id_mahasiswa');
-        $this->db->join('sidang s','s.id_mahasiswa = m.id_mahasiswa','left');
-        $this->db->join('yudisium y','y.id_mahasiswa = m.id_mahasiswa','left');
+        $this->db->join('sidang s', 's.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode');
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
@@ -93,5 +95,4 @@ class Dashboard_model extends CI_Model
         $query = $this->db->get();
         return count($query->result());
     }
-
 }

@@ -35,21 +35,28 @@ class Pengajuan extends BaseController
 
             $data['proyekInfo'] = $this->Pengajuan_model->getProyek();
             $data['periodeInfo'] = $this->Pengajuan_model->getPeriode();
+            $data['dataDosen'] = $this->Pengajuan_model->getDosen();
 
             // apabila dia sudah mendaftarkan TA
             $id_mahasiswa = $this->Pengajuan_model->getIdMahasiswa($userId);
             $ta_terplotting = $this->Pengajuan_model->getTATerplotting($id_mahasiswa[0]->id_mahasiswa);
+            $data['dataDosbing'] = $this->Pengajuan_model->getDosbing($id_mahasiswa[0]->id_mahasiswa);
             if ($ta_terplotting) {
                 $array = [
                     'id_ta' => $ta_terplotting['id_ta'],
                     'judul_ta' => $ta_terplotting['judul_ta'],
-                    'dosbing' => $ta_terplotting['dosbing']
+                    'dosbing' => $ta_terplotting['dosbing'],
+                    'progress' => $ta_terplotting['progress']
                 ];
                 $data['taTerplotting'] = $array;
+                $data['taDosbing'] = $this->Pengajuan_model->getDosbing($id_mahasiswa[0]->id_mahasiswa);
+                $data['taBimbingan'] = $this->Pengajuan_model->getBimbingan($ta_terplotting['id_ta']);
             } else {
                 $data['taTerplotting'] = $ta_terplotting;
                 $taInfo = $this->Pengajuan_model->getTa($id_mahasiswa[0]->id_mahasiswa);
                 $data['taInfo'] = $taInfo;
+                $data['taDosbing'] = $this->Pengajuan_model->getDosbing($id_mahasiswa[0]->id_mahasiswa);
+                $data['taBimbingan'] = $this->Pengajuan_model->getBimbingan($ta_terplotting['id_ta']);
             }
             $this->loadViews("tugasakhir", $this->global, $data, NULL);
         }
@@ -71,6 +78,7 @@ class Pengajuan extends BaseController
 
             $isLengkap = $this->Pengajuan_model->isDataMahasiswaLengkap($id_mahasiswa[0]->id_mahasiswa);
 
+            $mahasiswaID = $id_mahasiswa[0]->id_mahasiswa;
             if (!$isLengkap) {
                 $this->session->set_flashdata('error', 'Lengkapi data diri Anda terlebih dahulu');
                 redirect('mahasiswa/pengajuan/tugasakhir');
@@ -111,6 +119,26 @@ class Pengajuan extends BaseController
                         $this->session->set_flashdata('error', 'Lengkapi data pengajuan dengan benar');
                         redirect('mahasiswa/pengajuan/tugasakhir');
                     } else {
+                        $getProject = $this->Pengajuan_model->getProyek($proyek[2]);
+                        $id_dosen2 = $this->input->post('dosen2');
+                        if ($jenis[2] == 'proyek' && !empty($id_dosen2) && $getProject[0]->id_dosen == $id_dosen2) {
+                            $this->session->set_flashdata('error', 'Dosen Project dan Dosen 2 Harus berbeda');
+
+                            redirect('mahasiswa/pengajuan/tugasakhir');
+                        }
+
+                        if ($jenis[2] == 'usul') {
+                            $this->form_validation->set_rules('dosen', 'Dosen', 'required');
+
+                            $id_dosen = $this->input->post('dosen');
+                            $id_dosen2 = $this->input->post('dosen2');
+                            if (!empty($id_dosen2) && $id_dosen == $id_dosen2) {
+                                $this->session->set_flashdata('error', 'Dosen 1 dan Dosen 2 Harus berbeda');
+
+                                redirect('mahasiswa/pengajuan/tugasakhir');
+                            }
+                        }
+
                         $ta = array(
                             'id_mahasiswa' => $id_mahasiswa[0]->id_mahasiswa,
                             'id_periode' => $id_periode,
@@ -120,7 +148,7 @@ class Pengajuan extends BaseController
                         $id_ta = $this->Pengajuan_model->addNewTa($ta);
 
                         if ($jenis[2] == "proyek") {
-
+                            $id_dosen = $getProject[0]->id_dosen;
                             if (empty($proyek[2])) {
                                 $this->session->set_flashdata('error', 'Lengkapi data secara lengkap');
                                 redirect('mahasiswa/pengajuan/tugasakhir');
@@ -181,6 +209,24 @@ class Pengajuan extends BaseController
                             }
                             // add data ke tabel usulan
                             $resultusulan = $this->Pengajuan_model->addNewUsulan($usulan);
+                        }
+
+                        $this->db->where('id_mahasiswa', $mahasiswaID);
+                        $this->db->delete('dosbing');
+
+                        /* Insert tabel dosbing*/
+                        $data_dosbing = array(
+                            'id_dosen' => $id_dosen,
+                            'id_mahasiswa' => $mahasiswaID
+                        );
+                        $this->db->insert('dosbing', $data_dosbing);
+
+                        if (!empty($id_dosen2)) {
+                            $data_dosbing = array(
+                                'id_dosen' => $id_dosen2,
+                                'id_mahasiswa' => $mahasiswaID
+                            );
+                            $this->db->insert('dosbing', $data_dosbing);
                         }
 
                         if ($resultta > 0 || $resultusulan > 0) {
@@ -252,12 +298,21 @@ class Pengajuan extends BaseController
 
             if (!empty($id_mahasiswa)) {
 
+                $mahasiswaID = $id_mahasiswa[0]->id_mahasiswa;
                 if ($jenis[2] == "proyek") {
                     if ($jenis_pilihan3 == "usul" && $jenis[2] != 'usul' && $i = 2) {
                         // apabila jenis pengajuan ta sebelumnya adalah usulan
 
                         // delete data pada tabel usulan
                         $resultUsulan = $this->Pengajuan_model->deleteUsulan($id_usulan);
+                    }
+
+                    $getProject = $this->Pengajuan_model->getProyek($proyek[2]);
+                    $id_dosen2 = $this->input->post('dosenProyek');
+                    if (!empty($id_dosen2) && $getProject[0]->id_dosen == $id_dosen2) {
+                        $this->session->set_flashdata('error', 'Dosen Project dan Dosen 2 Harus berbeda');
+
+                        redirect('mahasiswa/pengajuan/tugasakhir');
                     }
 
                     // inputan 1&2 pasti jenis pengajuan ta = proyek
@@ -267,6 +322,25 @@ class Pengajuan extends BaseController
                         'jenis' => $jenis[2]
                     );
 
+                    $this->db->where('id_mahasiswa', $mahasiswaID);
+                    $this->db->delete('dosbing');
+
+                    $getProject = $this->Pengajuan_model->getProyek($id_proyek);
+
+                    /* Insert tabel dosbing*/
+                    $data_dosbing = array(
+                        'id_dosen' => $getProject[0]->id_dosen,
+                        'id_mahasiswa' => $mahasiswaID
+                    );
+                    $this->db->insert('dosbing', $data_dosbing);
+
+                    if (!empty($id_dosen2)) {
+                        $data_dosbing = array(
+                            'id_dosen' => $id_dosen2,
+                            'id_mahasiswa' => $mahasiswaID
+                        );
+                        $this->db->insert('dosbing', $data_dosbing);
+                    }
                     // edit data pengajuan ta dengan id_pengajuan_ta masing-masing
                     $resultPengajuanTA = $this->Pengajuan_model->editPengajuanTa($pengajuan_ta, $id_pengajuan_ta[2]);
                 } else {
@@ -275,6 +349,17 @@ class Pengajuan extends BaseController
                     $deskripsi = $this->input->post('deskripsi');
                     $bisnis_rule = $this->input->post('bisnis_rule');
                     $bisnis_rule = $this->input->post('bisnis_rule');
+
+                    $id_dosen = $this->input->post('dosen');
+                    $id_dosen2 = $this->input->post('dosen2');
+                    if (!empty($id_dosen2) && $id_dosen == $id_dosen2) {
+                        $this->session->set_flashdata(
+                            'error',
+                            'Dosen 1 dan Dosen 2 Harus berbeda'
+                        );
+                        redirect('mahasiswa/pengajuan/tugasakhir');
+                    }
+
                     if (empty($judul) || empty($deskripsi) || empty($bisnis_rule) || empty($_FILES['file_persetujuan']['name'])) {
                         $this->session->set_flashdata('error', 'Lengkapi data secara lengkap');
                         redirect('mahasiswa/pengajuan/tugasakhir');
@@ -360,6 +445,29 @@ class Pengajuan extends BaseController
                             // insert data to usulan table
                             $resultUsulan = $this->Pengajuan_model->addNewUsulan($usulan);
                         }
+
+                        $id_dosen = $this->input->post('dosen');
+                        $id_dosen2 = $this->input->post('dosen2');
+
+                        $this->db->where('id_mahasiswa', $mahasiswaID);
+                        $this->db->delete('dosbing');
+
+                        if (!empty($id_dosen)) {
+                            /* Insert tabel dosbing*/
+                            $data_dosbing = array(
+                                'id_dosen' => $id_dosen,
+                                'id_mahasiswa' => $mahasiswaID
+                            );
+                            $this->db->insert('dosbing', $data_dosbing);
+                        }
+
+                        if (!empty($id_dosen2)) {
+                            $data_dosbing = array(
+                                'id_dosen' => $id_dosen2,
+                                'id_mahasiswa' => $mahasiswaID
+                            );
+                            $this->db->insert('dosbing', $data_dosbing);
+                        }
                     }
 
                     // id_proyek di set null karna dia memilih usulan
@@ -406,6 +514,42 @@ class Pengajuan extends BaseController
             } else {
                 $this->session->set_flashdata('error', 'Tugas Akhir anda gagal diganti. Masalah database');
             }
+        }
+    }
+
+    function updateBimbingan()
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        if ($_FILES["file"]) {
+            $new_name = date("YmdHis") . "-" . $_FILES["file"]['name'];
+        } else {
+            delete_files('./uploads/data_bimbingan/');
+            $this->session->set_flashdata('error', 'Pilih file (.pdf) terlebih dahulu');
+            redirect('mahasiswa/pengajuan/tugasakhir');
+        }
+
+        $config['upload_path']          = './uploads/data_bimbingan';
+        $config['allowed_types']        = 'pdf';
+        $config['file_name']            = $new_name;
+
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload("file")) {
+            $this->session->set_flashdata('error', $this->upload->display_errors());
+            redirect('mahasiswa/pengajuan/tugasakhir');
+        } else {
+            $terupload = $this->upload->data();
+
+            $dataBimbingan = array(
+                'id_ta' => $this->input->post('id_ta'),
+                'subject' => $this->input->post('subject'),
+                'description' => $this->input->post('description'),
+                'status' => $this->input->post('status'),
+                'file' => $terupload['file_name'],
+            );
+            $this->db->insert('bimbingan', $dataBimbingan);
+
+            $this->session->set_flashdata('success', 'Bimbingan berhasil di upload');
+            redirect('mahasiswa/pengajuan/tugasakhir');
         }
     }
     /**

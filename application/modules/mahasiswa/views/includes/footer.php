@@ -12,7 +12,7 @@
 <!-- footer content -->
 <footer>
     <div class="pull-right">
-        KOMSI - Tugas Akhir
+        Proyek Akhir TRPL
     </div>
     <div class="clearfix"></div>
 </footer>

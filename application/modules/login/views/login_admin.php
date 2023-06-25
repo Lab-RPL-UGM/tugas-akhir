@@ -84,8 +84,8 @@
                         <div class="clearfix"></div>
                         <br />
                         <div>
-                            <h3><i class="fa fa-graduation-cap"></i> Tugas Akhir KOMSI</h3>
-                            <p>©2018 All Rights Reserved.</p>
+                            <h3><i class="fa fa-graduation-cap"></i> Proyek Akhir TRPL</h3>
+                            <p>©2023 All Rights Reserved.</p>
                         </div>
                     </div>
                 </form>

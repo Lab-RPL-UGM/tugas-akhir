@@ -53,13 +53,14 @@
                                         </td> -->
                                         <td>
                                             <?php if ($record->id_ta != '' and $record->id_sidang == '') { ?>
-                                                Judul
+                                                Bimbingan
                                             <?php } else { ?>
                                                 Sidang
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <a href="<?php echo base_url() ?>dosen/bimbingan/detail/<?php echo $record->id_mahasiswa ?>" class="btn btn-info"><i class="fa fa-tasks"></i></a>
+                                            <a href="<?php echo base_url() ?>dosen/bimbingan/detail/<?php echo $record->id_mahasiswa ?>" class="btn btn-info"><i class="fa fa-user"></i></a>
+                                            <a href="<?php echo base_url() ?>dosen/bimbingan/progress/<?php echo $record->id_mahasiswa ?>" class="btn btn-info"><i class="fa fa-tasks"></i></a>
                                         </td>
                                     </tr>
                         </tbody>
