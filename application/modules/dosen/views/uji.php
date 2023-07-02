@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 23/03/2018
@@ -28,49 +29,50 @@
                     </div>
                     <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
-                        <tr>
-                            <th>Tgl Sidang</th>
-                            <th>Jam</th>
-                            <th>Ruang</th>
-                            <th>NIM</th>
-                            <th>Nama</th>
-                            <th>Laporan TA</th>
-                            <th>Penilaian</th>
-                            <th>Nilai Akhir</th>
-                        </tr>
+                            <tr>
+                                <th>Tgl Sidang</th>
+                                <th>Jam</th>
+                                <th>Ruang</th>
+                                <th>NIM</th>
+                                <th>Nama</th>
+                                <th>Laporan TA</th>
+                                <th>Penilaian</th>
+                                <!-- <th>Nilai Akhir</th> -->
+                            </tr>
                         </thead>
                         <tbody>
-                        <?php
-                        if(!empty($pendadaranInfo))
-                        {
-                            foreach($pendadaranInfo as $record)
-                            {
-                        ?>
-                        <tr>
-                            <td>
-                                <?php echo date_format(date_create_from_format('Y-m-d',$record->tanggal), 'd/m/Y'); ?>
-                            </td>
-                            <td><?php echo substr($record->waktu,0,5) ?></td>
-                            <td><?php echo $record->ruang ?></td>
-                            <td><?php echo $record->nim ?></td>
-                            <td><?php echo $record->nama ?></td>
-                            <td>
-                                <?php if ($record->path != ''){?>
-                                    <a href="<?php echo base_url()?>uploads/sidang/1/<?php echo $record->path?>" class="btn btn-sm btn-info" download>
-                                        <i class="fa fa-download"></i>
-                                    </a>
-                                <?php }else{?>
-                                    Belum unggah
-                                <?php }?>
-                            </td>
-                            <td><a href="<?php echo base_url()?>dosen/pendadaran/nilai/<?php echo $record->id_sidang?>/<?php echo $record->id_penilaian?>" class="btn btn-success btn-sm"><i class="fa fa-tasks"></i></a></td>
-                            <td><?php echo $record->nilai_akhir_sidang ?></td>
-                        </tr>
+                            <?php
+                            if (!empty($pendadaranInfo)) {
+                                foreach ($pendadaranInfo as $record) {
+                            ?>
+                                    <tr>
+                                        <td>
+                                            <?php echo date_format(date_create_from_format('Y-m-d', $record->tanggal), 'd/m/Y'); ?>
+                                        </td>
+                                        <td><?php echo substr($record->waktu, 0, 5) ?></td>
+                                        <td><?php echo $record->ruang ?></td>
+                                        <td><?php echo $record->nim ?></td>
+                                        <td><?php echo $record->nama ?></td>
+                                        <td>
+                                            <?php if ($record->path != '') { ?>
+                                                <a href="<?php echo base_url() ?>uploads/sidang/1/<?php echo $record->path ?>" class="btn btn-sm btn-info" download>
+                                                    <i class="fa fa-download"></i>
+                                                </a>
+                                            <?php } else { ?>
+                                                Belum unggah
+                                            <?php } ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($record->ketuaPendadaranInfo[0]->id_user == $userId) { ?><a href="<?php echo base_url() ?>dosen/pendadaran/nilai/<?php echo $record->id_sidang ?>/<?php echo $record->id_penilaian ?>" class="btn btn-success btn-sm"><i class="fa fa-tasks"></i></a>
+                                            <?php } ?>
+                                        </td>
+                                        <!-- <td><?php echo $record->nilai_akhir_sidang ?></td> -->
+                                    </tr>
                         </tbody>
-                        <?php
+                <?php
+                                }
                             }
-                        }
-                        ?>
+                ?>
                     </table>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 22/03/2018
@@ -10,10 +11,8 @@
 $id_dosen = '';
 $nama = '';
 
-if(!empty($dosenInfo))
-{
-    foreach ($dosenInfo as $uf)
-    {
+if (!empty($dosenInfo)) {
+    foreach ($dosenInfo as $uf) {
         $id_mahasiswa = $uf->id_dosen;
         $nama = $uf->nama;
     }
@@ -22,7 +21,7 @@ if(!empty($dosenInfo))
 <div class="">
     <div class="page-title">
         <div class="title_left">
-            <h3><a href="<?php echo base_url()?>dosen/proyek"><i class="fa fa-chevron-left"></i></a> Project Management <small>Add, Edit</small></h3>
+            <h3><a href="<?php echo base_url() ?>dosen/proyek"><i class="fa fa-chevron-left"></i></a> Project Management <small>Add, Edit</small></h3>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -38,9 +37,8 @@ if(!empty($dosenInfo))
                             <?php
                             $this->load->helper('form');
                             $error = $this->session->flashdata('error');
-                            if($error)
-                            {
-                                ?>
+                            if ($error) {
+                            ?>
                                 <div class="alert alert-danger alert-dismissable">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                     <?php echo $this->session->flashdata('error'); ?>
@@ -48,9 +46,8 @@ if(!empty($dosenInfo))
                             <?php } ?>
                             <?php
                             $success = $this->session->flashdata('success');
-                            if($success)
-                            {
-                                ?>
+                            if ($success) {
+                            ?>
                                 <div class="alert alert-success alert-dismissable">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                     <?php echo $this->session->flashdata('success'); ?>
@@ -65,7 +62,7 @@ if(!empty($dosenInfo))
                         </div>
                     </div>
                     <br />
-                    <form id="tambah-proyek" action="<?php echo base_url()?>dosen/proyek/addNewProject" method="post" role="form" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="tambah-proyek" action="<?php echo base_url() ?>dosen/proyek/addNewProject" method="post" role="form" data-parsley-validate class="form-horizontal form-label-left">
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nama-dosen">Penanggung jawab<span class="required"> *</span>
                             </label>
@@ -73,13 +70,11 @@ if(!empty($dosenInfo))
                                 <select class="form-control col-md-7 col-xs-12" id="nama-dosen" name="id_dosen" required>
                                     <option value="0" disabled selected>Pilih ..</option>
                                     <?php
-                                    if(!empty($dosenInfo))
-                                    {
-                                        foreach ($dosenInfo as $dosen)
-                                        {
-                                            ?>
+                                    if (!empty($dosenInfo)) {
+                                        foreach ($dosenInfo as $dosen) {
+                                    ?>
                                             <option value="<?php echo $dosen->id_dosen ?>"><?php echo $dosen->nama ?></option>
-                                            <?php
+                                    <?php
                                         }
                                     }
                                     ?>
@@ -87,21 +82,35 @@ if(!empty($dosenInfo))
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nama-proyek">Nama Proyek <span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nama-proyek">Judul Proyek <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="text" name="nama-proyek" id="nama-proyek" required="required" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Instansi <span class="required">*</span></label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="deskripsi">Deksripsi Proyek <span class="required">*</span>
+                            </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="klien" class="form-control col-md-7 col-xs-12" type="text" name="klien" required="required">
+                                <textarea type="text" name="deskripsi" id="deskripsi" rows="4" required="required" class="form-control col-md-7 col-xs-12"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tools">Tools Proyek <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" name="tools" id="tools" required="required" class="form-control col-md-7 col-xs-12">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Instansi</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="klien" class="form-control col-md-7 col-xs-12" type="text" name="klien">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 pull-right">
-                                <a href="<?php echo base_url()?>dosen/proyek" class="btn btn-danger">Cancel</a>
+                                <a href="<?php echo base_url() ?>dosen/proyek" class="btn btn-danger">Cancel</a>
                                 <input type="submit" class="btn btn-success" value="Submit" />
                             </div>
                         </div>

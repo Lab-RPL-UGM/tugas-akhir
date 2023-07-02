@@ -133,7 +133,9 @@ $array_usulan = [];
                                             <?php } else {
                                                 $array_proyek = [
                                                     'judul' => $data['nama_proyek'],
-                                                    'dosen' => $data['nama_dosen']
+                                                    'dosen' => $data['nama_dosen'],
+                                                    'deskripsi' => $data['deskripsi'],
+                                                    'tools' => $data['tools'],
                                                 ]; ?>
                                                 <input type="text" hidden class="flat" name="terima" id="terima_proyek" value="<?php echo $data['id_pengajuan_ta'] . ' ' . $data['id_proyek'] ?>" />
                                             <?php } ?>
@@ -154,6 +156,14 @@ $array_usulan = [];
                                                 <p>
                                                     <span class="badge">Judul</span>&emsp;
                                                     <?php echo $array_proyek['judul']; ?>
+                                                </p>
+                                                <p>
+                                                    <span class="badge">Deskripsi</span>&emsp;
+                                                    <?php echo $array_proyek['deskripsi']; ?>
+                                                </p>
+                                                <p>
+                                                    <span class="badge">Tools</span>&emsp;
+                                                    <?php echo $array_proyek['tools']; ?>
                                                 </p>
                                                 <p>
                                                     <span class="badge">Dosen</span>&emsp;
@@ -257,9 +267,13 @@ $array_usulan = [];
                                     <?php } elseif ($dataTA[0]->status_pengambilan == 'revisi') { ?>
                                         <h4><i>(Tugas Akhir di Revisi dengan Alasan : </i><b><?= $dataTA[0]->reason ?></b><i>)</i></h4>
                                     <?php } else { ?>
-                                        <center>
+                                        <input class="btn btn-success pull-right" name="pilihan" value="Setujui" type="submit">
+                                        <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#modalRevisi" type="button">
+                                            Revisi
+                                        </button>
+                                        <!-- <center>
                                             <h4><i>(Periode registrasi tugas akhir masih berlangsung, plotting tugas akhir belum bisa dilakukan)</i></h4>
-                                        </center>
+                                        </center> -->
                                     <?php } ?>
                                 </form>
                             </div>

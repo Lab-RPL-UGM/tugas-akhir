@@ -115,7 +115,7 @@ class Pengajuan extends BaseController
                     if ($jenis[2] == 'proyek' && empty($proyek[2])) {
                         $this->session->set_flashdata('error', 'Lengkapi data pengajuan dengan benar');
                         redirect('mahasiswa/pengajuan/tugasakhir');
-                    } elseif ($jenis[2] == 'usul' && (empty($judul) || empty($deskripsi) || empty($bisnis_rule))) {
+                    } elseif ($jenis[2] == 'usul' && empty($judul)) {
                         $this->session->set_flashdata('error', 'Lengkapi data pengajuan dengan benar');
                         redirect('mahasiswa/pengajuan/tugasakhir');
                     } else {
@@ -176,7 +176,7 @@ class Pengajuan extends BaseController
                             if (empty($_FILES['file_persetujuan']['name'])) {
                                 $usulan = array(
                                     'id_pengajuan_ta' => $id_pengajuan_ta,
-                                    'judul' => $judul,
+                                    'judul' => strtoupper($judul),
                                     'deskripsi' => $deskripsi,
                                     'bisnis_rule' => $bisnis_rule,
                                     'file_persetujuan' => NULL
@@ -200,7 +200,7 @@ class Pengajuan extends BaseController
                                     $terupload = $this->upload->data();
                                     $usulan = array(
                                         'id_pengajuan_ta' => $id_pengajuan_ta,
-                                        'judul' => $judul,
+                                        'judul' => strtoupper($judul),
                                         'deskripsi' => $deskripsi,
                                         'bisnis_rule' => $bisnis_rule,
                                         'file_persetujuan' => $terupload['file_name']
@@ -325,8 +325,6 @@ class Pengajuan extends BaseController
                     $this->db->where('id_mahasiswa', $mahasiswaID);
                     $this->db->delete('dosbing');
 
-                    $getProject = $this->Pengajuan_model->getProyek($id_proyek);
-
                     /* Insert tabel dosbing*/
                     $data_dosbing = array(
                         'id_dosen' => $getProject[0]->id_dosen,
@@ -348,7 +346,6 @@ class Pengajuan extends BaseController
                     $judul = $this->input->post('judul');
                     $deskripsi = $this->input->post('deskripsi');
                     $bisnis_rule = $this->input->post('bisnis_rule');
-                    $bisnis_rule = $this->input->post('bisnis_rule');
 
                     $id_dosen = $this->input->post('dosen');
                     $id_dosen2 = $this->input->post('dosen2');
@@ -360,7 +357,7 @@ class Pengajuan extends BaseController
                         redirect('mahasiswa/pengajuan/tugasakhir');
                     }
 
-                    if (empty($judul) || empty($deskripsi) || empty($bisnis_rule) || empty($_FILES['file_persetujuan']['name'])) {
+                    if (empty($judul) || empty($_FILES['file_persetujuan']['name'])) {
                         $this->session->set_flashdata('error', 'Lengkapi data secara lengkap');
                         redirect('mahasiswa/pengajuan/tugasakhir');
                     } else {
@@ -369,7 +366,7 @@ class Pengajuan extends BaseController
                             if (empty($_FILES['file_persetujuan']['name'])) {
                                 $usulan = array(
                                     'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                    'judul' => $judul,
+                                    'judul' => strtoupper($judul),
                                     'deskripsi' => $deskripsi,
                                     'bisnis_rule' => $bisnis_rule,
                                     'file_persetujuan' => NULL
@@ -395,7 +392,7 @@ class Pengajuan extends BaseController
                                     $terupload = $this->upload->data();
                                     $usulan = array(
                                         'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                        'judul' => $judul,
+                                        'judul' => strtoupper($judul),
                                         'deskripsi' => $deskripsi,
                                         'bisnis_rule' => $bisnis_rule,
                                         'file_persetujuan' => $terupload['file_name'],
@@ -410,7 +407,7 @@ class Pengajuan extends BaseController
                             if (empty($_FILES['file_persetujuan']['name'])) {
                                 $usulan = array(
                                     'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                    'judul' => $judul,
+                                    'judul' => strtoupper($judul),
                                     'deskripsi' => $deskripsi,
                                     'bisnis_rule' => $bisnis_rule,
                                     'file_persetujuan' => NULL
@@ -435,7 +432,7 @@ class Pengajuan extends BaseController
                                     $terupload = $this->upload->data();
                                     $usulan = array(
                                         'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                        'judul' => $judul,
+                                        'judul' => strtoupper($judul),
                                         'deskripsi' => $deskripsi,
                                         'bisnis_rule' => $bisnis_rule,
                                         'file_persetujuan' => $terupload['file_name']

@@ -16,20 +16,13 @@ class Pendadaran_model extends CI_Model
      */
     function getSidang($userId)
     {
-        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
-        p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
+        $this->db->select('s.*, js.*');
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
-        $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang');
-        $this->db->join('validasi_berkas_sidang v', 'v.id_sidang = s.id_sidang');
-        $this->db->join('anggota_sidang a', 'a.id_sidang = s.id_sidang');
-        $this->db->join('penilaian p', 'p.id_anggota_sidang = a.id_anggota_sidang');
-        $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
-        $this->db->join('user u', 'u.id_user = d.id_user');
+        $this->db->join('user u', 'u.id_user = m.id_user');
+        $this->db->join('jadwal_sidang js', 's.id_sidang = js.id_sidang');
         $this->db->where('u.id_user', $userId);
-        $this->db->where('v.id_berkas_sidang', 1);
-        // $this->db->where('v.isValid', '2');
-        $this->db->order_by('j.tanggal DESC');
+        $this->db->where('s.status', 'lulus');
         $query = $this->db->get();
 
         $result = $query->result();
@@ -189,12 +182,44 @@ class Pendadaran_model extends CI_Model
     }
     function getKetuaSidang($idSidang)
     {
-        $this->db->select('a.role, d.nama, u.id_user');
+        $this->db->select('a.role, d.*, u.id_user');
         $this->db->from('anggota_sidang a');
         $this->db->join('dosen d', 'd.id_dosen=a.id_dosen');
         $this->db->join('user u', 'u.id_user=d.id_user');
         $this->db->where('a.id_sidang', $idSidang);
         $this->db->where('a.role', 'ketua');
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    function getSekreSidang($idSidang)
+    {
+        $this->db->select('a.role, d.*, u.id_user');
+        $this->db->from('anggota_sidang a');
+        $this->db->join('dosen d', 'd.id_dosen=a.id_dosen');
+        $this->db->join('user u', 'u.id_user=d.id_user');
+        $this->db->where('a.id_sidang', $idSidang);
+        $this->db->where('a.role', 'sekretaris');
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    function getAnggotaSidang($idSidang)
+    {
+        $this->db->select('a.role, d.*, u.id_user');
+        $this->db->from('anggota_sidang a');
+        $this->db->join('dosen d', 'd.id_dosen=a.id_dosen');
+        $this->db->join('user u', 'u.id_user=d.id_user');
+        $this->db->where('a.id_sidang', $idSidang);
+        $this->db->where('a.role', 'anggota');
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {

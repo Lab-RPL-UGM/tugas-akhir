@@ -57,7 +57,7 @@ class Daftar_dosen_model extends CI_Model
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('d.id_dosen', $userId);
         $this->db->where('v.id_berkas_sidang', 1);
-        $this->db->where('v.isValid', '2');
+        // $this->db->where('v.isValid', '2');
         $query = $this->db->get();
         return count($query->result());
     }

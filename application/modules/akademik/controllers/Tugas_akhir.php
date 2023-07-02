@@ -86,7 +86,9 @@ class Tugas_akhir extends BaseController
                     'id_pengajuan_ta' => $result->id_pengajuan_ta,
                     'id_proyek' => $detail_proyek[0]->id_proyek,
                     'nama_proyek' => $detail_proyek[0]->nama_proyek,
-                    'nama_dosen' => $detail_proyek[0]->nama_dosen
+                    'nama_dosen' => $detail_proyek[0]->nama_dosen,
+                    'deskripsi' => $detail_proyek[0]->deskripsi,
+                    'tools' => $detail_proyek[0]->tools,
                 );
                 array_push($pilihan_ta, $array);
             } else {

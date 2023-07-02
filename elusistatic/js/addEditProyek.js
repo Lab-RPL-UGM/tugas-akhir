@@ -20,10 +20,6 @@ $(document).ready(function () {
 			nama_proyek: {
                 required: true,
 				noSpace: true
-			},
-			instansi: {
-				required: true,
-				noSpace: true
 			}
 		},
 		messages: {
@@ -34,10 +30,6 @@ $(document).ready(function () {
 		    nama_proyek: {
                 required: 'Nama proyek tidak boleh kosong',
 				noSpace: 'Nama proyek tidak boleh kosong'
-			},
-			instansi: {
-                required: 'Nama instansi tidak boleh kosong',
-				noSpace: 'Nama instansi tidak boleh kosong'
 			}
 		}
 	});

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 22/03/2018
@@ -18,12 +19,9 @@ class Proyek extends BaseController
 
     function index()
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else
-        {
+        } else {
             $userId = $this->vendorId;
             $this->load->model('proyek_model');
             $data['proyekInfo'] = $this->proyek_model->getProyekInfo(null, $userId);
@@ -37,12 +35,9 @@ class Proyek extends BaseController
      */
     function addNew()
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else
-        {
+        } else {
             $this->load->model('proyek_model');
             $data['dosenInfo'] = $this->proyek_model->getDosen();
 
@@ -54,38 +49,36 @@ class Proyek extends BaseController
      */
     function addNewProject()
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else
-        {
+        } else {
             $this->load->library('form_validation');
 
-            $this->form_validation->set_rules('id_dosen','Penanggung Jawab','trim|required|numeric');
-            $this->form_validation->set_rules('nama-proyek','Nama Proyek','trim|required|max_length[128]');
-            $this->form_validation->set_rules('klien','Instansi','trim|required|max_length[128]');
+            $this->form_validation->set_rules('id_dosen', 'Penanggung Jawab', 'trim|required|numeric');
+            $this->form_validation->set_rules('nama-proyek', 'Judul Proyek', 'trim|required|max_length[128]');
 
-            if($this->form_validation->run() == FALSE)
-            {
+            if ($this->form_validation->run() == FALSE) {
                 $this->addNew();
-            }
-            else
-            {
+            } else {
                 $dosenId = $this->input->post('id_dosen');
                 $name = ucwords(strtolower($this->input->post('nama-proyek')));
-                $klien = ucwords(strtolower($this->input->post('klien')));
+                $klien = strtoupper($this->input->post('klien'));
+                $tools = ucwords(strtolower($this->input->post('tools')));
+                $deskripsi = $this->input->post('deskripsi');
 
-                $proyekInfo = array('id_dosen'=>$dosenId, 'nama'=>$name, 'klien'=>$klien);
+                $proyekInfo = [
+                    'id_dosen' => $dosenId,
+                    'nama' => $name,
+                    'klien' => $klien,
+                    'deskripsi' => $deskripsi,
+                    'tools' => $tools
+                ];
 
                 $result = $this->proyek_model->addNewProject($proyekInfo);
 
-                if($result > 0)
-                {
+                if ($result > 0) {
                     $this->session->set_flashdata('success', 'Berhasil mengajukan, status = waiting');
-                }
-                else
-                {
+                } else {
                     $this->session->set_flashdata('error', 'Gagal mengajukan proyek');
                 }
                 redirect('dosen/proyek/addNew');
@@ -98,14 +91,10 @@ class Proyek extends BaseController
      */
     function editOld($proyekId = NULL)
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else
-        {
-            if($proyekId == null)
-            {
+        } else {
+            if ($proyekId == null) {
                 redirect('dosen/proyek');
             }
             $data['proyekInfo'] = $this->proyek_model->getProyekInfo($proyekId);
@@ -118,32 +107,33 @@ class Proyek extends BaseController
      */
     function editProject()
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else {
+        } else {
             $this->load->library('form_validation');
 
             $proyekId = $this->input->post('id-proyek');
 
-            $this->form_validation->set_rules('id_dosen','Penanggung Jawab','trim|required|numeric');
-            $this->form_validation->set_rules('nama-proyek','Nama Proyek','trim|required|max_length[128]');
-            $this->form_validation->set_rules('klien','Instansi','trim|required|max_length[128]');
+            $this->form_validation->set_rules('id_dosen', 'Penanggung Jawab', 'trim|required|numeric');
+            $this->form_validation->set_rules('nama-proyek', 'Judul Proyek', 'trim|required|max_length[128]');
 
             if ($this->form_validation->run() == FALSE) {
                 $this->editOld();
             } else {
                 $dosenId = $this->input->post('id_dosen');
                 $name = ucwords(strtolower($this->input->post('nama-proyek')));
-                $klien = ucwords(strtolower($this->input->post('klien')));
+                $klien = strtoupper($this->input->post('klien'));
+                $tools = ucwords(strtolower($this->input->post('tools')));
+                $deskripsi = $this->input->post('deskripsi');
 
                 if (!empty($proyekId)) {
                     $proyekInfo = array(
                         'id_proyek' => $proyekId,
                         'id_dosen' => $dosenId,
                         'nama' => $name,
-                        'klien' => $klien
+                        'klien' => $klien,
+                        'deskripsi' => $deskripsi,
+                        'tools' => $tools
                     );
 
                     $result = $this->proyek_model->editProject($proyekInfo, $proyekId);
@@ -154,7 +144,9 @@ class Proyek extends BaseController
                         $this->session->set_flashdata('error', 'Proyek gagal diperbaharui');
                     }
                     redirect('dosen/proyek');
-                }else{echo "Alhamdulillah";}
+                } else {
+                    echo "Alhamdulillah";
+                }
             }
         }
     }

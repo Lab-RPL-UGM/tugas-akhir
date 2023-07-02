@@ -2,7 +2,7 @@ $(document).ready(function () {
     $.validator.addMethod("noSpace", function(value, element) {
         return value.trim().length != 0;
     }, "Tidak boleh ada spasi");
-    $.validator.addMethod("greaterThan", function(value, element, params) {
+    $.validator.addMethod("greaterThan", function (value, element, params) {
         if (!/Invalid|NaN/.test(new Date(value))) {
             return new Date(value) > new Date($(params).val());
         }
@@ -19,6 +19,8 @@ $(document).ready(function () {
                 error.insertAfter("#errordiv");
             else if (element.attr("name") == "waktuJadwal")
                 error.insertAfter("#errordiv-waktu");
+            else if (element.attr("name") == "waktuSelesaiJadwal")
+                error.insertAfter("#errordiv-waktu");
             else if (element.attr("name") == "ruangJadwal")
                 error.insertAfter("#errordiv-ruang");
             else if (element.attr("name") == "dataKetua")
@@ -29,10 +31,13 @@ $(document).ready(function () {
         rules: {
             tanggalJadwal: {
                 required: true,
-                noSpace: true,
-                greaterThan: ".StartDate"
+                noSpace: true
             },
             waktuJadwal: {
+                required: true,
+                noSpace: true
+            },
+            waktuSelesaiJadwal: {
                 required: true,
                 noSpace: true
             },
@@ -50,10 +55,13 @@ $(document).ready(function () {
         messages: {
             tanggalJadwal: {
                 required: 'Wajib diisi',
-                noSpace: 'Wajib diisi',
-                greaterThan: 'Tidak boleh tanggal kemarin'
+                noSpace: 'Wajib diisi'
             },
             waktuJadwal: {
+                required: 'Wajib diisi',
+                noSpace: 'Wajib diisi'
+            },
+            waktuSelesaiJadwal: {
                 required: 'Wajib diisi',
                 noSpace: 'Wajib diisi'
             },
@@ -91,6 +99,8 @@ $(document).ready(function () {
                 error.insertAfter("#errordiv");
             else if (element.attr("name") == "editWaktuJadwal")
                 error.insertAfter("#errordiv-waktu");
+            else if (element.attr("name") == "editWaktuSelesaiJadwal")
+                error.insertAfter("#errordiv-waktu");
             else if (element.attr("name") == "editRuangJadwal")
                 error.insertAfter("#errordiv-ruang");
             else
@@ -100,10 +110,13 @@ $(document).ready(function () {
         rules: {
             editTanggalJadwal: {
                 required: true,
-                noSpace: true,
-                greaterThan: ".StartDate"
+                noSpace: true
             },
             editWaktuJadwal: {
+                required: true,
+                noSpace: true
+            },
+            editWaktuSelesaiJadwal: {
                 required: true,
                 noSpace: true
             },
@@ -121,10 +134,13 @@ $(document).ready(function () {
         messages: {
             editTanggalJadwal: {
                 required: 'Wajib diisi',
-                noSpace: 'Wajib diisi',
-                greaterThan: 'Tidak boleh tanggal kemarin'
+                noSpace: 'Wajib diisi'
             },
             editWaktuJadwal: {
+                required: 'Wajib diisi',
+                noSpace: 'Wajib diisi'
+            },
+            editWaktuSelesaiJadwal: {
                 required: 'Wajib diisi',
                 noSpace: 'Wajib diisi'
             },

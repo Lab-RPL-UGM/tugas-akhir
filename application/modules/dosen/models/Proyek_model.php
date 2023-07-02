@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 22/03/2018
@@ -13,17 +14,17 @@ class Proyek_model extends CI_Model
      * @param number $id : This is project id
      * @return array $result : This is project information
      */
-    function getProyekInfo($proyekId=NULL, $dosenId = NULL)
+    function getProyekInfo($proyekId = NULL, $dosenId = NULL)
     {
         $this->db->select('proyek.id_proyek, proyek.nama nama_proyek, proyek.klien, 
-                           proyek.status, proyek.id_dosen, Dosen.nama nama_dosen');
+                           proyek.status, proyek.id_dosen, Dosen.nama nama_dosen, proyek.deskripsi, proyek.tools');
         $this->db->from('proyek');
-        $this->db->join('dosen as Dosen', 'Dosen.id_dosen = proyek.id_dosen','left');
+        $this->db->join('dosen as Dosen', 'Dosen.id_dosen = proyek.id_dosen', 'left');
         $this->db->where('proyek.isDeleted', 0);
-        if ($proyekId!=null){
+        if ($proyekId != null) {
             $this->db->where('id_proyek', $proyekId);
         }
-        if ($dosenId!=null){
+        if ($dosenId != null) {
             $this->db->where('Dosen.id_user', $dosenId);
         }
         $query = $this->db->get();

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 27/03/2018
@@ -13,60 +14,60 @@ class Sidang_model extends CI_Model
      * @param number $sidangId : This is get to know where is want to get data
      * @return array $result : This is result
      */
-    function getSidangInfo($sidangId=NULL)
+    function getSidangInfo($sidangId = NULL)
     {
         $this->db->select('s.id_sidang, s.createdDtm, s.status, m.nim, m.nama, m.id_mahasiswa, 
-        j.tanggal, j.ruang, j.waktu, ds.id_dosen id_dosbing, d.nama nama_dosbing');
+        j.tanggal, j.ruang, j.waktu, j.waktu_selesai, ds.id_dosen id_dosbing, d.nama nama_dosbing');
         $this->db->from('sidang s');
-        $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa','left');
-        $this->db->join('dosbing ds', 'ds.id_mahasiswa = m.id_mahasiswa','left');
-        $this->db->join('dosen d', 'd.id_dosen = ds.id_dosen','left');
-        $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang','left');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa', 'left');
+        $this->db->join('dosbing ds', 'ds.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('dosen d', 'd.id_dosen = ds.id_dosen', 'left');
+        $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang', 'left');
         $this->db->order_by('s.createdDtm DESC');
-        if ($sidangId!=null){
+        if ($sidangId != null) {
             $this->db->where('s.id_sidang', $sidangId);
         }
         $query = $this->db->get();
         return $query->result();
     }
-//    get data ketua where join to sidang
-    function getKetuaInfo($sidangId=NULL)
+    //    get data ketua where join to sidang
+    function getKetuaInfo($sidangId = NULL)
     {
         $this->db->select('a.id_sidang, a.id_anggota_sidang, d.nama nama_dosen, d.id_dosen');
         $this->db->from('anggota_sidang a');
-        $this->db->join('dosen d','d.id_dosen = a.id_dosen','left');
-        $this->db->where('role','ketua');
-        if ($sidangId!=null){
+        $this->db->join('dosen d', 'd.id_dosen = a.id_dosen', 'left');
+        $this->db->where('role', 'ketua');
+        if ($sidangId != null) {
             $this->db->where('a.id_sidang', $sidangId);
         }
         $query = $this->db->get();
         return $query->result();
     }
-//    get data sekretaris where join to sidang
-    function getSekreInfo($sidangId=NULL)
+    //    get data sekretaris where join to sidang
+    function getSekreInfo($sidangId = NULL)
     {
         $this->db->select('a.id_sidang, a.id_anggota_sidang, d.nama nama_dosen, d.id_dosen');
         $this->db->from('anggota_sidang a');
-        $this->db->join('dosen d','d.id_dosen = a.id_dosen','left');
-        $this->db->where('role','sekretaris');
-        if ($sidangId!=null){
+        $this->db->join('dosen d', 'd.id_dosen = a.id_dosen', 'left');
+        $this->db->where('role', 'sekretaris');
+        if ($sidangId != null) {
             $this->db->where('a.id_sidang', $sidangId);
         }
         $query = $this->db->get();
-        if ($query->num_rows()>0){
+        if ($query->num_rows() > 0) {
             return $query->result();
-        }else{
+        } else {
             return false;
         }
     }
-//    get data anggota where join to sidang
-    function getAnggotaInfo($sidangId=NULL)
+    //    get data anggota where join to sidang
+    function getAnggotaInfo($sidangId = NULL)
     {
         $this->db->select('a.id_sidang, a.id_anggota_sidang, d.nama nama_dosen, d.id_dosen');
         $this->db->from('anggota_sidang a');
-        $this->db->join('dosen d','d.id_dosen = a.id_dosen','left');
-        $this->db->where('role','anggota');
-        if ($sidangId!=null){
+        $this->db->join('dosen d', 'd.id_dosen = a.id_dosen', 'left');
+        $this->db->where('role', 'anggota');
+        if ($sidangId != null) {
             $this->db->where('a.id_sidang', $sidangId);
         }
         $query = $this->db->get();
@@ -95,12 +96,12 @@ class Sidang_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('validasi_berkas_sidang v');
-        $this->db->join('berkas_sidang b','b.id_berkas_sidang = v.id_berkas_sidang');
-        $this->db->where('id_sidang',$idMhs);
+        $this->db->join('berkas_sidang b', 'b.id_berkas_sidang = v.id_berkas_sidang');
+        $this->db->where('id_sidang', $idMhs);
         $query = $this->db->get();
         return $query->result();
     }
-//    get total komponen where active to become in form penilaian komponen
+    //    get total komponen where active to become in form penilaian komponen
     function getCountKomponen()
     {
         $this->db->select('k.id_komponen, k.isDeleted');
@@ -110,7 +111,7 @@ class Sidang_model extends CI_Model
         $query = $this->db->get();
         return count($query->result());
     }
-//    get rata-rata nilai akhir tiap sidang
+    //    get rata-rata nilai akhir tiap sidang
     function getPenilaian($idSidang)
     {
         $this->db->select('p.id_penilaian, p.id_sidang');
@@ -120,7 +121,7 @@ class Sidang_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-//    get komponen nilai where active
+    //    get komponen nilai where active
     function getKomponen()
     {
         $this->db->select('k.id_komponen');
@@ -225,9 +226,9 @@ class Sidang_model extends CI_Model
         $this->db->where('id_sidang', $idSidang);
         $this->db->update('sidang', $sidangInfo);
 
-        if($this->db->affected_rows() >= 0){
+        if ($this->db->affected_rows() >= 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -242,9 +243,9 @@ class Sidang_model extends CI_Model
         $this->db->where('id_sidang', $idSidang);
         $this->db->update('jadwal_sidang', $jadwalInfo);
 
-        if($this->db->affected_rows() >= 0){
+        if ($this->db->affected_rows() >= 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -259,9 +260,9 @@ class Sidang_model extends CI_Model
         $this->db->where('id_anggota_sidang', $anggotaId);
         $this->db->update('anggota_sidang', $asidangInfo);
 
-        if($this->db->affected_rows() >= 0){
+        if ($this->db->affected_rows() >= 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

@@ -63,7 +63,7 @@ class Ta_model extends CI_Model
         }
 
         if ($id_proyek != NULL) {
-            $this->db->select("*,p.nama nama_proyek,d.nama nama_dosen");
+            $this->db->select("*,p.nama nama_proyek,p.deskripsi,p.tools,d.nama nama_dosen");
             $this->db->from('proyek p');
             $this->db->join('dosen d', 'd.id_dosen = p.id_dosen', 'inner');
             $this->db->where('id_proyek', $id_proyek);
@@ -116,7 +116,7 @@ class Ta_model extends CI_Model
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
         $this->db->where('v.id_berkas_sidang', 1);
-        $this->db->where('v.isValid', '2');
+        // $this->db->where('v.isValid', '2');
         $query = $this->db->get();
         return count($query->result());
     }
@@ -133,9 +133,8 @@ class Ta_model extends CI_Model
             $query = $this->db->get()->result();
             foreach ($query as $key => $value) {
                 $activeBimbingan = $this->getCountActiveBimbingan($value->id_user);
-                $activePendadaran = $this->getCountActivePendadaran($value->id_user);
 
-                $sisaKuota = $value->kuota_mahasiswa - ($activeBimbingan + $activePendadaran);
+                $sisaKuota = $value->kuota_mahasiswa - ($activeBimbingan);
 
                 if ($sisaKuota <= 0) {
                     unset($query[$key]);

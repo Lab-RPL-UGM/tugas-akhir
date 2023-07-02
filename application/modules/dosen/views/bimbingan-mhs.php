@@ -139,7 +139,7 @@ if (!empty($taInfo)) {
                                         </td>
                                         <td><?= ucfirst($vBimbingan->status) ?></td>
                                         <td>
-                                            <?= ($taDosbing[0]->id_dosbing == $dosenId && $vBimbingan->reason == null) ? '<a data-toggle="modal" data-target="#progressBimbingan" data-id_bimbingan="' . $vBimbingan->id . '" data-subject="' . $vBimbingan->subject . '" data-description="' . $vBimbingan->description . '" type="button" class="modalProgress btn btn-success pull-right"><i class="fa fa-edit"></i> Respon</a>' : "" ?>
+                                            <?= ($taDosbing[0]->id_user == $dosenId && $vBimbingan->reason == null) ? '<a data-toggle="modal" data-target="#progressBimbingan" data-id_bimbingan="' . $vBimbingan->id . '" data-subject="' . $vBimbingan->subject . '" data-description="' . $vBimbingan->description . '" type="button" class="modalProgress btn btn-success"><i class="fa fa-edit"></i> Respon</a>' : "" ?>
                                         </td>
                                     </tr>
                             <?php }
@@ -160,7 +160,7 @@ if (!empty($taInfo)) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Ganti Tugas Akhir</h4>
+                <h4 class="modal-title">Tambah Catatan Bimbingan</h4>
             </div>
             <form action="<?php echo base_url(); ?>dosen/bimbingan/updateProgress" method="post" enctype="multipart/form-data">
                 <div class="modal-body">

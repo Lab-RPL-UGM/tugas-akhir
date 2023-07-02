@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 23/03/2018
@@ -15,7 +16,7 @@
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <form role="form" action="<?php echo base_url() ?>kaprodi/changepassword/changePassword" method="post">
+            <form role="form" action="<?php echo base_url() ?>kaprodi/changePassword/changePassword" method="post">
                 <div class="x_panel">
                     <div class="x_title">
                         <h2>Detail Password</h2>
@@ -46,9 +47,8 @@
             <?php
             $this->load->helper('form');
             $error = $this->session->flashdata('error');
-            if($error)
-            {
-                ?>
+            if ($error) {
+            ?>
                 <div class="alert alert-danger alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <?php echo $this->session->flashdata('error'); ?>
@@ -56,9 +56,8 @@
             <?php } ?>
             <?php
             $success = $this->session->flashdata('success');
-            if($success)
-            {
-                ?>
+            if ($success) {
+            ?>
                 <div class="alert alert-success alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <?php echo $this->session->flashdata('success'); ?>
@@ -67,9 +66,8 @@
 
             <?php
             $noMatch = $this->session->flashdata('nomatch');
-            if($noMatch)
-            {
-                ?>
+            if ($noMatch) {
+            ?>
                 <div class="alert alert-warning alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <?php echo $this->session->flashdata('nomatch'); ?>

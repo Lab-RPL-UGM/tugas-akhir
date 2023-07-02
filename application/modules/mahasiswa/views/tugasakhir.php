@@ -123,7 +123,7 @@ if (!empty($taInfo)) {
             </div>
         </div>
     </div>
-    <?php if ($periode == 1 && $date_now >= $awal && $date_now <= $akhir) { ?>
+    <?php if ($periode == 1 && $date_now >= $awal && $date_now <= $akhir && isset($taTerplotting) && empty($taTerplotting)) { ?>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x-panel">
@@ -149,10 +149,24 @@ if (!empty($taInfo)) {
                                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan</label>
                                                         <div class="well col-md-8">
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proyek</label>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <span>
                                                                     <?php echo $record->nama ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <span>
+                                                                    <?php echo $record->deskripsi_proyek ?>
+                                                                </span>
+                                                            </div>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools Proyek</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <span>
+                                                                    <?php echo $record->tools ?>
                                                                 </span>
                                                             </div>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
@@ -183,13 +197,13 @@ if (!empty($taInfo)) {
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <span><?php echo $record->judul ?></span>
                                                             </div>
-                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <!-- <div class="clearfix" style="margin-bottom: 2%"></div>
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <span>
                                                                     <?php echo $record->deskripsi ?>
                                                                 </span>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -198,7 +212,7 @@ if (!empty($taInfo)) {
                                                                 </span>
                                                             </div>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proposal</label>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek</label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <a target="_blank" href="<?php echo base_url(); ?>uploads/persetujuan/<?php echo $record->file_persetujuan; ?>"><?php echo $record->file_persetujuan ?></a>
                                                             </div>
@@ -244,9 +258,9 @@ if (!empty($taInfo)) {
                                     <div class="x_content">
                                         <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/edit_ta" method="POST" data-parsley-validate class="form-horizontal form-label-left" role="form" enctype="multipart/form-data">
                                             <input type="hidden" name="id_periode" value="<?php echo $id_periode ?>">
-                                            <center><span class="badge" style="margin-bottom:15px">Urutan nomor pilihan judul bisa dimodifikasi sesuai keinginan</span></center>
+                                            <center><span class="badge" style="margin-bottom:15px">DAFTAR TUGAS AKHIR</span></center>
                                             <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan <font color="red">*</font></label>
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                                                 <!-- Get Id Pengajuan TA -->
                                                 <input type="hidden" name="pilihan3" value="<?php echo $id_pengajuan_ta[0] ?>">
                                                 <input type="hidden" name="jenis_pilihan3" value="<?php echo $jenis ?>">
@@ -282,23 +296,23 @@ if (!empty($taInfo)) {
                                                                         <input type="text" name="judul" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan judul anda" value="<?php echo $judul ?>">
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group">
+                                                                <!-- <div class="form-group">
                                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem <span class="required">*</span>
                                                                     </label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <textarea type="text" name="deskripsi" id="deskripsi" class="form-control col-md-7 col-xs-12" placeholder="Deskripsikan dengan singkat dan jelas"><?php echo $deskripsi ?></textarea>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra <span class="required">*</span>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra
                                                                     </label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Bisnis yang diusulkan meliputi alur proses yang ada, data dan pengguna yang terlibat di dalamnya"><?php echo $bisnis_rule ?></textarea>
+                                                                        <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Nama Perusahaan Mitra"><?php echo $bisnis_rule ?></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Proposal (optional)</label>
-                                                                    <small>Bagi yang mengajukan project dari institusi (jika ada)</small>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek <span class="required">*</span></label>
+                                                                    <!-- <small>Bagi yang mengajukan project dari institusi</small> -->
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
                                                                     </div>
@@ -317,7 +331,7 @@ if (!empty($taInfo)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <select name="dosen2" id="dosen2" class="form-control">
                                                                             <option value="">Pilih Dosen pembimbing 2..</option>
@@ -344,20 +358,20 @@ if (!empty($taInfo)) {
                                                                                     } ?>tab-pane fade in" id="tab_content4" aria-labelledby="home-tab">
                                                             <div class="row">
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Proyek</label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek</label>
                                                                     <!-- Get Id Pengajuan TA Proyek -->
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <select name="proyektiga" class="form-control">
+                                                                        <select name="proyektiga" class="form-control proyek">
                                                                             <option value="">Pilih ..</option>
                                                                             <?php
                                                                             if (!empty($proyekInfo)) {
                                                                                 foreach ($proyekInfo as $record) {
                                                                             ?>
-                                                                                    <option value="<?php echo $record->id_proyek ?>" <?php if (!empty($proyek[0])) {
-                                                                                                                                            if ($proyek[0] == $record->id_proyek) {
-                                                                                                                                                echo "selected";
-                                                                                                                                            }
-                                                                                                                                        } ?>><?php echo $record->nama_proyek ?> (<?php echo $record->nama ?>)</option>
+                                                                                    <option data-deskripsi="<?= $record->deskripsi ?>" data-tools="<?= $record->tools ?>" value="<?php echo $record->id_proyek ?>" <?php if (!empty($proyek[0])) {
+                                                                                                                                                                                                                        if ($proyek[0] == $record->id_proyek) {
+                                                                                                                                                                                                                            echo "selected";
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                    } ?>><?php echo $record->nama_proyek ?> (<?php echo $record->nama ?>)</option>
                                                                             <?php
                                                                                 }
                                                                             }
@@ -366,7 +380,19 @@ if (!empty($taInfo)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools <span class="required">*</span></label>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                        <input readonly class="form-control tools_proyek">
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="form-group">
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <select name="dosenProyek" id="dosen" class="form-control">
                                                                             <option value="">Pilih Dosen pembimbing 2..</option>
@@ -377,7 +403,7 @@ if (!empty($taInfo)) {
                                                                             <?php } ?>
                                                                         </select>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="form-group col-md-9">
                                                                     <input type="submit" class="btn btn-success pull-right" style="margin-top: 3%" value="Submit">
                                                                 </div>
@@ -433,9 +459,9 @@ if (!empty($taInfo)) {
                                 <br>
                                 <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/daftar_ta" method="POST" data-parsley-validate class="form-horizontal form-label-left" role="form" enctype="multipart/form-data">
                                     <input type="hidden" name="id_periode" value="<?php echo $id_periode ?>">
-                                    <center><span class="badge" style="margin-bottom:15px">Urutan nomor pilihan judul bisa dimodifikasi sesuai keinginan</span></center>
+                                    <center><span class="badge" style="margin-bottom:15px">DAFTAR TUGAS AKHIR</span></center>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan <font color="red">*</font></label>
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <div class="btn-group" data-toggle="buttons" id="pilihan3">
                                                 <a class="active btn btn-default" href="#tab_content3" role="tab" id="ide" data-toggle="tab" aria-expanded="true"><input type="radio" name="jenis_radio" value="usul" checked>Usul Ide</a>
@@ -457,26 +483,26 @@ if (!empty($taInfo)) {
                                                                 <input type="text" name="judul" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan judul anda">
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <!-- <div class="form-group">
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem <span class="required">*</span>
                                                             </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <textarea type="text" name="deskripsi" id="deskripsi" class="form-control col-md-7 col-xs-12" placeholder="Deskripsikan dengan singkat dan jelas"></textarea>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra <span class="required">*</span>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra
                                                             </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Bisnis yang diusulkan meliputi alur proses yang ada, data dan pengguna yang terlibat di dalamnya"></textarea>
+                                                                <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Nama perusahaan mitra anda"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Proposal
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek <span class="required">*</span>
                                                             </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
-                                                                <small>Bagi yang mengajukan project dari institusi (jika ada)</small>
+                                                                <!-- <small>Bagi yang mengajukan project dari institusi </small> -->
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -493,7 +519,7 @@ if (!empty($taInfo)) {
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <select name="dosen2" id="dosen2" class="form-control">
                                                                     <option value="">Pilih Dosen pembimbing 2..</option>
@@ -522,13 +548,13 @@ if (!empty($taInfo)) {
                                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan Proyek <span class="required">*</span>
                                                                 </label>
                                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                    <select name="proyektiga" class="form-control">
+                                                                    <select name="proyektiga" class="form-control proyek">
                                                                         <option value="">Pilih ..</option>
                                                                         <?php
                                                                         if (!empty($proyekInfo)) {
                                                                             foreach ($proyekInfo as $record) {
                                                                         ?>
-                                                                                <option value="<?php echo $record->id_proyek ?>"><?php echo $record->nama_proyek ?> (<?= $record->nama ?>)</option>
+                                                                                <option data-deskripsi="<?= $record->deskripsi ?>" data-tools="<?= $record->tools ?>" value="<?php echo $record->id_proyek ?>"><?php echo $record->nama_proyek ?> (<?= $record->nama ?>)</option>
                                                                         <?php
                                                                             }
                                                                         }
@@ -537,7 +563,19 @@ if (!empty($taInfo)) {
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2 <span class="required">*</span></label>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
+                                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                    <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools <span class="required">*</span></label>
+                                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                    <input readonly class="form-control tools_proyek">
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="form-group">
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
                                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                                     <select name="dosenProyek" id="dosen2" class="form-control">
                                                                         <option value="">Pilih Dosen pembimbing 2..</option>
@@ -549,7 +587,7 @@ if (!empty($taInfo)) {
                                                                     </select>
                                                                     <small>Dosen 2 harus berbeda dengan Dosen Pemilik Proyek</small>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="form-group col-md-9">
                                                                 <input type="submit" class="btn btn-success pull-right" value="Submit">
                                                             </div>
@@ -647,7 +685,7 @@ if (!empty($taInfo)) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Ganti Tugas Akhir</h4>
+                <h4 class="modal-title">Tambah Catatan Bimbingan</h4>
             </div>
             <form action="<?php echo base_url(); ?>mahasiswa/pengajuan/updateBimbingan" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
@@ -795,7 +833,12 @@ if (!empty($taInfo)) {
         //     $('select[name=proyektiga]').val('').change();
         // });
 
+        $('.proyek').change(function() {
+            $('.deskripsi_proyek').val($(this).find(':selected').data('deskripsi'));
+            $('.tools_proyek').val($(this).find(':selected').data('tools'));
+        });
 
+        $('.proyek').trigger('change');
         $("#datatable-nopage_filter").ready(function() {
             $(".dataTables_filter").hide();
         });

@@ -59,7 +59,7 @@
                     <table id="datatable" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th>Nama Proyek</th>
+                            <th>Judul Proyek</th>
                             <th>Penanggung Jawab</th>
                             <th>Instansi</th>
                             <th>Status</th>

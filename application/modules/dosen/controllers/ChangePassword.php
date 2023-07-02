@@ -69,7 +69,7 @@ class ChangePassword extends BaseController
                 if(empty($resultPas))
                 {
                     $this->session->set_flashdata('nomatch', 'Your old password not correct');
-                    redirect('dosen/changepassword');
+                    redirect('dosen/changePassword');
                 }
                 else
                 {
@@ -80,7 +80,7 @@ class ChangePassword extends BaseController
                     if($result > 0) { $this->session->set_flashdata('success', 'Password updation successful'); }
                     else { $this->session->set_flashdata('error', 'Password updation failed'); }
 
-                    redirect('dosen/changepassword');
+                    redirect('dosen/changePassword');
                 }
             }
         }
@@ -94,4 +94,3 @@ class ChangePassword extends BaseController
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }
-?>

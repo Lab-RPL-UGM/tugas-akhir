@@ -28,7 +28,7 @@ class Pengajuan_model extends CI_Model
      */
     function getTa($id_mahasiswa)
     {
-        $this->db->select('ta.id_ta, ta.reason, ta.status_pengambilan, pt.id_pengajuan_ta, pt.pilihan, pt.jenis, p.id_proyek, p.nama, u.id_usulan, u.judul, u.deskripsi, u.bisnis_rule, u.file_persetujuan');
+        $this->db->select('ta.id_ta, ta.reason, ta.status_pengambilan, pt.id_pengajuan_ta, pt.pilihan, pt.jenis, p.id_proyek, p.nama, p.deskripsi as deskripsi_proyek, p.tools, u.id_usulan, u.judul, u.deskripsi, u.bisnis_rule, u.file_persetujuan');
         $this->db->from('tugas_akhir as ta');
         $this->db->join('pengajuan_ta as pt', 'pt.id_ta=ta.id_ta');
         $this->db->join('proyek as p', 'pt.id_proyek=p.id_proyek', 'left');
@@ -47,7 +47,7 @@ class Pengajuan_model extends CI_Model
      */
     function getIdMahasiswa($userId)
     {
-        $this->db->select('id_mahasiswa');
+        $this->db->select('*');
         $this->db->from('mahasiswa');
         $this->db->where('id_user', $userId);
         $query = $this->db->get();
@@ -367,7 +367,7 @@ class Pengajuan_model extends CI_Model
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
         $this->db->where('v.id_berkas_sidang', 1);
-        $this->db->where('v.isValid', '2');
+        // $this->db->where('v.isValid', '2');
         $query = $this->db->get();
         return count($query->result());
     }
@@ -384,9 +384,8 @@ class Pengajuan_model extends CI_Model
             $query = $this->db->get()->result();
             foreach ($query as $key => $value) {
                 $activeBimbingan = $this->getCountActiveBimbingan($value->id_user);
-                $activePendadaran = $this->getCountActivePendadaran($value->id_user);
 
-                $sisaKuota = $value->kuota_mahasiswa - ($activeBimbingan + $activePendadaran);
+                $sisaKuota = $value->kuota_mahasiswa - ($activeBimbingan);
 
                 if ($sisaKuota <= 0) {
                     unset($query[$key]);
