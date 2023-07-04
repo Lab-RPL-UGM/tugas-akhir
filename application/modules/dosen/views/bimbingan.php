@@ -25,7 +25,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="datatable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>NIM</th>
@@ -39,18 +39,10 @@
                             <?php
                             if (!empty($bimbinganInfo)) {
                                 foreach ($bimbinganInfo as $record) {
-                                    // if (!empty($record->nama_proyek) || !empty($record->nama_usulan)) {
                             ?>
                                     <tr>
                                         <td><?php echo $record->nim ?></td>
                                         <td><?php echo $record->nama ?></td>
-                                        <!-- <td>
-                                            <?php if (!empty($record->nama_proyek)) { ?>
-                                                <?php echo $record->nama_proyek ?>
-                                            <?php } else { ?>
-                                                <?php echo $record->nama_usulan ?>
-                                            <?php } ?>
-                                        </td> -->
                                         <td>
                                             <?php if ($record->id_ta != '' and $record->id_sidang == '') { ?>
                                                 Bimbingan
@@ -63,12 +55,11 @@
                                             <a href="<?php echo base_url() ?>dosen/bimbingan/progress/<?php echo $record->id_mahasiswa ?>" class="btn btn-info"><i class="fa fa-tasks"></i></a>
                                         </td>
                                     </tr>
-                        </tbody>
-                <?php
+                            <?php
                                 }
                             }
-                            // }
-                ?>
+                            ?>
+                        </tbody>
                     </table>
                 </div>
             </div>

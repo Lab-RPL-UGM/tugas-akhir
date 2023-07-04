@@ -132,7 +132,8 @@
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <label for="ketua">Sekretaris</label><small></small>
-                                <select class="form-control col-md-7 col-xs-12" id="dataSekretaris" name="dataSekretaris">
+                                <span class="required">*</span>
+                                <select class="form-control col-md-7 col-xs-12" id="dataSekretaris" required name="dataSekretaris">
                                     <option value="" selected>Pilih ..</option>
                                     <?php
                                     if (!empty($dosenInfo)) {
@@ -150,7 +151,8 @@
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <label for="anggota">Anggota</label><small></small>
-                                <select class="form-control" name="dataAnggota">
+                                <span class="required">*</span>
+                                <select class="form-control" required name="dataAnggota">
                                     <?php
                                     if (!empty($dosenInfo)) {
                                         foreach ($dosenInfo as $dosen) {

@@ -118,14 +118,14 @@ if (!empty($revisiInfo)) {
                                                 </strong>
                                             </h3>
                                         </td>
-                                        <td class="col-md-4">
+                                        <!-- <td class="col-md-4">
                                             <h3><strong>
                                                     <center>
                                                         <a class="btn btn-primary" data-toggle="modal" data-target="#lulus_revisi">Lulus Revisi</a>
                                                     </center>
                                                 </strong>
                                             </h3>
-                                        </td>
+                                        </td> -->
                                         <td class="col-md-4">
                                             <h3><strong>
                                                     <center>
@@ -198,7 +198,7 @@ if (!empty($revisiInfo)) {
                     <div class="modal-body">
                         <center>
                             <h4>Mahasiswa LULUS ?</h4>
-                            <h5>Pastikan semua anggota sidang telah mengisi nilai</h5>
+                            <!-- <h5>Pastikan semua anggota sidang telah mengisi nilai</h5> -->
                             <h5><strong>Data tidak dapat diubah, jika telah memilih tombol <i>Yes</i></strong></h5>
                             <div id="testmodal" style="padding: 5px 20px;">
                                 <form action="<?php echo base_url() ?>dosen/pendadaran/submitPenentuanLulus" method="post" enctype="multipart/form-data" role="form">
@@ -234,7 +234,7 @@ if (!empty($revisiInfo)) {
                     <div class="modal-body">
                         <center>
                             <h4>Mahasiswa LULUS dengan REVISI ?</h4>
-                            <h5>Pastikan semua anggota sidang telah mengisi nilai</h5>
+                            <!-- <h5>Pastikan semua anggota sidang telah mengisi nilai</h5> -->
                             <h5><strong>Data tidak dapat diubah, jika telah memilih tombol <i>Yes</i></strong></h5>
                             <div id="testmodal" style="padding: 5px 20px;">
                                 <form action="<?php echo base_url() ?>dosen/pendadaran/submitPenentuanLulusRevisi" method="post" enctype="multipart/form-data" role="form">
@@ -270,7 +270,7 @@ if (!empty($revisiInfo)) {
                     <div class="modal-body">
                         <center>
                             <h4>Mahasiswa MENGULANG ?</h4>
-                            <h5>Pastikan semua anggota sidang telah mengisi nilai</h5>
+                            <!-- <h5>Pastikan semua anggota sidang telah mengisi nilai</h5> -->
                             <h5><strong>Data tidak dapat diubah, jika telah memilih tombol <i>Yes</i></strong></h5>
                             <div id="testmodal" style="padding: 5px 20px;">
                                 <form action="<?php echo base_url() ?>dosen/pendadaran/submitPenentuanUlang" method="post" enctype="multipart/form-data" role="form">

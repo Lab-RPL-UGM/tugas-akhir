@@ -623,7 +623,7 @@ if (!empty($taInfo)) {
                         </center>
                         <br>
 
-                        <a data-toggle="modal" data-target="#tambahBimbingan" type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Update Bimbingan</a>
+                        <a data-toggle="modal" data-target="#tambahBimbingan" type="button" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Tambah Bimbingan</a>
 
                         <table id="datatable-nopage" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             <thead>

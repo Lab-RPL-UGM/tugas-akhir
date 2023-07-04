@@ -42,7 +42,9 @@ class Sidang extends BaseController
             $data['sidangInfo'] = $this->pendadaran_model->getSidang($userId);
 
             $this->global['pageTitle'] = "Elusi : Sidang";
-
+            // echo "<pre>";
+            // print_r($data);
+            // exit;
             $this->loadViews("sidang", $this->global, $data, NULL);
         }
     }

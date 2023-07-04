@@ -27,7 +27,7 @@ class Sidang extends BaseController
         if ($this->isAkademik() == TRUE) {
             $this->loadThis();
         } else {
-            $data['sidangInfo'] = $this->Sidang_model->getSidangInfo();
+            $data['sidangInfo'] = $this->Sidang_model->getSidangAkademikInfo();
             $data['dosenInfo'] = $this->Sidang_model->getDosen();
             $data['komponenInfo'] = $this->Sidang_model->getCountKomponen();
             $this->loadViews("dashboard_sidang", $this->global, $data, NULL);

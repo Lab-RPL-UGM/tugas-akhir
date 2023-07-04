@@ -132,10 +132,11 @@
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <label for="sekre">Sekretaris</label><small></small>
+                                <span class="required">*</span>
                                 <?php if ($sekreInfo != null) { ?>
                                     <input type="hidden" name="editIdSekre" id="editIdSekre" value="<?php echo $sekreInfo[0]->id_anggota_sidang ?>">
                                 <?php } ?>
-                                <select class="form-control col-md-7 col-xs-12" id="editDataSekre" name="editDataSekre">
+                                <select class="form-control col-md-7 col-xs-12" required id="editDataSekre" name="editDataSekre">
                                     <option value="">Tidak ada sekretaris</option>
                                     <?php
                                     if (!empty($dosenInfo)) {
@@ -161,8 +162,9 @@
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12">
                                 <label for="anggota">Anggota</label><small></small>
+                                <span class="required">*</span>
                                 <input name="editIdAnggota" id="editIdAnggota" type="hidden" value="<?php echo $anggotaInfo[0]->id_anggota_sidang ?>">
-                                <select name="editDataAnggota" id="editDataAnggota" class="form-control">
+                                <select name="editDataAnggota" id="editDataAnggota" required class="form-control">
                                     <?php
                                     if (!empty($dosenInfo)) {
                                         foreach ($dosenInfo as $dosen) {

@@ -51,8 +51,9 @@ class Dashboard_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
-        $this->db->where('v.id_berkas_sidang', 1);
+        // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
+        $this->db->group_by('m.id_mahasiswa');
         $query = $this->db->get();
         return count($query->result());
     }

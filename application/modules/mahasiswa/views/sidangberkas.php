@@ -136,7 +136,7 @@ line-height:150%;font-family:"Times New Roman",serif;color:#222222'>Pembimbing 
 
                 <p class=MsoNormal style='line-height:150%'><span style='font-size:11.0pt;
 line-height:150%;font-family:"Times New Roman",serif;color:#222222'>Waktu Ujian                :
-                                <?= hari_ini(date('D'), strtotime($sidangInfo[0]->tanggal)) ?> <?= tgl_indo(date('Y-m-d'), strtotime($sidangInfo[0]->tanggal)) ?> <?= date('H:i', strtotime($sidangInfo[0]->waktu)) ?> sampai <?= date('H:i', strtotime($sidangInfo[0]->waktu_selesai)) ?> di <?= $sidangInfo[0]->ruang ?></span></p>
+                                <?= hari_ini(date('D'), strtotime($sidangInfo[0]->tanggal)) ?>, <?= tgl_indo(date('Y-m-d'), strtotime($sidangInfo[0]->tanggal)) ?>, <?= date('H:i', strtotime($sidangInfo[0]->waktu)) ?> sampai <?= date('H:i', strtotime($sidangInfo[0]->waktu_selesai)) ?>, di <?= $sidangInfo[0]->ruang ?></span></p>
 
                 <div class=MsoNormal align=center style='text-align:center;line-height:150%'>
 
@@ -149,7 +149,10 @@ color:#222222'>Telah dipertanggungjawabkan dan diuji oleh Tim Penguji serta
                                 disetujui dan disahkan</span></p>
 
                 <p class=MsoNormal align=center style='text-align:center;line-height:150%'><span style='font-size:11.0pt;line-height:150%;font-family:"Times New Roman",serif;
-color:#222222'>Sebagai syarat kelengkapan studi jenjang Sarjana</span></p>
+color:#222222'>Sebagai syarat keklengkapan studi jenjang Sarjana Terapan</span></p>
+
+                <p class=MsoNormal align=center style='text-align:center;line-height:150%'><span style='font-size:11.0pt;line-height:150%;font-family:"Times New Roman",serif;
+color:#222222'>Program Studi Teknologi Rekayasa Perangkat Lunak</span></p>
 
                 <p class=MsoNormal align=center style='text-align:center;line-height:150%'><a name="_fqj6yhniemwh"></a><span style='font-size:11.0pt;line-height:150%;
 font-family:"Times New Roman",serif;color:#222222'>&nbsp;</span></p>
@@ -211,7 +214,11 @@ color:#222222'>Mengetahui,</span></p>
                 <table style="width: 100%;font-size:11.0pt;">
                         <tr>
                                 <td style="text-align: center;">Ketua Departemen</td>
-                                <td style="text-align: center;">Ketua Program Studi Jurusan</td>
+                                <td style="text-align: center;">Ketua Program Studi</td>
+                        </tr>
+                        <tr>
+                                <td style="text-align: center;">Teknik Elektro dan Informatika</td>
+                                <td style="text-align: center;">Teknologi Rekayasa Perangkat Lunak</td>
                         </tr>
                         <tr>
                                 <td>&nbsp;</td>

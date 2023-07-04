@@ -115,8 +115,9 @@ class Ta_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
-        $this->db->where('v.id_berkas_sidang', 1);
+        // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
+        $this->db->group_by('m.id_mahasiswa');
         $query = $this->db->get();
         return count($query->result());
     }
@@ -308,6 +309,16 @@ class Ta_model extends CI_Model
             }
         }
 
+        $donsenKe2 = "";
+        if (!empty($id_dosen2)) {
+            $nama_dosen2 = $this->getDosen($id_dosen2)[0]->nama;
+            $donsenKe2 = '
+            <tr>
+            <td style="padding: 5px;" ><h4>Dosen Pembimbing 2</h4></td>
+            <td style="padding: 5px;" ><h4>:</h4></td>
+            <td style="padding: 5px;" ><h4><strong>' . $nama_dosen2 . '</strong></h4></td>
+            </tr>';
+        }
         /* Insert tabel log */
         $data_log = array(
             'id_mahasiswa' => $id_mahasiswa,
@@ -324,6 +335,7 @@ class Ta_model extends CI_Model
                             <td style="padding: 5px;" ><h4>:</h4></td>
                             <td style="padding: 5px;" ><h4><strong>' . $nama_dosen . '</strong></h4></td>
                             </tr>
+                            ' . $donsenKe2 . '
                             </table> '
         );
 

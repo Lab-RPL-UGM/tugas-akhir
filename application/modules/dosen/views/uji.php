@@ -27,7 +27,7 @@
                     <div class="product_price">
                         <h1 class="price-tax">Silahkan membuka 'Laporan Tugas Akhir' dengan Foxit PhantomPDF</h1>
                     </div>
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="datatable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>Tgl Sidang</th>
@@ -54,8 +54,10 @@
                                         <td><?php echo $record->nim ?></td>
                                         <td><?php echo $record->nama ?></td>
                                         <td>
-                                            <?php if ($record->path != '') { ?>
-                                                <a href="<?php echo base_url() ?>uploads/sidang/1/<?php echo $record->path ?>" class="btn btn-sm btn-info" download>
+                                            <?php if ($record->path != '') {
+                                                $explodePath = explode('-', $record->path);
+                                            ?>
+                                                <a href="<?php echo base_url() ?>uploads/sidang/<?php echo $explodePath[1] ?>/<?php echo $record->path ?>" class="btn btn-sm btn-info" target="_blank">
                                                     <i class="fa fa-download"></i>
                                                 </a>
                                             <?php } else { ?>
@@ -68,11 +70,11 @@
                                         </td>
                                         <!-- <td><?php echo $record->nilai_akhir_sidang ?></td> -->
                                     </tr>
-                        </tbody>
-                <?php
+                            <?php
                                 }
                             }
-                ?>
+                            ?>
+                        </tbody>
                     </table>
                 </div>
             </div>

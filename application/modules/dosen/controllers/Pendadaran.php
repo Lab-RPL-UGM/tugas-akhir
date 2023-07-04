@@ -37,6 +37,9 @@ class Pendadaran extends BaseController
             $data['userRole'] = $userRole;
             $this->global['pageTitle'] = "TRPL-TA : Pendadaran";
 
+            // echo "<pre>";
+            // print_r($data);
+            // exit;
             $this->loadViews("uji", $this->global, $data, NULL);
         }
     }

@@ -26,7 +26,7 @@ class Daftar_dosen extends BaseController
                     'mobile' => $record->mobile,
                     'kuota_mahasiswa' => $record->kuota_mahasiswa,
                     'bimbingan' => $this->Daftar_dosen_model->getCountBimbingan($id_dosen),
-                    'sidang' => $this->Daftar_dosen_model->getSidangCount($id_dosen)
+                    'sidang' => $this->Daftar_dosen_model->getSidangCount($record->id_user)
                 );
                 array_push($data['dataTable'], $array);
             }
