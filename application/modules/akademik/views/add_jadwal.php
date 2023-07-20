@@ -167,7 +167,7 @@
                                 </select>
                             </div>
                             <div class="col-md-12 col-sm-12" style="margin-top: 5%">
-                                <input type="submit" class="btn btn-primary pull-right" value="Submit">
+                                <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
                             </div>
                         </div>
                     </form>
@@ -187,5 +187,25 @@
     });
     $('.myDatepicker3').datetimepicker({
         format: 'HH:mm'
+    });
+    $('.myDatepicker4').datetimepicker({
+        format: 'HH:mm'
+    });
+    $('.myDatepicker3').on('dp.change', function(e) {
+        jamMulai = $('#waktuJadwal').val();
+        jamMulai = jamMulai.split(':')
+        if (parseInt(jamMulai[0]) + 2 >= 24) {
+            jamMulai[0] = (parseInt(jamMulai[0]) + 2) - 24
+            if (parseInt(jamMulai[0]) < 10) {
+                jamMulai[0] = '0' + jamMulai[0]
+            }
+        } else {
+            jamMulai[0] = parseInt(jamMulai[0]) + 2
+            if (parseInt(jamMulai[0]) < 10) {
+                jamMulai[0] = '0' + jamMulai[0]
+            }
+        }
+        $('#waktuSelesaiJadwal').val(jamMulai[0] + ':' + jamMulai[1]);
+        $('.myDatepicker4').datetimepicker('setDate', $(this).val(jamMulai[0] + ':' + jamMulai[1]));
     });
 </script>

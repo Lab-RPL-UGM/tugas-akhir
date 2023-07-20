@@ -18,9 +18,19 @@
     <br>
     <center>
         <p>
-        <h3>Periode Semester <span><strong>Genap 2017/2018</strong></span></h3>
-        </p>
-        <p><?php echo DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->format('j F Y'); ?></i></p>
+            <?php if ($dataPeriode) { ?>
+        <h3>Periode Semester
+            <span>
+                <strong>
+                    <?php echo ucfirst($dataPeriode[0]->semester) . " " . $dataPeriode[0]->tahun_ajaran; ?>
+                </strong>
+            </span>
+        </h3>
+    <?php } else {
+                echo "<h3><strong><i>(Belum ada periode yang aktif)</i></strong></h3>";
+            } ?>
+    </p>
+    <p><?php echo DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->format('j F Y'); ?></i></p>
     </center>
     <div class="row top_tiles">
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">

@@ -18,6 +18,17 @@ class Ta_model extends CI_Model
         return $query->result();
     }
 
+    function getDosenTA()
+    {
+        $this->db->select('id_dosen, nama nama_dosen');
+        $this->db->from('dosen');
+        $this->db->where('isDeleted', 0);
+        $this->db->where_not_in('id_dosen');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function isMasaRegisTA()
     {
         $this->db->select("*");

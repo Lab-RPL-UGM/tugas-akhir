@@ -358,7 +358,7 @@ if (!empty($taInfo)) {
                                                                                     } ?>tab-pane fade in" id="tab_content4" aria-labelledby="home-tab">
                                                             <div class="row">
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek</label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek <span class="required">*</span></label>
                                                                     <!-- Get Id Pengajuan TA Proyek -->
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <select name="proyektiga" class="form-control proyek">
@@ -380,13 +380,13 @@ if (!empty($taInfo)) {
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi</label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools <span class="required">*</span></label>
+                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools</label>
                                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                                         <input readonly class="form-control tools_proyek">
                                                                     </div>
@@ -545,7 +545,7 @@ if (!empty($taInfo)) {
                                                     <div class="row">
                                                         <div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan Proyek <span class="required">*</span>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek <span class="required">*</span>
                                                                 </label>
                                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                                     <select name="proyektiga" class="form-control proyek">
@@ -563,13 +563,13 @@ if (!empty($taInfo)) {
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi</label>
                                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                                     <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools <span class="required">*</span></label>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools</label>
                                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                                     <input readonly class="form-control tools_proyek">
                                                                 </div>
@@ -841,6 +841,11 @@ if (!empty($taInfo)) {
         $('.proyek').trigger('change');
         $("#datatable-nopage_filter").ready(function() {
             $(".dataTables_filter").hide();
+        });
+
+        $('#datatable').dataTable({
+            /* No ordering applied by DataTables during initialisation */
+            "order": []
         });
     });
 </script>

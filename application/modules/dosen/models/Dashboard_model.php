@@ -9,6 +9,18 @@
 
 class Dashboard_model extends CI_Model
 {
+    public function getPeriodeAktif()
+    {
+        $this->db->select("*");
+        $this->db->from('periode');
+        $this->db->where('status_periode', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
     /**
      * This function is used to get total bimbingan mahasiswa
      * @param number $userId : This is get from user who is logged in
@@ -90,7 +102,7 @@ class Dashboard_model extends CI_Model
         $this->db->select('p.id_dosen');
         $this->db->from('proyek p');
         $this->db->join('dosen ds', 'ds.id_dosen = p.id_dosen');
-        $this->db->where('ds.isDeleted', 0);
+        $this->db->where('p.isDeleted', 0);
         $this->db->where('ds.id_user', $userId);
 
         $query = $this->db->get();

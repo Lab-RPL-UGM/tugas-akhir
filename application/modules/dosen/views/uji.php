@@ -27,7 +27,7 @@
                     <div class="product_price">
                         <h1 class="price-tax">Silahkan membuka 'Laporan Tugas Akhir' dengan Foxit PhantomPDF</h1>
                     </div>
-                    <table id="datatable" class="table table-striped table-bordered">
+                    <table id="dynamic-table" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>Tgl Sidang</th>
@@ -65,7 +65,7 @@
                                             <?php } ?>
                                         </td>
                                         <td>
-                                            <?php if ($record->ketuaPendadaranInfo[0]->id_user == $userId) { ?><a href="<?php echo base_url() ?>dosen/pendadaran/nilai/<?php echo $record->id_sidang ?>/<?php echo $record->id_penilaian ?>" class="btn btn-success btn-sm"><i class="fa fa-tasks"></i></a>
+                                            <?php if (($record->ketuaPendadaranInfo[0]->id_user == $userId || $record->sekertarisPendadaranInfo[0]->id_user == $userId)) { ?><a href="<?php echo base_url() ?>dosen/pendadaran/nilai/<?php echo $record->id_sidang ?>/<?php echo $record->id_penilaian ?>" class="btn btn-success btn-sm"><i class="fa fa-tasks"></i></a>
                                             <?php } ?>
                                         </td>
                                         <!-- <td><?php echo $record->nilai_akhir_sidang ?></td> -->

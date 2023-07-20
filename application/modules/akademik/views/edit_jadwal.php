@@ -81,7 +81,7 @@
                                         s/d
                                     </div>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
-                                        <div class='input-group date myDatepicker5' id='myDatepicker5'>
+                                        <div class='input-group date myDatepicker6' id='myDatepicker6'>
                                             <input value="<?php echo substr($sidangInfo[0]->waktu_selesai, 0, 5) ?>" name="editWaktuSelesaiJadwal" id="editWaktuSelesaiJadwal" type='text' class="form-control" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
@@ -179,7 +179,11 @@
                                 </select>
                             </div>
                             <div class="col-md-12 col-sm-12" style="margin-top: 5%">
-                                <input type="submit" class="btn btn-primary pull-right" value="Submit">
+                                <?php if ($isAkademik == 'akademik') {
+                                    echo '<input type="submit" name="submit" class="btn btn-success pull-right" value="Approve">';
+                                } ?>
+                                
+                                <input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
                             </div>
                         </div>
                     </form>
@@ -199,5 +203,25 @@
     });
     $('.myDatepicker5').datetimepicker({
         format: 'HH:mm'
+    });
+    $('.myDatepicker6').datetimepicker({
+        format: 'HH:mm'
+    });
+    $('.myDatepicker5').on('dp.change', function(e) {
+        jamMulai = $('#editWaktuJadwal').val();
+        jamMulai = jamMulai.split(':')
+        if (parseInt(jamMulai[0]) + 2 >= 24) {
+            jamMulai[0] = (parseInt(jamMulai[0]) + 2) - 24
+            if (parseInt(jamMulai[0]) < 10) {
+                jamMulai[0] = '0' + jamMulai[0]
+            }
+        } else {
+            jamMulai[0] = parseInt(jamMulai[0]) + 2
+            if (parseInt(jamMulai[0]) < 10) {
+                jamMulai[0] = '0' + jamMulai[0]
+            }
+        }
+        $('#editWaktuSelesaiJadwal').val(jamMulai[0] + ':' + jamMulai[1]);
+        $('.myDatepicker6').datetimepicker('setDate', $(this).val(jamMulai[0] + ':' + jamMulai[1]));
     });
 </script>

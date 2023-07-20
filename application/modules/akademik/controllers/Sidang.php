@@ -46,6 +46,50 @@ class Sidang extends BaseController
             }
             $data['sidangInfo'] = $this->Sidang_model->getSidangInfo($sidangId);
             $data['berkasInfo'] = $this->Sidang_model->getBerkas($sidangId);
+            $data['dataMahasiswa'] = $this->Sidang_model->getTA($data['sidangInfo'][0]->id_ta);
+
+            $result = $this->Sidang_model->getPengajuanTA($data['sidangInfo'][0]->id_ta, 'diterima');
+            if ($result[0]->jenis == 'proyek') {
+                $detail_proyek = $this->Sidang_model->getProyek($result[0]->id_proyek);
+                if (isset($result[1]->id_dosen)) {
+                    $dosen2 = $this->Sidang_model->getDosenTA($result[1]->id_dosen);
+                }
+
+                $pilihan_ta = array(
+                    'pilihan' => $result[0]->pilihan,
+                    'jenis' => $result[0]->jenis,
+                    'id_ta' => $data['sidangInfo'][0]->id_ta,
+                    'id_pengajuan_ta' => $result[0]->id_pengajuan_ta,
+                    'nama_proyek' => $detail_proyek[0]->nama_proyek,
+                    'nama_dosen' => $detail_proyek[0]->nama_dosen,
+                    'nama_dosen2' => (isset($result[1]->id_dosen)) ? $dosen2[0]->nama : '(Tidak Ada Dosen 2)'
+                );
+            } else {
+                $detail_usulan = $this->Sidang_model->getUsulan($result[0]->id_pengajuan_ta);
+                $pilihan_ta = array(
+                    'judul' => $detail_usulan[0]->judul,
+                    'deskripsi' => $detail_usulan[0]->deskripsi,
+                    'bisnis_rule' => $detail_usulan[0]->bisnis_rule,
+                    'id_ta' => $data['sidangInfo'][0]->id_ta,
+                    'file' => $detail_usulan[0]->file_persetujuan,
+                    'pilihan' => $result[0]->pilihan,
+                    'jenis' => $result[0]->jenis,
+                    'id_dosen' => $detail_usulan[0]->id_dosen,
+                    'id_dosen2' => (isset($result[1]->id_dosen)) ? $result[1]->id_dosen : null,
+                    'id_pengajuan_ta' => $result[0]->id_pengajuan_ta
+                );
+                $data['dataDosen'] = $this->Sidang_model->getDosenTA($detail_usulan[0]->id_dosen);
+                if (isset($result[1]->id_dosen)) {
+                    $data['dataDosen2'] = $this->Sidang_model->getDosenTA($result[1]->id_dosen);
+                } else {
+                    $data['dataDosen2'] = [];
+                }
+            }
+
+            $data['dataPengajuanTA'] = $pilihan_ta;
+            // echo "<pre>";
+            // print_r($data);
+            // exit;
             $this->loadViews("edit_sidang", $this->global, $data, NULL);
         }
     }
@@ -140,6 +184,7 @@ class Sidang extends BaseController
             if ($sidangId == null) {
                 redirect('akademik/sidang');
             }
+            $data['isAkademik'] = $this->name;
             $data['sidangInfo'] = $this->Sidang_model->getSidangInfo($sidangId);
             $data['ketuaInfo'] = $this->Sidang_model->getKetuaInfo($sidangId);
             $data['sekreInfo'] = $this->Sidang_model->getSekreInfo($sidangId);
@@ -214,78 +259,88 @@ class Sidang extends BaseController
                         redirect('akademik/sidang');
                     }
                     //                  when sidang scheduled automate sidang is 'disetujui'
-                    $statusInfo = array(
-                        'id_sidang' => $idSidang,
-                        'status' => 'disetujui',
-                    );
+
+                    if ($this->input->post('submit') == 'Submit') {
+                        $statusInfo = array(
+                            'id_sidang' => $idSidang,
+                            'status' => 'pending'
+                        );
+                    } elseif ($this->input->post('submit') == 'Approve') {
+                        $statusInfo = array(
+                            'id_sidang' => $idSidang,
+                            'status' => 'disetujui',
+                        );
+                    }
                     $status = $this->Sidang_model->editStatus($statusInfo, $idSidang);
                     //                  post pesan to mahasiswa if there is sekretaris to the schedule
                     //                  else no sekretaris
-                    if ($dataSekre != null) {
-                        $pesanInfo = array(
-                            'id_mahasiswa' => $idMhs,
-                            'nama' => 'Jadwal sidang terplotting.',
-                            'deskripsi' =>
-                            'Sidang akan dilaksanakan pada : <br>
-                            <table>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Tanggal</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . ' pukul ' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ruang</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Sekretaris Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_sekre . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
-                            </tr>
-                            </table> '
-                        );
-                    } else {
-                        $pesanInfo = array(
-                            'id_mahasiswa' => $idMhs,
-                            'nama' => 'Jadwal sidang terplotting.',
-                            'deskripsi' =>
-                            'Sidang akan dilaksanakan pada : <br>
-                            <table>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Tanggal</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . ' pukul ' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ruang</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
-                            </tr>
-                            </table> '
-                        );
+                    if ($this->input->post('submit') == 'Approve') {
+                        if ($dataSekre != null) {
+                            $pesanInfo = array(
+                                'id_mahasiswa' => $idMhs,
+                                'nama' => 'Jadwal sidang terplotting.',
+                                'deskripsi' =>
+                                'Sidang akan dilaksanakan pada : <br>
+                                <table>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Tanggal</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . ' pukul ' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ruang</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Sekretaris Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_sekre . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
+                                </tr>
+                                </table> '
+                            );
+                        } else {
+                            $pesanInfo = array(
+                                'id_mahasiswa' => $idMhs,
+                                'nama' => 'Jadwal sidang terplotting.',
+                                'deskripsi' =>
+                                'Sidang akan dilaksanakan pada : <br>
+                                <table>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Tanggal</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . ' pukul ' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ruang</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
+                                </tr>
+                                </table> '
+                            );
+                        }
+                        $resultPesan = $this->Sidang_model->addPesan($pesanInfo);
                     }
-                    $resultPesan = $this->Sidang_model->addPesan($pesanInfo);
                     //                  post schedule sidang mahasiswa
                     $jadwalInfo = array(
                         'id_sidang' => $idSidang,
@@ -434,79 +489,95 @@ class Sidang extends BaseController
 
                         redirect('akademik/sidang');
                     }
-                    if ($dataSekre != null) {
-                        $pesanInfo = array(
-                            'id_mahasiswa' => $idMhs,
-                            'nama' => 'Jadwal sidang diubah.',
-                            'deskripsi' => 'Sidang akan dilaksanakan pada : <br>
-                            <table>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Tanggal</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Pukul</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ruang</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Sekretaris Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_sekre . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
-                            </tr>
-                            </table> '
+
+                    if ($this->input->post('submit') == 'Submit') {
+                        $statusInfo = array(
+                            'id_sidang' => $idSidang,
+                            'status' => 'pending'
                         );
-                        $resultPesan1 = $this->Sidang_model->addPesan($pesanInfo);
-                    } else {
-                        $pesanInfo = array(
-                            'id_mahasiswa' => $idMhs,
-                            'nama' => 'Jadwal sidang diubah.',
-                            'deskripsi' => 'Sidang akan dilaksanakan pada : <br>
-                            <table>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Tanggal</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Pukul</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ruang</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
-                            </tr>
-                            <tr>
-                            <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
-                            <td style="padding: 5px;" ><h4>:</h4></td>
-                            <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
-                            </tr>
-                            </table> '
+                    } elseif ($this->input->post('submit') == 'Approve') {
+                        $statusInfo = array(
+                            'id_sidang' => $idSidang,
+                            'status' => 'disetujui',
                         );
-                        $resultPesan2 = $this->Sidang_model->addPesan($pesanInfo);
+                    }
+                    $status = $this->Sidang_model->editStatus($statusInfo, $idSidang);
+
+                    if ($this->input->post('submit') == 'Approve') {
+                        if ($dataSekre != null) {
+                            $pesanInfo = array(
+                                'id_mahasiswa' => $idMhs,
+                                'nama' => 'Jadwal sidang diubah.',
+                                'deskripsi' => 'Sidang akan dilaksanakan pada : <br>
+                                <table>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Tanggal</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Pukul</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ruang</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Sekretaris Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_sekre . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
+                                </tr>
+                                </table> '
+                            );
+                            $resultPesan1 = $this->Sidang_model->addPesan($pesanInfo);
+                        } else {
+                            $pesanInfo = array(
+                                'id_mahasiswa' => $idMhs,
+                                'nama' => 'Jadwal sidang diubah.',
+                                'deskripsi' => 'Sidang akan dilaksanakan pada : <br>
+                                <table>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Tanggal</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $tanggalUji . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Pukul</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $waktu . ' sampai ' . $waktuSelesai . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ruang</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $ruang . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Ketua Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_ketua . '</strong></h4></td>
+                                </tr>
+                                <tr>
+                                <td style="padding: 5px;" ><h4>Anggota Penguji</h4></td>
+                                <td style="padding: 5px;" ><h4>:</h4></td>
+                                <td style="padding: 5px;" ><h4><strong>' . $nama_anggota . '</strong></h4></td>
+                                </tr>
+                                </table> '
+                            );
+                            $resultPesan2 = $this->Sidang_model->addPesan($pesanInfo);
+                        }
                     }
 
                     $jadwalInfo = array(

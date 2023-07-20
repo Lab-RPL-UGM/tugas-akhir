@@ -9,6 +9,74 @@
 
 class Sidang_model extends CI_Model
 {
+    public function getTA($id = NULL)
+    {
+        $this->db->select("*");
+        $this->db->from('tugas_akhir ta');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa', 'inner');
+        $this->db->join('periode p', 'p.id_periode = ta.id_periode', 'inner');
+        if ($id != NULL) {
+            $this->db->where('id_ta', $id);
+        } else {
+            $this->db->order_by('ta.createdDtm DESC');
+        }
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    public function getPengajuanTA($id_ta, $status = NULL)
+    {
+        $this->db->select("pt.*, d.id_dosen");
+        $this->db->from('pengajuan_ta pt');
+        $this->db->join('tugas_akhir ta', 'pt.id_ta = ta.id_ta');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa');
+        $this->db->join('dosbing d', 'd.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->where('pt.id_ta', $id_ta);
+        if ($status != NULL) {
+            $this->db->where('pt.status', $status);
+        }
+        $this->db->order_by('pt.pilihan', 'ASC');
+        $this->db->order_by('d.id_dosbing', 'ASC');
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    public function getProyek($id_proyek = NULL)
+    {
+        if ($id_proyek == NULL) {
+            $query = $this->db->query(
+                'SELECT *,p.nama nama_proyek,d.nama nama_dosen FROM proyek p
+                INNER JOIN dosen d ON d.id_dosen = p.id_dosen
+                WHERE p.id_proyek 
+                NOT IN (
+                SELECT id_proyek FROM pengajuan_ta pt WHERE pt.status = \'diterima\' AND id_proyek IS NOT NULL
+                ) AND p.status = \'disetujui\''
+            );
+        }
+
+        if ($id_proyek != NULL) {
+            $this->db->select("*,p.nama nama_proyek,p.deskripsi,p.tools,d.nama nama_dosen");
+            $this->db->from('proyek p');
+            $this->db->join('dosen d', 'd.id_dosen = p.id_dosen', 'inner');
+            $this->db->where('id_proyek', $id_proyek);
+            $query = $this->db->get();
+        }
+
+        return $query->result();
+    }
+
+    public function getUsulan($id_pengajuan_ta)
+    {
+        $this->db->select("*");
+        $this->db->from('usulan');
+        $this->db->where('id_pengajuan_ta', $id_pengajuan_ta);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     /**
      * This function is used to get the mahasiswa sidang list
      * @param number $sidangId : This is get to know where is want to get data
@@ -17,9 +85,10 @@ class Sidang_model extends CI_Model
     function getSidangInfo($sidangId = NULL)
     {
         $this->db->select('s.id_sidang, s.createdDtm, s.status, m.nim, m.nama, m.id_mahasiswa, 
-        j.tanggal, j.ruang, j.waktu, j.waktu_selesai, ds.id_dosen id_dosbing, d.nama nama_dosbing');
+        j.tanggal, j.ruang, j.waktu, j.waktu_selesai, ds.id_dosen id_dosbing, d.nama nama_dosbing, ta.id_ta');
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa', 'left');
+        $this->db->join('tugas_akhir ta', 'ta.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('dosbing ds', 'ds.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('dosen d', 'd.id_dosen = ds.id_dosen', 'left');
         $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang', 'left');

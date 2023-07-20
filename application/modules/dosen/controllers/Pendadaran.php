@@ -32,6 +32,7 @@ class Pendadaran extends BaseController
             $data['pendadaranInfo'] = $this->pendadaran_model->getSidang($userId);
             foreach ($data['pendadaranInfo'] as $key => $value) {
                 $data['pendadaranInfo'][$key]->ketuaPendadaranInfo = $this->pendadaran_model->getKetuaSidang($value->id_sidang);
+                $data['pendadaranInfo'][$key]->sekertarisPendadaranInfo = $this->pendadaran_model->getSekertarisSidang($value->id_sidang);
             }
             $data['userId'] = $userId;
             $data['userRole'] = $userRole;

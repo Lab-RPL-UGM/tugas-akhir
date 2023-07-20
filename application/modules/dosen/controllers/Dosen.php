@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by nad.
  * Date: 07/03/2018
@@ -24,15 +25,13 @@ class Dosen extends BaseController
      */
     function index()
     {
-        if($this->isDosen() == TRUE)
-        {
+        if ($this->isDosen() == TRUE) {
             $this->loadThis();
-        }
-        else
-        {
+        } else {
             $userId = $this->vendorId;
 
             $this->global['pageTitle'] = "Elusi : Dashboard";
+            $data['dataPeriode'] = $this->dashboard_model->getPeriodeAktif();
             $data['countBimbingan'] = $this->dashboard_model->getCountBimbingan($userId);
             $data['countPendadaran'] = $this->dashboard_model->getCountPendadaran($userId);
             $data['countYudisium'] = $this->dashboard_model->getCountYudisium($userId);

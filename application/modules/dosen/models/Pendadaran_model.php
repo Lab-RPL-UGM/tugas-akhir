@@ -29,7 +29,7 @@ class Pendadaran_model extends CI_Model
         $this->db->where('u.id_user', $userId);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
-        $this->db->order_by('j.tanggal DESC');
+        $this->db->order_by('j.tanggal', 'DESC');
         $this->db->group_by('m.id_mahasiswa');
         $query = $this->db->get();
 
@@ -196,6 +196,22 @@ class Pendadaran_model extends CI_Model
         $this->db->join('user u', 'u.id_user=d.id_user');
         $this->db->where('a.id_sidang', $idSidang);
         $this->db->where('a.role', 'ketua');
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    function getSekertarisSidang($idSidang)
+    {
+        $this->db->select('a.role, d.nama, u.id_user');
+        $this->db->from('anggota_sidang a');
+        $this->db->join('dosen d', 'd.id_dosen=a.id_dosen');
+        $this->db->join('user u', 'u.id_user=d.id_user');
+        $this->db->where('a.id_sidang', $idSidang);
+        $this->db->where('a.role', 'sekretaris');
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
