@@ -25,7 +25,9 @@ class Akun_mahasiswa extends BaseController
     public function edit_form($id){
         $data['role'] = ROLE_MAHASISWA;
         $data['dataUser'] = $this->User_model->getUser($id,ROLE_MAHASISWA);
-        $this->global['pageTitle'] = "TA-TRPL : Edit User"; 
+        $data['ta'] = $this->User_model->getTA($id);
+        $data['status_pengambilan'] = $data['ta'][0]->status_pengambilan;
+        $this->global['pageTitle'] = "TA-TRPL : Edit User";
         $this->loadViews("edit_user",$this->global,$data);
     }
     function pageNotFound()

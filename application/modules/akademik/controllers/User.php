@@ -195,13 +195,17 @@ class User extends BaseController
                 $data = array(
                     'nama' => trim($this->input->post('fname')),
                     'username' => trim($this->input->post('username')),
-                    'nim' => trim($this->input->post('nim'))
+                    'nim' => trim($this->input->post('nim')),
+                    'id_mahasiswa' => trim($this->input->post('id_mahasiswa')),
+                    'status_pengambilan' => trim($this->input->post('status_pengambilan'))
                 );
             } else {
                 $data = array(
                     'nama' => trim($this->input->post('fname')),
                     'username' => trim($this->input->post('username')),
                     'nim' => trim($this->input->post('nim')),
+                    'status_pengambilan' => trim($this->input->post('status_pengambilan')),
+                    'id_mahasiswa' => trim($this->input->post('id_mahasiswa')),
                     'password' => getHashedPassword(trim($this->input->post('password')))
                 );
             }

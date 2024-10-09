@@ -56,6 +56,20 @@
                                 <input id="nim" type="text" name="nim" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $dataUser[0]->nim?>">
                             </div>
                         </div>
+                            <input type="hidden" value="<?php  echo $ta[0]->id_mahasiswa ;  ?>" name="id_mahasiswa" id="id_mahasiswa" />
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Status TA
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                    <select class="form-control col-md-7 col-xs-12" name="status_pengambilan" id="status_pengambilan">
+                                        <option value="terplotting" <?php if($status_pengambilan == 'terplotting') echo 'selected'; ?>>Terploting Bimbingan</option>
+                                        <option value="revisi" <?php if($status_pengambilan == 'revisi') echo 'selected'; ?>>Revisi</option>
+                                        <option value="proses" <?php if($status_pengambilan == 'proses') echo 'selected'; ?>>Proses</option>
+                                        <option value="lulus" <?php if($status_pengambilan == 'lulus') echo 'selected'; ?>>Lulus</option>
+                                    </select>
+                                </div>
+                            </div>
                         <?php } ?>
                         <?php if($role == ROLE_DOSEN || $role == ROLE_KAPRODI){?>
                         <div class="form-group">
