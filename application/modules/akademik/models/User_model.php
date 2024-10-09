@@ -153,6 +153,8 @@ class User_model extends CI_Model{
             );
             $this->db->where('id_user',$id);
             $this->db->update('mahasiswa', $data_mahasiswa);
+            $this->db->where('id_mahasiswa',$data['id_mahasiswa']);
+            $this->db->update('tugas_akhir', array('status_pengambilan' => $data['status_pengambilan']));
         }
         if($role == ROLE_DOSEN){
             $data_dosen = array(
@@ -259,6 +261,17 @@ class User_model extends CI_Model{
         $this->db->where('id_user_role',$role);
         $this->db->where('isDeleted',0);
         $this->db->order_by('createdDtm DESC');
+        $query = $this->db->get();
+
+        if($query->num_rows() > 0) { return $query->result(); } else { return FALSE; }
+    }
+
+    public function getTA($userId){
+        $this->db->select('tugas_akhir.*');
+        $this->db->from('tugas_akhir');
+        $this->db->join('mahasiswa m','tugas_akhir.id_mahasiswa = m.id_mahasiswa','inner');
+        $this->db->where('m.id_user',$userId);
+        $this->db->order_by('tugas_akhir.createdDtm DESC');
         $query = $this->db->get();
 
         if($query->num_rows() > 0) { return $query->result(); } else { return FALSE; }
