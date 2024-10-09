@@ -266,6 +266,19 @@ class User_model extends CI_Model{
         if($query->num_rows() > 0) { return $query->result(); } else { return FALSE; }
     }
 
+    public function getUserTableWithTA(){
+        $this->db->select('u.*, m.nim, m.id_mahasiswa, t.status_pengambilan');
+        $this->db->from('user u');
+        $this->db->join('mahasiswa m','u.id_user = m.id_user','inner');
+        $this->db->join('tugas_akhir t','m.id_mahasiswa = t.id_mahasiswa','left');
+        $this->db->where('u.id_user_role',ROLE_MAHASISWA);
+        $this->db->where('u.isDeleted',0);
+        $this->db->order_by('u.createdDtm DESC');
+        $query = $this->db->get();
+
+        if($query->num_rows() > 0) { return $query->result(); } else { return FALSE; }
+    }
+
     public function getTA($userId){
         $this->db->select('tugas_akhir.*');
         $this->db->from('tugas_akhir');

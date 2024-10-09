@@ -24,7 +24,7 @@
     <div class="row col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
     <div class="row col-lg-5 col-md-12 col-sm-12 col-xs-12">
         <div class="login_wrapper">
-            <div class="animate form login_form">
+            <div class="animate form ">
                 <section class="login_content">
                     <form action="<?php echo base_url(); ?>login/loginMe" method="post">
                         <h1>LOGIN</h1>

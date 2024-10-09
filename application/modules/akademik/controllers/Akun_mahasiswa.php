@@ -10,9 +10,9 @@ class Akun_mahasiswa extends BaseController
     }
 
     public function index(){
-        $data['dataTable'] = $this->User_model->getUserTable(ROLE_MAHASISWA);
+        $data['dataTable'] = $this->User_model->getUserTableWithTA();
         $data['role'] = ROLE_MAHASISWA;
-        $this->global['pageTitle'] = "TA-TRPL : Dashboard User Mahasiswa"; 
+        $this->global['pageTitle'] = "TA-TRPL : Dashboard User Mahasiswa";
         $this->loadViews("dashboard_mahasiswa",$this->global,$data);
     }
 

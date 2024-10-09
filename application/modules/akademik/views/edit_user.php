@@ -67,6 +67,7 @@
                                         <option value="revisi" <?php if($status_pengambilan == 'revisi') echo 'selected'; ?>>Revisi</option>
                                         <option value="proses" <?php if($status_pengambilan == 'proses') echo 'selected'; ?>>Proses</option>
                                         <option value="lulus" <?php if($status_pengambilan == 'lulus') echo 'selected'; ?>>Lulus</option>
+                                        <option value="lulus" <?php if(!$status_pengambilan) echo 'selected'; ?>>-</option>
                                     </select>
                                 </div>
                             </div>

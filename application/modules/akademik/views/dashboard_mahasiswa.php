@@ -41,6 +41,7 @@
                             <tr>
                                 <th class="col-md-4">Nama</th>
                                 <th class="col-md-3">Username</th>
+                                <th class="col-md-3">Status TA</th>
                                 <th class="col-md-2"><center>Action</center></th>
                             </tr>
                         </thead>
@@ -56,6 +57,21 @@
                                 </td>
                                 <td style="vertical-align:middle">
                                     <?php echo $data->username; ?>
+                                </td>
+                                <td style="vertical-align:middle">
+                                    <?php
+                                    if ($data->status_pengambilan == 'terplotting') {
+                                        echo "Terploting Bimbingan";
+                                    } else if ($data->status_pengambilan == 'proses') {
+                                        echo "Proses";
+                                    } else if ($data->status_pengambilan == 'lulus') {
+                                        echo "Lulus";
+                                    } else if ($data->status_pengambilan == 'revisi') {
+                                        echo "Revisi";
+                                    } else {
+                                        echo "-";
+                                    }
+                                    ?>
                                 </td>
                                 <td style="vertical-align:middle">
                                     <center>

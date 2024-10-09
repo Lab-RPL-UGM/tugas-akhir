@@ -11426,3 +11426,1496 @@ DEBUG - 2024-10-09 19:42:07 --> File loaded: D:\Code\php-root\tugas-akhir\applic
 DEBUG - 2024-10-09 19:42:07 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
 INFO - 2024-10-09 19:42:07 --> Final output sent to browser
 DEBUG - 2024-10-09 19:42:07 --> Total execution time: 0.1595
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:02 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:02 --> URI Class Initialized
+INFO - 2024-10-09 20:27:02 --> Router Class Initialized
+INFO - 2024-10-09 20:27:02 --> Output Class Initialized
+INFO - 2024-10-09 20:27:02 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:02 --> Input Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:02 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:02 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:02 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:02 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:02 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:27:02 --> Model Class Initialized
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:02 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:02 --> URI Class Initialized
+INFO - 2024-10-09 20:27:02 --> Router Class Initialized
+INFO - 2024-10-09 20:27:02 --> Output Class Initialized
+INFO - 2024-10-09 20:27:02 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:02 --> Input Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:02 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:02 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:02 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:02 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:02 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:02 --> URI Class Initialized
+INFO - 2024-10-09 20:27:02 --> Router Class Initialized
+INFO - 2024-10-09 20:27:02 --> Output Class Initialized
+INFO - 2024-10-09 20:27:02 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:02 --> Input Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Language Class Initialized
+INFO - 2024-10-09 20:27:02 --> Config Class Initialized
+INFO - 2024-10-09 20:27:02 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:02 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:02 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:02 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:02 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:02 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:02 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/Dashboard_model.php
+INFO - 2024-10-09 20:27:02 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:02 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+DEBUG - 2024-10-09 20:27:02 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard.php
+DEBUG - 2024-10-09 20:27:02 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:27:02 --> Final output sent to browser
+DEBUG - 2024-10-09 20:27:02 --> Total execution time: 0.0913
+INFO - 2024-10-09 20:27:08 --> Config Class Initialized
+INFO - 2024-10-09 20:27:08 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:08 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:08 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:08 --> URI Class Initialized
+INFO - 2024-10-09 20:27:08 --> Router Class Initialized
+INFO - 2024-10-09 20:27:08 --> Output Class Initialized
+INFO - 2024-10-09 20:27:08 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:08 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:08 --> Input Class Initialized
+INFO - 2024-10-09 20:27:08 --> Language Class Initialized
+INFO - 2024-10-09 20:27:08 --> Language Class Initialized
+INFO - 2024-10-09 20:27:08 --> Config Class Initialized
+INFO - 2024-10-09 20:27:08 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:08 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:08 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:08 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:08 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:08 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:08 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:08 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:08 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:08 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/Daftar_mahasiswa_model.php
+INFO - 2024-10-09 20:27:08 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:08 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:27:08 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:27:08 --> Severity: Warning --> Undefined variable $pilihan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\daftar_mahasiswa.php 46
+ERROR - 2024-10-09 20:27:08 --> Severity: Warning --> Undefined variable $pilihan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\daftar_mahasiswa.php 46
+ERROR - 2024-10-09 20:27:08 --> Severity: Warning --> Undefined variable $pilihan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\daftar_mahasiswa.php 46
+ERROR - 2024-10-09 20:27:08 --> Severity: Warning --> Undefined variable $pilihan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\daftar_mahasiswa.php 46
+ERROR - 2024-10-09 20:27:08 --> Severity: Warning --> Undefined variable $pilihan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\daftar_mahasiswa.php 46
+DEBUG - 2024-10-09 20:27:08 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/daftar_mahasiswa.php
+DEBUG - 2024-10-09 20:27:08 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:27:08 --> Final output sent to browser
+DEBUG - 2024-10-09 20:27:08 --> Total execution time: 0.2229
+INFO - 2024-10-09 20:27:17 --> Config Class Initialized
+INFO - 2024-10-09 20:27:17 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:17 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:17 --> URI Class Initialized
+INFO - 2024-10-09 20:27:17 --> Router Class Initialized
+INFO - 2024-10-09 20:27:17 --> Output Class Initialized
+INFO - 2024-10-09 20:27:17 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:17 --> Input Class Initialized
+INFO - 2024-10-09 20:27:17 --> Language Class Initialized
+INFO - 2024-10-09 20:27:17 --> Language Class Initialized
+INFO - 2024-10-09 20:27:17 --> Config Class Initialized
+INFO - 2024-10-09 20:27:17 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:17 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:17 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:17 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:17 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:17 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:17 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:17 --> Config Class Initialized
+INFO - 2024-10-09 20:27:17 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:17 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:17 --> URI Class Initialized
+INFO - 2024-10-09 20:27:17 --> Router Class Initialized
+INFO - 2024-10-09 20:27:17 --> Output Class Initialized
+INFO - 2024-10-09 20:27:17 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:17 --> Input Class Initialized
+INFO - 2024-10-09 20:27:17 --> Language Class Initialized
+INFO - 2024-10-09 20:27:17 --> Language Class Initialized
+INFO - 2024-10-09 20:27:17 --> Config Class Initialized
+INFO - 2024-10-09 20:27:17 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:17 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:17 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:17 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:17 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:17 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:17 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:17 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/Dashboard_model.php
+INFO - 2024-10-09 20:27:17 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:17 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+DEBUG - 2024-10-09 20:27:17 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard.php
+DEBUG - 2024-10-09 20:27:17 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:27:17 --> Final output sent to browser
+DEBUG - 2024-10-09 20:27:17 --> Total execution time: 0.1016
+INFO - 2024-10-09 20:27:19 --> Config Class Initialized
+INFO - 2024-10-09 20:27:19 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:27:19 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:27:19 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:27:19 --> URI Class Initialized
+INFO - 2024-10-09 20:27:19 --> Router Class Initialized
+INFO - 2024-10-09 20:27:19 --> Output Class Initialized
+INFO - 2024-10-09 20:27:19 --> Security Class Initialized
+DEBUG - 2024-10-09 20:27:19 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:27:19 --> Input Class Initialized
+INFO - 2024-10-09 20:27:19 --> Language Class Initialized
+INFO - 2024-10-09 20:27:19 --> Language Class Initialized
+INFO - 2024-10-09 20:27:19 --> Config Class Initialized
+INFO - 2024-10-09 20:27:19 --> Loader Class Initialized
+INFO - 2024-10-09 20:27:19 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:27:19 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:27:19 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:27:19 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:27:19 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:27:19 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:27:19 --> Controller Class Initialized
+INFO - 2024-10-09 20:27:19 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:19 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:27:19 --> Model Class Initialized
+DEBUG - 2024-10-09 20:27:19 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:27:19 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:27:19 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:27:19 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:27:19 --> Final output sent to browser
+DEBUG - 2024-10-09 20:27:19 --> Total execution time: 0.0711
+INFO - 2024-10-09 20:29:00 --> Config Class Initialized
+INFO - 2024-10-09 20:29:00 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:29:00 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:29:00 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:29:00 --> URI Class Initialized
+INFO - 2024-10-09 20:29:00 --> Router Class Initialized
+INFO - 2024-10-09 20:29:00 --> Output Class Initialized
+INFO - 2024-10-09 20:29:00 --> Security Class Initialized
+DEBUG - 2024-10-09 20:29:00 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:29:00 --> Input Class Initialized
+INFO - 2024-10-09 20:29:00 --> Language Class Initialized
+INFO - 2024-10-09 20:29:00 --> Language Class Initialized
+INFO - 2024-10-09 20:29:00 --> Config Class Initialized
+INFO - 2024-10-09 20:29:00 --> Loader Class Initialized
+INFO - 2024-10-09 20:29:00 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:29:00 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:29:00 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:29:00 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:29:00 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:29:00 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:29:00 --> Controller Class Initialized
+INFO - 2024-10-09 20:29:00 --> Model Class Initialized
+DEBUG - 2024-10-09 20:29:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:29:00 --> Model Class Initialized
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined variable $id D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 15
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 16
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Attempt to read property "status_pengambilan" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 16
+DEBUG - 2024-10-09 20:29:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:29:00 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+ERROR - 2024-10-09 20:29:00 --> Severity: Warning --> Undefined property: stdClass::$status_pengambilan D:\Code\php-root\tugas-akhir\application\modules\akademik\views\dashboard_mahasiswa.php 62
+DEBUG - 2024-10-09 20:29:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:29:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:29:00 --> Final output sent to browser
+DEBUG - 2024-10-09 20:29:00 --> Total execution time: 0.1405
+INFO - 2024-10-09 20:37:24 --> Config Class Initialized
+INFO - 2024-10-09 20:37:24 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:37:24 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:37:24 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:37:24 --> URI Class Initialized
+INFO - 2024-10-09 20:37:24 --> Router Class Initialized
+INFO - 2024-10-09 20:37:24 --> Output Class Initialized
+INFO - 2024-10-09 20:37:24 --> Security Class Initialized
+DEBUG - 2024-10-09 20:37:24 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:37:24 --> Input Class Initialized
+INFO - 2024-10-09 20:37:24 --> Language Class Initialized
+INFO - 2024-10-09 20:37:24 --> Language Class Initialized
+INFO - 2024-10-09 20:37:24 --> Config Class Initialized
+INFO - 2024-10-09 20:37:24 --> Loader Class Initialized
+INFO - 2024-10-09 20:37:24 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:37:24 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:37:24 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:37:24 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:37:24 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:37:24 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:37:24 --> Controller Class Initialized
+INFO - 2024-10-09 20:37:24 --> Model Class Initialized
+DEBUG - 2024-10-09 20:37:24 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:37:24 --> Model Class Initialized
+INFO - 2024-10-09 20:37:35 --> Config Class Initialized
+INFO - 2024-10-09 20:37:35 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:37:35 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:37:35 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:37:35 --> URI Class Initialized
+INFO - 2024-10-09 20:37:35 --> Router Class Initialized
+INFO - 2024-10-09 20:37:35 --> Output Class Initialized
+INFO - 2024-10-09 20:37:35 --> Security Class Initialized
+DEBUG - 2024-10-09 20:37:35 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:37:35 --> Input Class Initialized
+INFO - 2024-10-09 20:37:35 --> Language Class Initialized
+INFO - 2024-10-09 20:37:35 --> Language Class Initialized
+INFO - 2024-10-09 20:37:35 --> Config Class Initialized
+INFO - 2024-10-09 20:37:35 --> Loader Class Initialized
+INFO - 2024-10-09 20:37:35 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:37:35 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:37:35 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:37:35 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:37:35 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:37:35 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:37:35 --> Controller Class Initialized
+INFO - 2024-10-09 20:37:35 --> Model Class Initialized
+DEBUG - 2024-10-09 20:37:35 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:37:35 --> Model Class Initialized
+INFO - 2024-10-09 20:37:53 --> Config Class Initialized
+INFO - 2024-10-09 20:37:53 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:37:53 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:37:53 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:37:53 --> URI Class Initialized
+INFO - 2024-10-09 20:37:53 --> Router Class Initialized
+INFO - 2024-10-09 20:37:53 --> Output Class Initialized
+INFO - 2024-10-09 20:37:53 --> Security Class Initialized
+DEBUG - 2024-10-09 20:37:53 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:37:53 --> Input Class Initialized
+INFO - 2024-10-09 20:37:53 --> Language Class Initialized
+INFO - 2024-10-09 20:37:53 --> Language Class Initialized
+INFO - 2024-10-09 20:37:53 --> Config Class Initialized
+INFO - 2024-10-09 20:37:53 --> Loader Class Initialized
+INFO - 2024-10-09 20:37:53 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:37:53 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:37:53 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:37:53 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:37:53 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:37:53 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:37:53 --> Controller Class Initialized
+INFO - 2024-10-09 20:37:53 --> Model Class Initialized
+DEBUG - 2024-10-09 20:37:53 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:37:53 --> Model Class Initialized
+DEBUG - 2024-10-09 20:37:53 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:37:53 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:37:53 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:37:53 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:37:53 --> Final output sent to browser
+DEBUG - 2024-10-09 20:37:53 --> Total execution time: 0.0468
+INFO - 2024-10-09 20:39:37 --> Config Class Initialized
+INFO - 2024-10-09 20:39:37 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:39:37 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:39:37 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:39:37 --> URI Class Initialized
+INFO - 2024-10-09 20:39:37 --> Router Class Initialized
+INFO - 2024-10-09 20:39:37 --> Output Class Initialized
+INFO - 2024-10-09 20:39:37 --> Security Class Initialized
+DEBUG - 2024-10-09 20:39:37 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:39:37 --> Input Class Initialized
+INFO - 2024-10-09 20:39:37 --> Language Class Initialized
+INFO - 2024-10-09 20:39:37 --> Language Class Initialized
+INFO - 2024-10-09 20:39:37 --> Config Class Initialized
+INFO - 2024-10-09 20:39:37 --> Loader Class Initialized
+INFO - 2024-10-09 20:39:37 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:39:37 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:39:37 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:39:37 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:39:37 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:39:37 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:39:37 --> Controller Class Initialized
+INFO - 2024-10-09 20:39:37 --> Model Class Initialized
+DEBUG - 2024-10-09 20:39:37 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:39:37 --> Model Class Initialized
+DEBUG - 2024-10-09 20:39:37 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:39:37 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:39:37 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:39:37 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:39:37 --> Final output sent to browser
+DEBUG - 2024-10-09 20:39:37 --> Total execution time: 0.0723
+INFO - 2024-10-09 20:39:41 --> Config Class Initialized
+INFO - 2024-10-09 20:39:41 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:39:41 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:39:41 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:39:41 --> URI Class Initialized
+INFO - 2024-10-09 20:39:41 --> Router Class Initialized
+INFO - 2024-10-09 20:39:41 --> Output Class Initialized
+INFO - 2024-10-09 20:39:41 --> Security Class Initialized
+DEBUG - 2024-10-09 20:39:41 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:39:41 --> Input Class Initialized
+INFO - 2024-10-09 20:39:41 --> Language Class Initialized
+INFO - 2024-10-09 20:39:41 --> Language Class Initialized
+INFO - 2024-10-09 20:39:41 --> Config Class Initialized
+INFO - 2024-10-09 20:39:41 --> Loader Class Initialized
+INFO - 2024-10-09 20:39:41 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:39:41 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:39:41 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:39:41 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:39:41 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:39:41 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:39:41 --> Controller Class Initialized
+INFO - 2024-10-09 20:39:41 --> Model Class Initialized
+DEBUG - 2024-10-09 20:39:41 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:39:41 --> Model Class Initialized
+ERROR - 2024-10-09 20:39:41 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+ERROR - 2024-10-09 20:39:41 --> Severity: Warning --> Attempt to read property "status_pengambilan" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+DEBUG - 2024-10-09 20:39:41 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:39:41 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:39:41 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+ERROR - 2024-10-09 20:39:41 --> Severity: Warning --> Attempt to read property "id_mahasiswa" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+DEBUG - 2024-10-09 20:39:41 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/edit_user.php
+DEBUG - 2024-10-09 20:39:41 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:39:41 --> Final output sent to browser
+DEBUG - 2024-10-09 20:39:41 --> Total execution time: 0.0703
+INFO - 2024-10-09 20:39:45 --> Config Class Initialized
+INFO - 2024-10-09 20:39:45 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:39:45 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:39:45 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:39:45 --> URI Class Initialized
+INFO - 2024-10-09 20:39:45 --> Router Class Initialized
+INFO - 2024-10-09 20:39:45 --> Output Class Initialized
+INFO - 2024-10-09 20:39:45 --> Security Class Initialized
+DEBUG - 2024-10-09 20:39:45 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:39:45 --> Input Class Initialized
+INFO - 2024-10-09 20:39:45 --> Language Class Initialized
+INFO - 2024-10-09 20:39:45 --> Language Class Initialized
+INFO - 2024-10-09 20:39:45 --> Config Class Initialized
+INFO - 2024-10-09 20:39:45 --> Loader Class Initialized
+INFO - 2024-10-09 20:39:45 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:39:45 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:39:45 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:39:45 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:39:45 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:39:45 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:39:45 --> Controller Class Initialized
+INFO - 2024-10-09 20:39:45 --> Model Class Initialized
+DEBUG - 2024-10-09 20:39:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:39:45 --> Model Class Initialized
+DEBUG - 2024-10-09 20:39:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:39:45 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:39:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:39:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:39:45 --> Final output sent to browser
+DEBUG - 2024-10-09 20:39:45 --> Total execution time: 0.0590
+INFO - 2024-10-09 20:40:30 --> Config Class Initialized
+INFO - 2024-10-09 20:40:30 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:40:30 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:40:30 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:40:30 --> URI Class Initialized
+INFO - 2024-10-09 20:40:31 --> Router Class Initialized
+INFO - 2024-10-09 20:40:31 --> Output Class Initialized
+INFO - 2024-10-09 20:40:31 --> Security Class Initialized
+DEBUG - 2024-10-09 20:40:31 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:40:31 --> Input Class Initialized
+INFO - 2024-10-09 20:40:31 --> Language Class Initialized
+INFO - 2024-10-09 20:40:31 --> Language Class Initialized
+INFO - 2024-10-09 20:40:31 --> Config Class Initialized
+INFO - 2024-10-09 20:40:31 --> Loader Class Initialized
+INFO - 2024-10-09 20:40:31 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:40:31 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:40:31 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:40:31 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:40:31 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:40:31 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:40:31 --> Controller Class Initialized
+INFO - 2024-10-09 20:40:31 --> Model Class Initialized
+DEBUG - 2024-10-09 20:40:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:40:31 --> Model Class Initialized
+DEBUG - 2024-10-09 20:40:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:40:31 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:40:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:40:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:40:31 --> Final output sent to browser
+DEBUG - 2024-10-09 20:40:31 --> Total execution time: 0.0762
+INFO - 2024-10-09 20:40:33 --> Config Class Initialized
+INFO - 2024-10-09 20:40:33 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:40:33 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:40:33 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:40:33 --> URI Class Initialized
+INFO - 2024-10-09 20:40:33 --> Router Class Initialized
+INFO - 2024-10-09 20:40:33 --> Output Class Initialized
+INFO - 2024-10-09 20:40:33 --> Security Class Initialized
+DEBUG - 2024-10-09 20:40:33 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:40:33 --> Input Class Initialized
+INFO - 2024-10-09 20:40:33 --> Language Class Initialized
+INFO - 2024-10-09 20:40:33 --> Language Class Initialized
+INFO - 2024-10-09 20:40:33 --> Config Class Initialized
+INFO - 2024-10-09 20:40:33 --> Loader Class Initialized
+INFO - 2024-10-09 20:40:33 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:40:33 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:40:33 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:40:33 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:40:33 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:40:33 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:40:33 --> Controller Class Initialized
+INFO - 2024-10-09 20:40:33 --> Model Class Initialized
+DEBUG - 2024-10-09 20:40:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:40:33 --> Model Class Initialized
+ERROR - 2024-10-09 20:40:33 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+ERROR - 2024-10-09 20:40:33 --> Severity: Warning --> Attempt to read property "status_pengambilan" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+DEBUG - 2024-10-09 20:40:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:40:33 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:40:33 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+ERROR - 2024-10-09 20:40:33 --> Severity: Warning --> Attempt to read property "id_mahasiswa" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+DEBUG - 2024-10-09 20:40:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/edit_user.php
+DEBUG - 2024-10-09 20:40:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:40:33 --> Final output sent to browser
+DEBUG - 2024-10-09 20:40:33 --> Total execution time: 0.0693
+INFO - 2024-10-09 20:41:28 --> Config Class Initialized
+INFO - 2024-10-09 20:41:28 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:41:28 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:41:28 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:41:28 --> URI Class Initialized
+INFO - 2024-10-09 20:41:28 --> Router Class Initialized
+INFO - 2024-10-09 20:41:28 --> Output Class Initialized
+INFO - 2024-10-09 20:41:28 --> Security Class Initialized
+DEBUG - 2024-10-09 20:41:28 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:41:28 --> Input Class Initialized
+INFO - 2024-10-09 20:41:28 --> Language Class Initialized
+INFO - 2024-10-09 20:41:28 --> Language Class Initialized
+INFO - 2024-10-09 20:41:28 --> Config Class Initialized
+INFO - 2024-10-09 20:41:28 --> Loader Class Initialized
+INFO - 2024-10-09 20:41:28 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:41:28 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:41:28 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:41:28 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:41:28 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:41:28 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:41:28 --> Controller Class Initialized
+INFO - 2024-10-09 20:41:28 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:28 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:41:28 --> Model Class Initialized
+ERROR - 2024-10-09 20:41:28 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+ERROR - 2024-10-09 20:41:28 --> Severity: Warning --> Attempt to read property "status_pengambilan" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+DEBUG - 2024-10-09 20:41:28 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:41:28 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:41:28 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+ERROR - 2024-10-09 20:41:28 --> Severity: Warning --> Attempt to read property "id_mahasiswa" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+DEBUG - 2024-10-09 20:41:28 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/edit_user.php
+DEBUG - 2024-10-09 20:41:28 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:41:28 --> Final output sent to browser
+DEBUG - 2024-10-09 20:41:28 --> Total execution time: 0.0672
+INFO - 2024-10-09 20:41:33 --> Config Class Initialized
+INFO - 2024-10-09 20:41:33 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:41:33 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:41:33 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:41:33 --> URI Class Initialized
+INFO - 2024-10-09 20:41:33 --> Router Class Initialized
+INFO - 2024-10-09 20:41:33 --> Output Class Initialized
+INFO - 2024-10-09 20:41:33 --> Security Class Initialized
+DEBUG - 2024-10-09 20:41:33 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:41:33 --> Input Class Initialized
+INFO - 2024-10-09 20:41:33 --> Language Class Initialized
+INFO - 2024-10-09 20:41:33 --> Language Class Initialized
+INFO - 2024-10-09 20:41:33 --> Config Class Initialized
+INFO - 2024-10-09 20:41:33 --> Loader Class Initialized
+INFO - 2024-10-09 20:41:33 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:41:33 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:41:33 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:41:33 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:41:33 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:41:33 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:41:33 --> Controller Class Initialized
+INFO - 2024-10-09 20:41:33 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:41:33 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:41:33 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:41:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:41:33 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:41:33 --> Final output sent to browser
+DEBUG - 2024-10-09 20:41:33 --> Total execution time: 0.1046
+INFO - 2024-10-09 20:41:40 --> Config Class Initialized
+INFO - 2024-10-09 20:41:40 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:41:40 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:41:40 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:41:40 --> URI Class Initialized
+INFO - 2024-10-09 20:41:40 --> Router Class Initialized
+INFO - 2024-10-09 20:41:40 --> Output Class Initialized
+INFO - 2024-10-09 20:41:40 --> Security Class Initialized
+DEBUG - 2024-10-09 20:41:40 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:41:40 --> Input Class Initialized
+INFO - 2024-10-09 20:41:40 --> Language Class Initialized
+INFO - 2024-10-09 20:41:40 --> Language Class Initialized
+INFO - 2024-10-09 20:41:40 --> Config Class Initialized
+INFO - 2024-10-09 20:41:40 --> Loader Class Initialized
+INFO - 2024-10-09 20:41:40 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:41:40 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:41:40 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:41:40 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:41:40 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:41:40 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:41:40 --> Controller Class Initialized
+INFO - 2024-10-09 20:41:40 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:40 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:41:40 --> Model Class Initialized
+ERROR - 2024-10-09 20:41:40 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+ERROR - 2024-10-09 20:41:40 --> Severity: Warning --> Attempt to read property "status_pengambilan" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\controllers\Akun_mahasiswa.php 29
+DEBUG - 2024-10-09 20:41:40 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:41:40 --> Helper loaded: form_helper
+ERROR - 2024-10-09 20:41:40 --> Severity: Warning --> Trying to access array offset on value of type bool D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+ERROR - 2024-10-09 20:41:40 --> Severity: Warning --> Attempt to read property "id_mahasiswa" on null D:\Code\php-root\tugas-akhir\application\modules\akademik\views\edit_user.php 59
+DEBUG - 2024-10-09 20:41:40 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/edit_user.php
+DEBUG - 2024-10-09 20:41:40 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:41:40 --> Final output sent to browser
+DEBUG - 2024-10-09 20:41:40 --> Total execution time: 0.0559
+INFO - 2024-10-09 20:41:44 --> Config Class Initialized
+INFO - 2024-10-09 20:41:44 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:41:45 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:41:45 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:41:45 --> URI Class Initialized
+INFO - 2024-10-09 20:41:45 --> Router Class Initialized
+INFO - 2024-10-09 20:41:45 --> Output Class Initialized
+INFO - 2024-10-09 20:41:45 --> Security Class Initialized
+DEBUG - 2024-10-09 20:41:45 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:41:45 --> Input Class Initialized
+INFO - 2024-10-09 20:41:45 --> Language Class Initialized
+INFO - 2024-10-09 20:41:45 --> Language Class Initialized
+INFO - 2024-10-09 20:41:45 --> Config Class Initialized
+INFO - 2024-10-09 20:41:45 --> Loader Class Initialized
+INFO - 2024-10-09 20:41:45 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:41:45 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:41:45 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:41:45 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:41:45 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:41:45 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:41:45 --> Controller Class Initialized
+INFO - 2024-10-09 20:41:45 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/models/User_model.php
+INFO - 2024-10-09 20:41:45 --> Model Class Initialized
+DEBUG - 2024-10-09 20:41:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/header.php
+INFO - 2024-10-09 20:41:45 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:41:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/dashboard_mahasiswa.php
+DEBUG - 2024-10-09 20:41:45 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/akademik/views/includes/footer.php
+INFO - 2024-10-09 20:41:45 --> Final output sent to browser
+DEBUG - 2024-10-09 20:41:45 --> Total execution time: 0.0718
+INFO - 2024-10-09 20:42:03 --> Config Class Initialized
+INFO - 2024-10-09 20:42:03 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:42:03 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:42:03 --> URI Class Initialized
+INFO - 2024-10-09 20:42:03 --> Router Class Initialized
+INFO - 2024-10-09 20:42:03 --> Output Class Initialized
+INFO - 2024-10-09 20:42:03 --> Security Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:42:03 --> Input Class Initialized
+INFO - 2024-10-09 20:42:03 --> Language Class Initialized
+INFO - 2024-10-09 20:42:03 --> Language Class Initialized
+INFO - 2024-10-09 20:42:03 --> Config Class Initialized
+INFO - 2024-10-09 20:42:03 --> Loader Class Initialized
+INFO - 2024-10-09 20:42:03 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:42:03 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:42:03 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:42:03 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:42:03 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:42:03 --> Controller Class Initialized
+INFO - 2024-10-09 20:42:03 --> Config Class Initialized
+INFO - 2024-10-09 20:42:03 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:42:03 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:42:03 --> URI Class Initialized
+INFO - 2024-10-09 20:42:03 --> Router Class Initialized
+INFO - 2024-10-09 20:42:03 --> Output Class Initialized
+INFO - 2024-10-09 20:42:03 --> Security Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:42:03 --> Input Class Initialized
+INFO - 2024-10-09 20:42:03 --> Language Class Initialized
+INFO - 2024-10-09 20:42:03 --> Language Class Initialized
+INFO - 2024-10-09 20:42:03 --> Config Class Initialized
+INFO - 2024-10-09 20:42:03 --> Loader Class Initialized
+INFO - 2024-10-09 20:42:03 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:42:03 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:42:03 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:42:03 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:42:03 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:42:03 --> Controller Class Initialized
+INFO - 2024-10-09 20:42:03 --> Model Class Initialized
+DEBUG - 2024-10-09 20:42:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:42:03 --> Model Class Initialized
+INFO - 2024-10-09 20:42:03 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:42:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:42:03 --> Final output sent to browser
+DEBUG - 2024-10-09 20:42:03 --> Total execution time: 0.0738
+INFO - 2024-10-09 20:42:57 --> Config Class Initialized
+INFO - 2024-10-09 20:42:57 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:42:57 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:42:57 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:42:57 --> URI Class Initialized
+INFO - 2024-10-09 20:42:57 --> Router Class Initialized
+INFO - 2024-10-09 20:42:57 --> Output Class Initialized
+INFO - 2024-10-09 20:42:57 --> Security Class Initialized
+DEBUG - 2024-10-09 20:42:57 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:42:57 --> Input Class Initialized
+INFO - 2024-10-09 20:42:57 --> Language Class Initialized
+INFO - 2024-10-09 20:42:57 --> Language Class Initialized
+INFO - 2024-10-09 20:42:57 --> Config Class Initialized
+INFO - 2024-10-09 20:42:57 --> Loader Class Initialized
+INFO - 2024-10-09 20:42:57 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:42:57 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:42:57 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:42:57 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:42:57 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:42:57 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:42:57 --> Controller Class Initialized
+INFO - 2024-10-09 20:42:57 --> Model Class Initialized
+DEBUG - 2024-10-09 20:42:57 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:42:57 --> Model Class Initialized
+INFO - 2024-10-09 20:42:57 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:42:57 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:42:57 --> Final output sent to browser
+DEBUG - 2024-10-09 20:42:57 --> Total execution time: 0.1022
+INFO - 2024-10-09 20:43:01 --> Config Class Initialized
+INFO - 2024-10-09 20:43:01 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:43:01 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:43:01 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:43:01 --> URI Class Initialized
+INFO - 2024-10-09 20:43:01 --> Router Class Initialized
+INFO - 2024-10-09 20:43:01 --> Output Class Initialized
+INFO - 2024-10-09 20:43:01 --> Security Class Initialized
+DEBUG - 2024-10-09 20:43:01 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:43:01 --> Input Class Initialized
+INFO - 2024-10-09 20:43:01 --> Language Class Initialized
+INFO - 2024-10-09 20:43:01 --> Language Class Initialized
+INFO - 2024-10-09 20:43:01 --> Config Class Initialized
+INFO - 2024-10-09 20:43:01 --> Loader Class Initialized
+INFO - 2024-10-09 20:43:01 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:43:01 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:43:01 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:43:01 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:43:01 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:43:01 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:43:01 --> Controller Class Initialized
+INFO - 2024-10-09 20:43:01 --> Model Class Initialized
+DEBUG - 2024-10-09 20:43:01 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:43:01 --> Model Class Initialized
+INFO - 2024-10-09 20:43:01 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:43:01 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:43:01 --> Final output sent to browser
+DEBUG - 2024-10-09 20:43:01 --> Total execution time: 0.0896
+INFO - 2024-10-09 20:43:56 --> Config Class Initialized
+INFO - 2024-10-09 20:43:56 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:43:56 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:43:56 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:43:56 --> URI Class Initialized
+INFO - 2024-10-09 20:43:56 --> Router Class Initialized
+INFO - 2024-10-09 20:43:56 --> Output Class Initialized
+INFO - 2024-10-09 20:43:56 --> Security Class Initialized
+DEBUG - 2024-10-09 20:43:56 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:43:56 --> Input Class Initialized
+INFO - 2024-10-09 20:43:56 --> Language Class Initialized
+INFO - 2024-10-09 20:43:56 --> Language Class Initialized
+INFO - 2024-10-09 20:43:56 --> Config Class Initialized
+INFO - 2024-10-09 20:43:56 --> Loader Class Initialized
+INFO - 2024-10-09 20:43:56 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:43:56 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:43:56 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:43:56 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:43:56 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:43:56 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:43:56 --> Controller Class Initialized
+INFO - 2024-10-09 20:43:56 --> Model Class Initialized
+DEBUG - 2024-10-09 20:43:56 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:43:56 --> Model Class Initialized
+DEBUG - 2024-10-09 20:43:56 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:43:56 --> Final output sent to browser
+DEBUG - 2024-10-09 20:43:56 --> Total execution time: 0.0946
+INFO - 2024-10-09 20:44:00 --> Config Class Initialized
+INFO - 2024-10-09 20:44:00 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:44:00 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:44:00 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:44:00 --> URI Class Initialized
+INFO - 2024-10-09 20:44:00 --> Router Class Initialized
+INFO - 2024-10-09 20:44:00 --> Output Class Initialized
+INFO - 2024-10-09 20:44:00 --> Security Class Initialized
+DEBUG - 2024-10-09 20:44:00 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:44:00 --> Input Class Initialized
+INFO - 2024-10-09 20:44:00 --> Language Class Initialized
+INFO - 2024-10-09 20:44:00 --> Language Class Initialized
+INFO - 2024-10-09 20:44:00 --> Config Class Initialized
+INFO - 2024-10-09 20:44:00 --> Loader Class Initialized
+INFO - 2024-10-09 20:44:00 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:44:00 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:44:00 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:44:00 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:44:00 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:44:00 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:44:00 --> Controller Class Initialized
+INFO - 2024-10-09 20:44:00 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:44:00 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:00 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:44:00 --> Final output sent to browser
+DEBUG - 2024-10-09 20:44:00 --> Total execution time: 0.1203
+INFO - 2024-10-09 20:44:31 --> Config Class Initialized
+INFO - 2024-10-09 20:44:31 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:44:31 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:44:31 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:44:31 --> URI Class Initialized
+INFO - 2024-10-09 20:44:31 --> Router Class Initialized
+INFO - 2024-10-09 20:44:31 --> Output Class Initialized
+INFO - 2024-10-09 20:44:31 --> Security Class Initialized
+DEBUG - 2024-10-09 20:44:31 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:44:31 --> Input Class Initialized
+INFO - 2024-10-09 20:44:31 --> Language Class Initialized
+INFO - 2024-10-09 20:44:31 --> Language Class Initialized
+INFO - 2024-10-09 20:44:31 --> Config Class Initialized
+INFO - 2024-10-09 20:44:31 --> Loader Class Initialized
+INFO - 2024-10-09 20:44:31 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:44:31 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:44:31 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:44:31 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:44:31 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:44:31 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:44:31 --> Controller Class Initialized
+INFO - 2024-10-09 20:44:31 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:44:31 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:31 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:44:31 --> Final output sent to browser
+DEBUG - 2024-10-09 20:44:31 --> Total execution time: 0.1151
+INFO - 2024-10-09 20:44:51 --> Config Class Initialized
+INFO - 2024-10-09 20:44:51 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:44:51 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:44:51 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:44:51 --> URI Class Initialized
+INFO - 2024-10-09 20:44:51 --> Router Class Initialized
+INFO - 2024-10-09 20:44:51 --> Output Class Initialized
+INFO - 2024-10-09 20:44:51 --> Security Class Initialized
+DEBUG - 2024-10-09 20:44:51 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:44:51 --> Input Class Initialized
+INFO - 2024-10-09 20:44:51 --> Language Class Initialized
+INFO - 2024-10-09 20:44:51 --> Language Class Initialized
+INFO - 2024-10-09 20:44:51 --> Config Class Initialized
+INFO - 2024-10-09 20:44:51 --> Loader Class Initialized
+INFO - 2024-10-09 20:44:51 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:44:51 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:44:51 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:44:51 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:44:51 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:44:51 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:44:51 --> Controller Class Initialized
+INFO - 2024-10-09 20:44:51 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:51 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:44:51 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:51 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:44:51 --> Final output sent to browser
+DEBUG - 2024-10-09 20:44:51 --> Total execution time: 0.0763
+INFO - 2024-10-09 20:44:59 --> Config Class Initialized
+INFO - 2024-10-09 20:44:59 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:44:59 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:44:59 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:44:59 --> URI Class Initialized
+INFO - 2024-10-09 20:44:59 --> Router Class Initialized
+INFO - 2024-10-09 20:44:59 --> Output Class Initialized
+INFO - 2024-10-09 20:44:59 --> Security Class Initialized
+DEBUG - 2024-10-09 20:44:59 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:44:59 --> Input Class Initialized
+INFO - 2024-10-09 20:44:59 --> Language Class Initialized
+INFO - 2024-10-09 20:44:59 --> Language Class Initialized
+INFO - 2024-10-09 20:44:59 --> Config Class Initialized
+INFO - 2024-10-09 20:44:59 --> Loader Class Initialized
+INFO - 2024-10-09 20:44:59 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:44:59 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:44:59 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:44:59 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:44:59 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:44:59 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:44:59 --> Controller Class Initialized
+INFO - 2024-10-09 20:44:59 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:59 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:44:59 --> Model Class Initialized
+DEBUG - 2024-10-09 20:44:59 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:44:59 --> Final output sent to browser
+DEBUG - 2024-10-09 20:44:59 --> Total execution time: 0.0686
+INFO - 2024-10-09 20:45:04 --> Config Class Initialized
+INFO - 2024-10-09 20:45:04 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:45:04 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:45:04 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:45:04 --> URI Class Initialized
+INFO - 2024-10-09 20:45:04 --> Router Class Initialized
+INFO - 2024-10-09 20:45:04 --> Output Class Initialized
+INFO - 2024-10-09 20:45:04 --> Security Class Initialized
+DEBUG - 2024-10-09 20:45:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:45:04 --> Input Class Initialized
+INFO - 2024-10-09 20:45:04 --> Language Class Initialized
+INFO - 2024-10-09 20:45:04 --> Language Class Initialized
+INFO - 2024-10-09 20:45:04 --> Config Class Initialized
+INFO - 2024-10-09 20:45:04 --> Loader Class Initialized
+INFO - 2024-10-09 20:45:04 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:45:04 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:45:04 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:45:04 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:45:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:45:04 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:45:04 --> Controller Class Initialized
+INFO - 2024-10-09 20:45:04 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:45:04 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:45:04 --> Final output sent to browser
+DEBUG - 2024-10-09 20:45:04 --> Total execution time: 0.0866
+INFO - 2024-10-09 20:45:09 --> Config Class Initialized
+INFO - 2024-10-09 20:45:09 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:45:09 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:45:09 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:45:09 --> URI Class Initialized
+INFO - 2024-10-09 20:45:09 --> Router Class Initialized
+INFO - 2024-10-09 20:45:09 --> Output Class Initialized
+INFO - 2024-10-09 20:45:09 --> Security Class Initialized
+DEBUG - 2024-10-09 20:45:09 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:45:09 --> Input Class Initialized
+INFO - 2024-10-09 20:45:09 --> Language Class Initialized
+INFO - 2024-10-09 20:45:09 --> Language Class Initialized
+INFO - 2024-10-09 20:45:09 --> Config Class Initialized
+INFO - 2024-10-09 20:45:09 --> Loader Class Initialized
+INFO - 2024-10-09 20:45:09 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:45:09 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:45:09 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:45:09 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:45:09 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:45:09 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:45:09 --> Controller Class Initialized
+INFO - 2024-10-09 20:45:09 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:09 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:45:09 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:09 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:45:09 --> Final output sent to browser
+DEBUG - 2024-10-09 20:45:09 --> Total execution time: 0.0675
+INFO - 2024-10-09 20:45:15 --> Config Class Initialized
+INFO - 2024-10-09 20:45:15 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:45:15 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:45:15 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:45:15 --> URI Class Initialized
+INFO - 2024-10-09 20:45:15 --> Router Class Initialized
+INFO - 2024-10-09 20:45:15 --> Output Class Initialized
+INFO - 2024-10-09 20:45:15 --> Security Class Initialized
+DEBUG - 2024-10-09 20:45:15 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:45:15 --> Input Class Initialized
+INFO - 2024-10-09 20:45:15 --> Language Class Initialized
+INFO - 2024-10-09 20:45:15 --> Language Class Initialized
+INFO - 2024-10-09 20:45:15 --> Config Class Initialized
+INFO - 2024-10-09 20:45:15 --> Loader Class Initialized
+INFO - 2024-10-09 20:45:15 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:45:15 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:45:15 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:45:15 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:45:15 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:45:15 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:45:15 --> Controller Class Initialized
+INFO - 2024-10-09 20:45:15 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:15 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:45:15 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:15 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:45:15 --> Final output sent to browser
+DEBUG - 2024-10-09 20:45:15 --> Total execution time: 0.0906
+INFO - 2024-10-09 20:45:50 --> Config Class Initialized
+INFO - 2024-10-09 20:45:50 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:45:50 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:45:50 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:45:50 --> URI Class Initialized
+INFO - 2024-10-09 20:45:50 --> Router Class Initialized
+INFO - 2024-10-09 20:45:50 --> Output Class Initialized
+INFO - 2024-10-09 20:45:50 --> Security Class Initialized
+DEBUG - 2024-10-09 20:45:50 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:45:50 --> Input Class Initialized
+INFO - 2024-10-09 20:45:50 --> Language Class Initialized
+INFO - 2024-10-09 20:45:50 --> Language Class Initialized
+INFO - 2024-10-09 20:45:50 --> Config Class Initialized
+INFO - 2024-10-09 20:45:50 --> Loader Class Initialized
+INFO - 2024-10-09 20:45:50 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:45:50 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:45:50 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:45:50 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:45:50 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:45:50 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:45:50 --> Controller Class Initialized
+INFO - 2024-10-09 20:45:50 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:50 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:45:50 --> Model Class Initialized
+INFO - 2024-10-09 20:45:50 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:45:50 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:45:50 --> Final output sent to browser
+DEBUG - 2024-10-09 20:45:50 --> Total execution time: 0.0779
+INFO - 2024-10-09 20:45:54 --> Config Class Initialized
+INFO - 2024-10-09 20:45:54 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:45:54 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:45:54 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:45:54 --> URI Class Initialized
+INFO - 2024-10-09 20:45:54 --> Router Class Initialized
+INFO - 2024-10-09 20:45:54 --> Output Class Initialized
+INFO - 2024-10-09 20:45:54 --> Security Class Initialized
+DEBUG - 2024-10-09 20:45:54 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:45:54 --> Input Class Initialized
+INFO - 2024-10-09 20:45:54 --> Language Class Initialized
+INFO - 2024-10-09 20:45:54 --> Language Class Initialized
+INFO - 2024-10-09 20:45:54 --> Config Class Initialized
+INFO - 2024-10-09 20:45:54 --> Loader Class Initialized
+INFO - 2024-10-09 20:45:54 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:45:54 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:45:54 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:45:54 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:45:54 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:45:54 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:45:54 --> Controller Class Initialized
+INFO - 2024-10-09 20:45:54 --> Model Class Initialized
+DEBUG - 2024-10-09 20:45:54 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:45:54 --> Model Class Initialized
+INFO - 2024-10-09 20:45:54 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:45:54 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:45:54 --> Final output sent to browser
+DEBUG - 2024-10-09 20:45:54 --> Total execution time: 0.1000
+INFO - 2024-10-09 20:46:03 --> Config Class Initialized
+INFO - 2024-10-09 20:46:03 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:46:03 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:46:03 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:46:03 --> URI Class Initialized
+INFO - 2024-10-09 20:46:03 --> Router Class Initialized
+INFO - 2024-10-09 20:46:03 --> Output Class Initialized
+INFO - 2024-10-09 20:46:03 --> Security Class Initialized
+DEBUG - 2024-10-09 20:46:03 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:46:03 --> Input Class Initialized
+INFO - 2024-10-09 20:46:03 --> Language Class Initialized
+INFO - 2024-10-09 20:46:03 --> Language Class Initialized
+INFO - 2024-10-09 20:46:03 --> Config Class Initialized
+INFO - 2024-10-09 20:46:03 --> Loader Class Initialized
+INFO - 2024-10-09 20:46:03 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:46:03 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:46:03 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:46:03 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:46:03 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:46:03 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:46:03 --> Controller Class Initialized
+INFO - 2024-10-09 20:46:03 --> Model Class Initialized
+DEBUG - 2024-10-09 20:46:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:46:03 --> Model Class Initialized
+INFO - 2024-10-09 20:46:03 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:46:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:46:03 --> Final output sent to browser
+DEBUG - 2024-10-09 20:46:03 --> Total execution time: 0.1221
+INFO - 2024-10-09 20:46:55 --> Config Class Initialized
+INFO - 2024-10-09 20:46:55 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:46:55 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:46:55 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:46:55 --> URI Class Initialized
+INFO - 2024-10-09 20:46:55 --> Router Class Initialized
+INFO - 2024-10-09 20:46:55 --> Output Class Initialized
+INFO - 2024-10-09 20:46:55 --> Security Class Initialized
+DEBUG - 2024-10-09 20:46:55 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:46:55 --> Input Class Initialized
+INFO - 2024-10-09 20:46:55 --> Language Class Initialized
+INFO - 2024-10-09 20:46:55 --> Language Class Initialized
+INFO - 2024-10-09 20:46:55 --> Config Class Initialized
+INFO - 2024-10-09 20:46:55 --> Loader Class Initialized
+INFO - 2024-10-09 20:46:55 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:46:55 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:46:55 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:46:55 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:46:55 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:46:55 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:46:55 --> Controller Class Initialized
+INFO - 2024-10-09 20:46:55 --> Model Class Initialized
+DEBUG - 2024-10-09 20:46:55 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:46:55 --> Model Class Initialized
+INFO - 2024-10-09 20:46:55 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:46:55 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:46:55 --> Final output sent to browser
+DEBUG - 2024-10-09 20:46:55 --> Total execution time: 0.1510
+INFO - 2024-10-09 20:48:46 --> Config Class Initialized
+INFO - 2024-10-09 20:48:46 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:48:46 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:48:46 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:48:46 --> URI Class Initialized
+INFO - 2024-10-09 20:48:46 --> Router Class Initialized
+INFO - 2024-10-09 20:48:46 --> Output Class Initialized
+INFO - 2024-10-09 20:48:46 --> Security Class Initialized
+DEBUG - 2024-10-09 20:48:46 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:48:46 --> Input Class Initialized
+INFO - 2024-10-09 20:48:46 --> Language Class Initialized
+INFO - 2024-10-09 20:48:46 --> Language Class Initialized
+INFO - 2024-10-09 20:48:46 --> Config Class Initialized
+INFO - 2024-10-09 20:48:46 --> Loader Class Initialized
+INFO - 2024-10-09 20:48:46 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:48:46 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:48:46 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:48:46 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:48:46 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:48:46 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:48:46 --> Controller Class Initialized
+INFO - 2024-10-09 20:48:46 --> Model Class Initialized
+DEBUG - 2024-10-09 20:48:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:48:46 --> Model Class Initialized
+INFO - 2024-10-09 20:48:46 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:48:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:48:46 --> Final output sent to browser
+DEBUG - 2024-10-09 20:48:46 --> Total execution time: 0.1004
+INFO - 2024-10-09 20:49:46 --> Config Class Initialized
+INFO - 2024-10-09 20:49:46 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:49:46 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:49:46 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:49:46 --> URI Class Initialized
+INFO - 2024-10-09 20:49:46 --> Router Class Initialized
+INFO - 2024-10-09 20:49:46 --> Output Class Initialized
+INFO - 2024-10-09 20:49:46 --> Security Class Initialized
+DEBUG - 2024-10-09 20:49:46 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:49:46 --> Input Class Initialized
+INFO - 2024-10-09 20:49:46 --> Language Class Initialized
+INFO - 2024-10-09 20:49:46 --> Language Class Initialized
+INFO - 2024-10-09 20:49:46 --> Config Class Initialized
+INFO - 2024-10-09 20:49:46 --> Loader Class Initialized
+INFO - 2024-10-09 20:49:46 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:49:46 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:49:46 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:49:46 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:49:46 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:49:46 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:49:46 --> Controller Class Initialized
+INFO - 2024-10-09 20:49:46 --> Model Class Initialized
+DEBUG - 2024-10-09 20:49:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:49:46 --> Model Class Initialized
+INFO - 2024-10-09 20:49:46 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:49:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:49:46 --> Final output sent to browser
+DEBUG - 2024-10-09 20:49:46 --> Total execution time: 0.0844
+INFO - 2024-10-09 20:49:51 --> Config Class Initialized
+INFO - 2024-10-09 20:49:51 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:49:51 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:49:51 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:49:51 --> URI Class Initialized
+INFO - 2024-10-09 20:49:51 --> Router Class Initialized
+INFO - 2024-10-09 20:49:51 --> Output Class Initialized
+INFO - 2024-10-09 20:49:51 --> Security Class Initialized
+DEBUG - 2024-10-09 20:49:51 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:49:51 --> Input Class Initialized
+INFO - 2024-10-09 20:49:51 --> Language Class Initialized
+INFO - 2024-10-09 20:49:51 --> Language Class Initialized
+INFO - 2024-10-09 20:49:51 --> Config Class Initialized
+INFO - 2024-10-09 20:49:51 --> Loader Class Initialized
+INFO - 2024-10-09 20:49:51 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:49:51 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:49:51 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:49:51 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:49:51 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:49:51 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:49:51 --> Controller Class Initialized
+INFO - 2024-10-09 20:49:51 --> Model Class Initialized
+DEBUG - 2024-10-09 20:49:51 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:49:51 --> Model Class Initialized
+INFO - 2024-10-09 20:49:51 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:49:51 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:49:51 --> Final output sent to browser
+DEBUG - 2024-10-09 20:49:51 --> Total execution time: 0.0923
+INFO - 2024-10-09 20:50:04 --> Config Class Initialized
+INFO - 2024-10-09 20:50:04 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:50:04 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:50:04 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:50:04 --> URI Class Initialized
+INFO - 2024-10-09 20:50:04 --> Router Class Initialized
+INFO - 2024-10-09 20:50:04 --> Output Class Initialized
+INFO - 2024-10-09 20:50:04 --> Security Class Initialized
+DEBUG - 2024-10-09 20:50:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:50:04 --> Input Class Initialized
+INFO - 2024-10-09 20:50:04 --> Language Class Initialized
+INFO - 2024-10-09 20:50:04 --> Language Class Initialized
+INFO - 2024-10-09 20:50:04 --> Config Class Initialized
+INFO - 2024-10-09 20:50:04 --> Loader Class Initialized
+INFO - 2024-10-09 20:50:04 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:50:04 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:50:04 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:50:04 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:50:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:50:04 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:50:04 --> Controller Class Initialized
+INFO - 2024-10-09 20:50:04 --> Model Class Initialized
+DEBUG - 2024-10-09 20:50:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:50:04 --> Model Class Initialized
+INFO - 2024-10-09 20:50:04 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:50:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:50:04 --> Final output sent to browser
+DEBUG - 2024-10-09 20:50:04 --> Total execution time: 0.0878
+INFO - 2024-10-09 20:51:04 --> Config Class Initialized
+INFO - 2024-10-09 20:51:04 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:51:04 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:51:04 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:51:04 --> URI Class Initialized
+INFO - 2024-10-09 20:51:04 --> Router Class Initialized
+INFO - 2024-10-09 20:51:04 --> Output Class Initialized
+INFO - 2024-10-09 20:51:04 --> Security Class Initialized
+DEBUG - 2024-10-09 20:51:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:51:04 --> Input Class Initialized
+INFO - 2024-10-09 20:51:04 --> Language Class Initialized
+INFO - 2024-10-09 20:51:04 --> Language Class Initialized
+INFO - 2024-10-09 20:51:04 --> Config Class Initialized
+INFO - 2024-10-09 20:51:04 --> Loader Class Initialized
+INFO - 2024-10-09 20:51:04 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:51:04 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:51:04 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:51:04 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:51:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:51:04 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:51:04 --> Controller Class Initialized
+INFO - 2024-10-09 20:51:04 --> Model Class Initialized
+DEBUG - 2024-10-09 20:51:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:51:04 --> Model Class Initialized
+INFO - 2024-10-09 20:51:04 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:51:04 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:51:04 --> Final output sent to browser
+DEBUG - 2024-10-09 20:51:04 --> Total execution time: 0.1093
+INFO - 2024-10-09 20:51:11 --> Config Class Initialized
+INFO - 2024-10-09 20:51:11 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:51:11 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:51:11 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:51:11 --> URI Class Initialized
+INFO - 2024-10-09 20:51:11 --> Router Class Initialized
+INFO - 2024-10-09 20:51:11 --> Output Class Initialized
+INFO - 2024-10-09 20:51:11 --> Security Class Initialized
+DEBUG - 2024-10-09 20:51:11 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:51:11 --> Input Class Initialized
+INFO - 2024-10-09 20:51:11 --> Language Class Initialized
+INFO - 2024-10-09 20:51:11 --> Language Class Initialized
+INFO - 2024-10-09 20:51:11 --> Config Class Initialized
+INFO - 2024-10-09 20:51:11 --> Loader Class Initialized
+INFO - 2024-10-09 20:51:11 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:51:11 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:51:11 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:51:11 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:51:11 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:51:11 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:51:11 --> Controller Class Initialized
+INFO - 2024-10-09 20:51:11 --> Model Class Initialized
+DEBUG - 2024-10-09 20:51:11 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:51:11 --> Model Class Initialized
+INFO - 2024-10-09 20:51:11 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:51:11 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:51:11 --> Final output sent to browser
+DEBUG - 2024-10-09 20:51:11 --> Total execution time: 0.1543
+INFO - 2024-10-09 20:51:32 --> Config Class Initialized
+INFO - 2024-10-09 20:51:32 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:51:32 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:51:32 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:51:32 --> URI Class Initialized
+INFO - 2024-10-09 20:51:32 --> Router Class Initialized
+INFO - 2024-10-09 20:51:32 --> Output Class Initialized
+INFO - 2024-10-09 20:51:32 --> Security Class Initialized
+DEBUG - 2024-10-09 20:51:32 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:51:32 --> Input Class Initialized
+INFO - 2024-10-09 20:51:32 --> Language Class Initialized
+INFO - 2024-10-09 20:51:32 --> Language Class Initialized
+INFO - 2024-10-09 20:51:32 --> Config Class Initialized
+INFO - 2024-10-09 20:51:32 --> Loader Class Initialized
+INFO - 2024-10-09 20:51:32 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:51:32 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:51:32 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:51:32 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:51:32 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:51:32 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:51:32 --> Controller Class Initialized
+INFO - 2024-10-09 20:51:32 --> Model Class Initialized
+DEBUG - 2024-10-09 20:51:32 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:51:32 --> Model Class Initialized
+INFO - 2024-10-09 20:51:32 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:51:32 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:51:32 --> Final output sent to browser
+DEBUG - 2024-10-09 20:51:32 --> Total execution time: 0.1133
+INFO - 2024-10-09 20:51:46 --> Config Class Initialized
+INFO - 2024-10-09 20:51:46 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:51:46 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:51:46 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:51:46 --> URI Class Initialized
+INFO - 2024-10-09 20:51:46 --> Router Class Initialized
+INFO - 2024-10-09 20:51:46 --> Output Class Initialized
+INFO - 2024-10-09 20:51:46 --> Security Class Initialized
+DEBUG - 2024-10-09 20:51:46 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:51:46 --> Input Class Initialized
+INFO - 2024-10-09 20:51:46 --> Language Class Initialized
+INFO - 2024-10-09 20:51:46 --> Language Class Initialized
+INFO - 2024-10-09 20:51:46 --> Config Class Initialized
+INFO - 2024-10-09 20:51:46 --> Loader Class Initialized
+INFO - 2024-10-09 20:51:46 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:51:46 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:51:46 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:51:46 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:51:46 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:51:46 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:51:46 --> Controller Class Initialized
+INFO - 2024-10-09 20:51:46 --> Model Class Initialized
+DEBUG - 2024-10-09 20:51:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:51:46 --> Model Class Initialized
+INFO - 2024-10-09 20:51:46 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:51:46 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:51:46 --> Final output sent to browser
+DEBUG - 2024-10-09 20:51:46 --> Total execution time: 0.2063
+INFO - 2024-10-09 20:51:58 --> Config Class Initialized
+INFO - 2024-10-09 20:51:58 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:51:58 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:51:58 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:51:58 --> URI Class Initialized
+INFO - 2024-10-09 20:51:58 --> Router Class Initialized
+INFO - 2024-10-09 20:51:58 --> Output Class Initialized
+INFO - 2024-10-09 20:51:58 --> Security Class Initialized
+DEBUG - 2024-10-09 20:51:58 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:51:58 --> Input Class Initialized
+INFO - 2024-10-09 20:51:58 --> Language Class Initialized
+INFO - 2024-10-09 20:51:58 --> Language Class Initialized
+INFO - 2024-10-09 20:51:58 --> Config Class Initialized
+INFO - 2024-10-09 20:51:58 --> Loader Class Initialized
+INFO - 2024-10-09 20:51:58 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:51:58 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:51:58 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:51:58 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:51:58 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:51:58 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:51:58 --> Controller Class Initialized
+INFO - 2024-10-09 20:51:58 --> Model Class Initialized
+DEBUG - 2024-10-09 20:51:58 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:51:58 --> Model Class Initialized
+INFO - 2024-10-09 20:51:58 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:51:58 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:51:58 --> Final output sent to browser
+DEBUG - 2024-10-09 20:51:58 --> Total execution time: 0.0816
+INFO - 2024-10-09 20:52:13 --> Config Class Initialized
+INFO - 2024-10-09 20:52:13 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:52:13 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:52:13 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:52:13 --> URI Class Initialized
+INFO - 2024-10-09 20:52:13 --> Router Class Initialized
+INFO - 2024-10-09 20:52:13 --> Output Class Initialized
+INFO - 2024-10-09 20:52:13 --> Security Class Initialized
+DEBUG - 2024-10-09 20:52:13 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:52:13 --> Input Class Initialized
+INFO - 2024-10-09 20:52:13 --> Language Class Initialized
+INFO - 2024-10-09 20:52:13 --> Language Class Initialized
+INFO - 2024-10-09 20:52:13 --> Config Class Initialized
+INFO - 2024-10-09 20:52:13 --> Loader Class Initialized
+INFO - 2024-10-09 20:52:13 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:52:13 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:52:13 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:52:13 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:52:13 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:52:13 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:52:13 --> Controller Class Initialized
+INFO - 2024-10-09 20:52:13 --> Model Class Initialized
+DEBUG - 2024-10-09 20:52:13 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:52:13 --> Model Class Initialized
+INFO - 2024-10-09 20:52:13 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:52:13 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:52:13 --> Final output sent to browser
+DEBUG - 2024-10-09 20:52:13 --> Total execution time: 0.1011
+INFO - 2024-10-09 20:53:03 --> Config Class Initialized
+INFO - 2024-10-09 20:53:03 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:53:03 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:53:03 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:53:03 --> URI Class Initialized
+INFO - 2024-10-09 20:53:03 --> Router Class Initialized
+INFO - 2024-10-09 20:53:03 --> Output Class Initialized
+INFO - 2024-10-09 20:53:03 --> Security Class Initialized
+DEBUG - 2024-10-09 20:53:03 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:53:03 --> Input Class Initialized
+INFO - 2024-10-09 20:53:03 --> Language Class Initialized
+INFO - 2024-10-09 20:53:03 --> Language Class Initialized
+INFO - 2024-10-09 20:53:03 --> Config Class Initialized
+INFO - 2024-10-09 20:53:03 --> Loader Class Initialized
+INFO - 2024-10-09 20:53:03 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:53:03 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:53:03 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:53:03 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:53:03 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:53:03 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:53:03 --> Controller Class Initialized
+INFO - 2024-10-09 20:53:03 --> Model Class Initialized
+DEBUG - 2024-10-09 20:53:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:53:03 --> Model Class Initialized
+INFO - 2024-10-09 20:53:03 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:53:03 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:53:03 --> Final output sent to browser
+DEBUG - 2024-10-09 20:53:03 --> Total execution time: 0.2199
+INFO - 2024-10-09 20:53:11 --> Config Class Initialized
+INFO - 2024-10-09 20:53:11 --> Hooks Class Initialized
+DEBUG - 2024-10-09 20:53:11 --> UTF-8 Support Enabled
+INFO - 2024-10-09 20:53:11 --> Utf8 Class Initialized
+INFO - 2024-10-09 20:53:11 --> URI Class Initialized
+INFO - 2024-10-09 20:53:11 --> Router Class Initialized
+INFO - 2024-10-09 20:53:11 --> Output Class Initialized
+INFO - 2024-10-09 20:53:11 --> Security Class Initialized
+DEBUG - 2024-10-09 20:53:11 --> Global POST, GET and COOKIE data sanitized
+INFO - 2024-10-09 20:53:11 --> Input Class Initialized
+INFO - 2024-10-09 20:53:11 --> Language Class Initialized
+INFO - 2024-10-09 20:53:11 --> Language Class Initialized
+INFO - 2024-10-09 20:53:11 --> Config Class Initialized
+INFO - 2024-10-09 20:53:11 --> Loader Class Initialized
+INFO - 2024-10-09 20:53:11 --> Helper loaded: url_helper
+INFO - 2024-10-09 20:53:11 --> Helper loaded: file_helper
+INFO - 2024-10-09 20:53:11 --> Helper loaded: cias_helper
+INFO - 2024-10-09 20:53:11 --> Database Driver Class Initialized
+DEBUG - 2024-10-09 20:53:11 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2024-10-09 20:53:11 --> Session: Class initialized using 'files' driver.
+INFO - 2024-10-09 20:53:11 --> Controller Class Initialized
+INFO - 2024-10-09 20:53:11 --> Model Class Initialized
+DEBUG - 2024-10-09 20:53:11 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/models/Login_model.php
+INFO - 2024-10-09 20:53:11 --> Model Class Initialized
+INFO - 2024-10-09 20:53:11 --> Helper loaded: form_helper
+DEBUG - 2024-10-09 20:53:11 --> File loaded: D:\Code\php-root\tugas-akhir\application\modules/login/views/login.php
+INFO - 2024-10-09 20:53:11 --> Final output sent to browser
+DEBUG - 2024-10-09 20:53:11 --> Total execution time: 0.1077
