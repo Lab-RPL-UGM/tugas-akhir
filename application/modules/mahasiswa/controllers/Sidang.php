@@ -41,7 +41,7 @@ class Sidang extends BaseController
             $userId = $this->vendorId;
             $data['sidangInfo'] = $this->pendadaran_model->getSidang($userId);
 
-            $this->global['pageTitle'] = "Elusi : Sidang";
+            $this->global['pageTitle'] = "TA-TRPL : Sidang";
             // echo "<pre>";
             // print_r($data);
             // exit;
@@ -202,7 +202,7 @@ class Sidang extends BaseController
      */
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

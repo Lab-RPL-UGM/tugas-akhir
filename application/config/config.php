@@ -26,7 +26,7 @@ date_default_timezone_set("Asia/Bangkok");
 */
 $base  = "http://".$_SERVER['HTTP_HOST'];
 $base .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-$config['base_url'] = "https://ta-siti.cosmolab.space";
+$config['base_url'] = "https://tugas-akhir.trpl.space/";
 
 /*
 |--------------------------------------------------------------------------

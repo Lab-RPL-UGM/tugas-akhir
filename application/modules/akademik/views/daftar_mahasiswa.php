@@ -70,7 +70,7 @@
                                         <th class="col-md-2">No. HP</th>
                                         <th class="col-md-1">Judul</th>
                                         <th class="col-md-1">Sidang</th>
-                                        <th class="col-md-1">Nilai Akhir</th>
+                                        <!-- <th class="col-md-1">Nilai Akhir</th> -->
                                         <th class="col-md-1">Yudisium</th>
                                         <th class="col-md-1">Aksi</th>
                                     </tr>

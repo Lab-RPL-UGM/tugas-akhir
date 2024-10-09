@@ -108,7 +108,7 @@ class BaseController extends CI_Controller
 	 */
 	function loadThis()
 	{
-		// $this->global ['pageTitle'] = 'Elusi : Access Denied';
+		// $this->global ['pageTitle'] = 'TA-TRPL : Access Denied';
 
 		//$this->load->view ( 'includes/header', $this->global );
 		$this->load->view('error_404');

@@ -36,7 +36,26 @@ class Login extends CI_Controller
 
         if(!isset($isLoggedIn) || $isLoggedIn != TRUE)
         {
-            $this->load->view('login');
+            $dataProfil = $this->Login_model->getDosen();
+
+            $data['dataTable'] = array();
+            if ($dataProfil) {
+                foreach ($dataProfil as $record) {
+                    $id_dosen = $record->id_dosen;
+                    $array = array(
+                        'id_dosen' => $record->id_dosen,
+                        'nid' => $record->nid,
+                        'nama_dosen' => $record->nama,
+                        'mobile' => $record->mobile,
+                        'kuota_mahasiswa' => $record->kuota_mahasiswa,
+                        'bimbingan' => $this->Login_model->getCountBimbingan($id_dosen),
+                        'sidang' => $this->Login_model->getSidangCount($record->id_user)
+                    );
+                    array_push($data['dataTable'], $array);
+                }
+            }
+            
+            $this->load->view('login', $data);
         }
         else
         {

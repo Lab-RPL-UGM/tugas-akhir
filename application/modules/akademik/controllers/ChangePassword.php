@@ -29,7 +29,7 @@ class ChangePassword extends BaseController
         }
         else
         {
-            $this->global['pageTitle'] = 'Elusi : Change Password';
+            $this->global['pageTitle'] = 'TA-TRPL : Change Password';
 
             $this->loadViews("change_password", $this->global, NULL, NULL);
         }
@@ -83,9 +83,9 @@ class ChangePassword extends BaseController
             }
         }
     }
-    function pageNotFound()
-    {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
-        $this->loadViews("404", $this->global, NULL, NULL);
-    }
+    // function pageNotFound()
+    // {
+    //     $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
+    //     $this->loadViews("404", $this->global, NULL, NULL);
+    // }
 }

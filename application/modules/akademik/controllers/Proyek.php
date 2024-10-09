@@ -13,14 +13,14 @@ class Proyek extends BaseController
     public function index()
     {
         $data['dataTable'] = $this->Proyek_model->getProyek();
-        $this->global['pageTitle'] = "Elusi : Proyek";
+        $this->global['pageTitle'] = "TA-TRPL : Proyek";
         $this->loadViews("dashboard_proyek", $this->global, $data);
     }
 
     public function add_form()
     {
         $data['dataDosen'] = $this->Proyek_model->getDosen();
-        $this->global['pageTitle'] = "Elusi : Tambah Proyek";
+        $this->global['pageTitle'] = "TA-TRPL : Tambah Proyek";
         $this->loadViews("add_proyek", $this->global, $data);
     }
 
@@ -29,7 +29,7 @@ class Proyek extends BaseController
         $data['dataDosen'] = $this->Proyek_model->getDosen();
         $data['dataProyek'] = $this->Proyek_model->getProyek($id);
         $data['dataStatus'] = $this->Proyek_model->getStatus();
-        $this->global['pageTitle'] = "Elusi : Tambah Proyek";
+        $this->global['pageTitle'] = "TA-TRPL : Tambah Proyek";
         $this->loadViews("edit_proyek", $this->global, $data);
     }
 

@@ -30,7 +30,7 @@ class Dosen extends BaseController
         } else {
             $userId = $this->vendorId;
 
-            $this->global['pageTitle'] = "Elusi : Dashboard";
+            $this->global['pageTitle'] = "TA-TRPL : Dashboard";
             $data['dataPeriode'] = $this->dashboard_model->getPeriodeAktif();
             $data['countBimbingan'] = $this->dashboard_model->getCountBimbingan($userId);
             $data['countPendadaran'] = $this->dashboard_model->getCountPendadaran($userId);
@@ -46,7 +46,7 @@ class Dosen extends BaseController
      */
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

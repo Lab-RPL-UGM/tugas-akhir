@@ -31,7 +31,7 @@ class Profil extends BaseController
             $data['profilInfo'] = $this->profil_model->getDosen($userId);
             $data['userId'] = $userId;
             $data['userRole'] = $userRole;
-            $this->global['pageTitle'] = "Elusi : Profil";
+            $this->global['pageTitle'] = "TA-TRPL : Profil";
 
             $this->loadViews("profil", $this->global, $data, NULL);
         }
@@ -126,7 +126,7 @@ class Profil extends BaseController
             $id_dosen = $this->input->post('id_dosen');
 
             $config['upload_path'] = 'uploads/foto/dosen';
-            $config['allowed_types'] = 'jpg|png';
+            $config['allowed_types'] = 'jpg|png|jpeg';
             $config['max_size'] = 4000;
             $config['max_width'] = 1024;
             $config['max_height'] = 1024;

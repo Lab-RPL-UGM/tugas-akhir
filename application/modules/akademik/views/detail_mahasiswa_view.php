@@ -91,9 +91,9 @@
                                             <li role="presentation" class="">
                                                 <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Berkas Sidang</a>
                                             </li>
-                                            <li role="presentation" class="">
+                                            <!-- <li role="presentation" class="">
                                                 <a href="#tab_content4" role="tab" id="profile-tab3" data-toggle="tab" aria-expanded="false">Penilaian</a>
-                                            </li>
+                                            </li> -->
                                             <li role="presentation" class="">
                                                 <a href="#tab_content5" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">Berkas Yudisium</a>
                                             </li>

@@ -25,7 +25,7 @@ class Proyek extends BaseController
             $userId = $this->vendorId;
             $this->load->model('proyek_model');
             $data['proyekInfo'] = $this->proyek_model->getProyekInfo(null, $userId);
-            $this->global['pageTitle'] = "Elusi : Proyek";
+            $this->global['pageTitle'] = "TA-TRPL : Proyek";
 
             $this->loadViews("proyek", $this->global, $data, NULL);
         }

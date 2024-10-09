@@ -23,12 +23,12 @@ class Dashboard extends BaseController {
             $data['countYudisium'] = 0;
             $data['dataNilai'] = 0;
         }
-        $this->global['pageTitle'] = "Elusi : Dashboard";
+        $this->global['pageTitle'] = "TA-TRPL : Dashboard";
         $this->loadViews("dashboard",$this->global,$data);
     }
 
     function pageNotFound() {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 

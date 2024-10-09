@@ -50,7 +50,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="<?php echo base_url(); ?>mahasiswa" class="site_title"><i class="fa fa-graduation-cap"></i> <span>TRPL-TA</span></a>
+                        <a href="<?php echo base_url(); ?>mahasiswa" class="site_title"><i class="fa fa-graduation-cap"></i> <span>TA-TRPL</span></a>
                     </div>
                     <div class="clearfix"></div>
                     <br />

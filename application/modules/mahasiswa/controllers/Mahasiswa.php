@@ -24,14 +24,14 @@ class Mahasiswa extends BaseController
         $userId = $this->vendorId;
         $data['pesanInfo'] = $this->Dashboard_model->getPesanList($userId);
         $data['revisiInfo'] = $this->Dashboard_model->getRevisiSidang($userId);
-        $this->global['pageTitle'] = "Elusi : Dashboard";
+        $this->global['pageTitle'] = "TA-TRPL : Dashboard";
         $this->loadViews("dashboard",$this->global,$data);
     }
     /**
      * This function is used to load the 404 page not found
      */
     function pageNotFound() {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

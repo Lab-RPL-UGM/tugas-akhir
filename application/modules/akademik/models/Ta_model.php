@@ -148,9 +148,9 @@ class Ta_model extends CI_Model
 
                 $sisaKuota = $value->kuota_mahasiswa - ($activeBimbingan);
 
-                if ($sisaKuota <= 0) {
-                    unset($query[$key]);
-                }
+              //  if ($sisaKuota <= 0) {
+                //    unset($query[$key]);
+                //}
             }
         }
 

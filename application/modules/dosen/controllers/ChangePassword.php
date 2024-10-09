@@ -31,7 +31,7 @@ class ChangePassword extends BaseController
         }
         else
         {
-            $this->global['pageTitle'] = "Elusi : Ubah Password";
+            $this->global['pageTitle'] = "TA-TRPL : Ubah Password";
 
             $this->loadViews("change_password", $this->global, NULL, NULL);
         }

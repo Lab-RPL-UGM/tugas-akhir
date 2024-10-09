@@ -30,7 +30,7 @@ class Yudisium extends BaseController
         else
         {
             $userId = $this->vendorId;
-            $this->global['pageTitle'] = "Elusi : Yudisium";
+            $this->global['pageTitle'] = "TA-TRPL : Yudisium";
 
             $data['berkasInfo'] = $this->Yudisium_model->getBerkasInfo($userId);
             $data['periodeInfo'] = $this->Yudisium_model->getPeriode();
@@ -151,7 +151,7 @@ class Yudisium extends BaseController
      */
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

@@ -36,7 +36,7 @@ class Pendadaran extends BaseController
             }
             $data['userId'] = $userId;
             $data['userRole'] = $userRole;
-            $this->global['pageTitle'] = "TRPL-TA : Pendadaran";
+            $this->global['pageTitle'] = "TA-TRPL : Pendadaran";
 
             // echo "<pre>";
             // print_r($data);

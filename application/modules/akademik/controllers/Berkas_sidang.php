@@ -21,7 +21,7 @@ class Berkas_sidang extends BaseController
         }
         else {
             $data['dataTable'] = $this->Berkas_model->getBerkas();
-            $this->global['pageTitle'] = "Elusi : Berkas Sidang";
+            $this->global['pageTitle'] = "TA-TRPL : Berkas Sidang";
             $this->loadViews("dashboard_berkas_sidang", $this->global, $data);
         }
     }
@@ -103,7 +103,7 @@ class Berkas_sidang extends BaseController
 //    page not found
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

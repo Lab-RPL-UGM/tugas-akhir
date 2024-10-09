@@ -11,18 +11,18 @@ class Pengumuman extends BaseController
 
     public function index(){
         $data['dataTable'] = $this->Pengumuman_model->getPengumumanList();
-        $this->global['pageTitle'] = "Elusi : Pengumuman"; 
+        $this->global['pageTitle'] = "TA-TRPL : Pengumuman"; 
         $this->loadViews("dashboard_pengumuman",$this->global,$data);
     }
 
     public function add_form(){
-        $this->global['pageTitle'] = "Elusi : Publish Pengumuman"; 
+        $this->global['pageTitle'] = "TA-TRPL : Publish Pengumuman"; 
         $this->loadViews("add_pengumuman",$this->global);
     }
 
     public function edit_form($id){
         $data['dataPengumuman'] = $this->Pengumuman_model->getPengumumanList($id);
-        $this->global['pageTitle'] = "Elusi : Edit Pengumuman"; 
+        $this->global['pageTitle'] = "TA-TRPL : Edit Pengumuman"; 
         $this->loadViews("edit_pengumuman",$this->global,$data);
     }
 

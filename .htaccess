@@ -1,7 +1,3 @@
-<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-SetHandler application/x-lsphp56
-</FilesMatch>
-
 RewriteEngine on
  
 RewriteCond $1 !^(index\.php|(.*)\.swf|forums|images|css|downloads|jquery|js|robots\.txt|favicon\.ico)

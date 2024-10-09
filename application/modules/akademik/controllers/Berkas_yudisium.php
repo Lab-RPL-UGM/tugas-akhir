@@ -21,7 +21,7 @@ class Berkas_yudisium extends BaseController
         }
         else {
             $data['dataTable'] = $this->Berkas_model->getBerkasYudisium();
-            $this->global['pageTitle'] = "Elusi : Berkas Yudisium";
+            $this->global['pageTitle'] = "TA-TRPL : Berkas Yudisium";
             $this->loadViews("dashboard_berkas_yudisium", $this->global, $data);
         }
     }
@@ -100,7 +100,7 @@ class Berkas_yudisium extends BaseController
     }
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

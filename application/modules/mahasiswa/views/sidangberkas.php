@@ -154,6 +154,9 @@ color:#222222'>Sebagai syarat keklengkapan studi jenjang Sarjana Terapan</span><
                 <p class=MsoNormal align=center style='text-align:center;line-height:150%'><span style='font-size:11.0pt;line-height:150%;font-family:"Times New Roman",serif;
 color:#222222'>Program Studi Teknologi Rekayasa Perangkat Lunak</span></p>
 
+<p class=MsoNormal align=center style='text-align:center;line-height:150%'><span style='font-size:11.0pt;line-height:150%;font-family:"Times New Roman",serif;
+color:#222222'>Sekolah Vokasi Universitas Gadjah Mada</span></p>
+
                 <p class=MsoNormal align=center style='text-align:center;line-height:150%'><a name="_fqj6yhniemwh"></a><span style='font-size:11.0pt;line-height:150%;
 font-family:"Times New Roman",serif;color:#222222'>&nbsp;</span></p>
 

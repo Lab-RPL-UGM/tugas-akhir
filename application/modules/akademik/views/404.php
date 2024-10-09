@@ -18,7 +18,7 @@
     <?php if(isset($pageTitle)){
         echo '<title>' . $pageTitle . '</title>';
     } else {
-        echo '<title>e-Lusi</title>';
+        echo '<title>TA-TRPL</title>';
     }?>
 
     <!-- Bootstrap -->

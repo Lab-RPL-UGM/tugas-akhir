@@ -14,7 +14,7 @@ class Tugas_akhir extends BaseController
     public function index()
     {
         $data['dataTable'] = $this->Ta_model->getTA();
-        $this->global['pageTitle'] = "Elusi : Tugas Akhir";
+        $this->global['pageTitle'] = "TA-TRPL : Tugas Akhir";
         $this->loadViews("dashboard_ta", $this->global, $data);
     }
 
@@ -59,7 +59,7 @@ class Tugas_akhir extends BaseController
             }
         }
         $data['dataPengajuanTA'] = $pilihan_ta;
-        $this->global['pageTitle'] = "Elusi : Detail Tugas Akhir";
+        $this->global['pageTitle'] = "TA-TRPL : Detail Tugas Akhir";
         $this->loadViews("detail_ta", $this->global, $data);
     }
 

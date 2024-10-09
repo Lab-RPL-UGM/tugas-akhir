@@ -52,7 +52,7 @@ $(document).ready(function () {
             jumlah_SKS: {
                 required: true,
                 noSpace: true,
-                minlength: 3
+                // minlength: 3
             },
             mobile: {
                 required: true,
@@ -85,8 +85,8 @@ $(document).ready(function () {
             jumlah_SKS: {
                 required: "sks harus diisi",
                 noSpace: "IPK tidak boleh kosong",
-                min: "Minimal telah menempuh 100 SKS",
-                max: "Maksimal telah menempuh 120 SKS"
+                // min: "Minimal telah menempuh 100 SKS",
+                // max: "Maksimal telah menempuh 120 SKS"
             },
             mobile: {
             	required: "Nomor Handphone harus diisi",

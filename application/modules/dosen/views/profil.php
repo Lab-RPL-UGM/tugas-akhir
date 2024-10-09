@@ -64,7 +64,7 @@ if(!empty($profilInfo))
 
                         <ul class="list-unstyled user_data">
                             <li class="m-top-xs">
-                                <strong>NIP : </strong>
+                                <strong>NIP/NIKA : </strong>
                                 <?php echo $nid?>
                             </li>
                             <li>
@@ -166,7 +166,7 @@ if(!empty($profilInfo))
                                     <div class="clearfix"></div>
                                     <label for="nama">Nama Lengkap <span>*</span></label>
                                     <input type="text" id="nama" class="form-control" name="nama" value="<?php echo $nama?>"/><br>
-                                    <label for="nid">NID <span>*</span></label>
+                                    <label for="nid">NIP/NIKA <span>*</span></label>
                                     <input type="number" id="nid" class="form-control" name="nid" value="<?php echo $nid?>"/><br>
                                     <label for="skill">Keahlian <small>(pisahkan dengan 'koma')</small></label>
                                     <textarea class="form-control" id="skill" name="skill" id=""rows="3"><?php echo $skill?></textarea>

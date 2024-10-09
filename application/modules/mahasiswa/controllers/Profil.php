@@ -32,7 +32,7 @@ class Profil extends BaseController
             $data['profilInfo'] = $this->Profil_model->getMahasiswa($userId);
             $data['userId'] = $userId;
             $data['userRole'] = $userRole;
-            $this->global['pageTitle'] = "Elusi : Profil";
+            $this->global['pageTitle'] = "TA-TRPL : Profil";
 
             $this->loadViews("profil", $this->global, $data, NULL);
         }
@@ -94,7 +94,7 @@ class Profil extends BaseController
             $id_mahasiswa = $this->input->post('id_mahasiswa');
 
             $config['upload_path'] = 'uploads/foto/mahasiswa';
-            $config['allowed_types'] = 'jpg|png';
+            $config['allowed_types'] = 'jpg|png|jpeg';
             $config['max_size'] = 4000;
             $config['max_width'] = 1024;
             $config['max_height'] = 1024;
@@ -165,7 +165,7 @@ class Profil extends BaseController
      */
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

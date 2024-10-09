@@ -11,12 +11,12 @@ class Periode extends BaseController
 
     public function index(){
         $data['dataPeriode'] = $this->Periode_model->getPeriodeAktif();
-        $this->global['pageTitle'] = "Elusi : Periode";
+        $this->global['pageTitle'] = "TA-TRPL : Periode";
         $this->loadViews("dashboard_periode",$this->global,$data);
     }
 
     public function ubah_periode(){
-        $this->global['pageTitle'] = "Elusi :  Periode "; 
+        $this->global['pageTitle'] = "TA-TRPL :  Periode "; 
         $this->loadViews("add_periode",$this->global);
     }
 

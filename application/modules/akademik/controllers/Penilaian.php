@@ -21,7 +21,7 @@ class Penilaian extends BaseController
         }
         else {
             $data['dataTable'] = $this->Penilaian_model->getKomponen();
-            $this->global['pageTitle'] = "Elusi : Berkas Penilaian";
+            $this->global['pageTitle'] = "TA-TRPL : Berkas Penilaian";
             $this->loadViews("dashboard_penilaian", $this->global, $data);
         }
     }

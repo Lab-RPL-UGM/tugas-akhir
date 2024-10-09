@@ -139,6 +139,67 @@ class Login_model extends CI_Model
         $this->db->update('user', array('password'=>getHashedPassword($password)));
         $this->db->delete('user_reset_password', array('username'=>$username));
     }
+
+    public function getDosen($id_dosen = NULL)
+    {
+        $this->db->select("*");
+        $this->db->from('dosen');
+        $this->db->where('isDeleted', 0);
+        if ($id_dosen != NULL) {
+            $this->db->where('id_dosen', $id_dosen);
+        }
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    function getCountBimbingan($userId)
+    {
+        $this->db->select('d.*, ds.id_user');
+        $this->db->from('dosbing d');
+        $this->db->join('dosen ds', 'ds.id_dosen = d.id_dosen');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = d.id_mahasiswa');
+        $this->db->join('tugas_akhir ta', 'ta.id_mahasiswa = m.id_mahasiswa');
+        $this->db->join('sidang s', 's.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
+        $this->db->join('periode p', 'p.id_periode = ta.id_periode');
+        // $this->db->where('p.status_periode', 1);
+        $this->db->group_by('m.nama');
+        $this->db->where('ds.isDeleted', 0);
+        $this->db->where('ta.status_pengambilan IN ("terplotting", "revisi")');
+        // $this->db->where('ta.status_pengambilan', 'terplotting');
+        $this->db->where('y.id_yudisium IS NULL');
+        $this->db->where('ds.id_dosen', $userId);
+        $query = $this->db->get();
+        return count($query->result());
+    }
+
+    public function getSidangCount($id_dosen)
+    {
+        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
+        p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
+        $this->db->from('sidang s');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
+        $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang');
+        $this->db->join('validasi_berkas_sidang v', 'v.id_sidang = s.id_sidang');
+        $this->db->join('anggota_sidang a', 'a.id_sidang = s.id_sidang');
+        $this->db->join('penilaian p', 'p.id_anggota_sidang = a.id_anggota_sidang');
+        $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
+        $this->db->join('user u', 'u.id_user = d.id_user');
+        $this->db->where('u.id_user', $id_dosen);
+        $this->db->group_by('m.id_mahasiswa');
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->num_rows();
+        } else {
+            return FALSE;
+        }
+    }
 }
 
 ?>

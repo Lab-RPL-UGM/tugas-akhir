@@ -12,7 +12,7 @@ class Daftar_dosen extends BaseController
 
     public function index()
     {
-        $this->global['pageTitle'] = "Elusi : Daftar Dosen";
+        $this->global['pageTitle'] = "TA-TRPL : Daftar Dosen";
         $dataProfil = $this->Daftar_dosen_model->getDosen();
 
         $data['dataTable'] = array();
@@ -69,7 +69,7 @@ class Daftar_dosen extends BaseController
                 array_push($track_mahasiswa, $array_mahasiswa);
             }
         }
-        $this->global['pageTitle'] = "Elusi : Daftar Bimbingan Dosen";
+        $this->global['pageTitle'] = "TA-TRPL : Daftar Bimbingan Dosen";
         $data['dataMahasiswa'] = $track_mahasiswa;
         $this->loadViews("daftar_bimbingan", $this->global, $data);
     }

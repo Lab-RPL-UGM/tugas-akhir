@@ -191,7 +191,7 @@ if(!empty($profilInfo))
                                         </div>
                                         <div class="col-md-2" style="margin-bottom: 3%">
                                             <label for="sks">SKS <span>*</span></label>
-                                            <input type="number" id="jumlah_SKS" class="form-control" maxlength="3" max="120" min="100" name="jumlah_SKS" value="<?php echo $jumlah_sks ?>">
+                                            <input type="number" id="jumlah_SKS" class="form-control" maxlength="3" name="jumlah_SKS" value="<?php echo $jumlah_sks ?>">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>

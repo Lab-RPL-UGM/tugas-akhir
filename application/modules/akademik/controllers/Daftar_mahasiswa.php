@@ -45,7 +45,7 @@ class Daftar_mahasiswa extends BaseController
 
             array_push($track_mahasiswa,$array_mahasiswa);
         }
-        $this->global['pageTitle'] = "Elusi : Daftar Mahasiswa"; 
+        $this->global['pageTitle'] = "TA-TRPL : Daftar Mahasiswa"; 
         $data['dataTable'] = $track_mahasiswa;
         $this->loadViews("daftar_mahasiswa",$this->global,$data);
     }

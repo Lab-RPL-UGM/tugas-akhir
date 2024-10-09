@@ -258,7 +258,15 @@ $array_usulan = [];
                                     </div>
                                     <input type="hidden" name="id_ta" value="<?php echo $dataTA[0]->id_ta; ?>">
                                     <input type="hidden" name="id_mahasiswa" value="<?php echo $dataTA[0]->id_mahasiswa; ?>">
+                                    <?php if ($dataTA[0]->status_pengambilan == 'revisi') {?>
+                                        <h4><i>(Tugas Akhir di Revisi dengan Alasan : </i><b><?= $dataTA[0]->reason ?></b><i>)</i></h4>
+                                    <?php } ?>
                                     <a href="<?php echo base_url() ?>akademik/tugas_akhir" class="btn btn-warning pull-right">Kembali</a>
+                                        <input class="btn btn-success pull-right" name="pilihan" value="Setujui" type="submit">
+                                        <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#modalRevisi" type="button">
+                                            Revisi
+                                        </button>
+                                    <!--
                                     <?php if (!$isMasaRegis) { ?>
                                         <input class="btn btn-success pull-right" name="pilihan" value="Setujui" type="submit">
                                         <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#modalRevisi" type="button">
@@ -271,6 +279,7 @@ $array_usulan = [];
                                         <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#modalRevisi" type="button">
                                             Revisi
                                         </button>
+                                        -->
                                         <!-- <center>
                                             <h4><i>(Periode registrasi tugas akhir masih berlangsung, plotting tugas akhir belum bisa dilakukan)</i></h4>
                                         </center> -->

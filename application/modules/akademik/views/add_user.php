@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12">NID
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">NIP/NIKA
                                     <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -170,7 +170,7 @@
                                         </li>
                                     <?php } elseif ($role == ROLE_DOSEN) { ?>
                                         <li>
-                                            <strong><u>Password</u> untuk user <u>dosen</u> akan secara otomatis diambilkan dari NID</strong>
+                                            <strong><u>Password</u> untuk user <u>dosen</u> akan secara otomatis diambilkan dari NIP/NIKA</strong>
                                         </li>
 
                                     <?php }  ?>
