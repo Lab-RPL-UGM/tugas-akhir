@@ -148,6 +148,7 @@ class Login_model extends CI_Model
         if ($id_dosen != NULL) {
             $this->db->where('id_dosen', $id_dosen);
         }
+        $this->db->order_by('nama', 'ASC');
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {

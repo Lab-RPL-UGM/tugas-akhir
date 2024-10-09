@@ -46,6 +46,8 @@ class Login extends CI_Controller
                         'id_dosen' => $record->id_dosen,
                         'nid' => $record->nid,
                         'nama_dosen' => $record->nama,
+                        'gelar_depan' => $record->gelar_depan,
+                        'gelar_belakang' => $record->gelar_belakang,
                         'mobile' => $record->mobile,
                         'kuota_mahasiswa' => $record->kuota_mahasiswa,
                         'bimbingan' => $this->Login_model->getCountBimbingan($id_dosen),

@@ -20,7 +20,9 @@
 </head>
 
 <body class="login">
-    <div class="row">
+    <div class="row col-12 col-md-12 col-sm-12 col-xs-12"><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
+    <div class="row col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+    <div class="row col-lg-5 col-md-12 col-sm-12 col-xs-12">
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
@@ -76,40 +78,43 @@
             </div>
         </div>
     </div>
-</body>
-<div class="row">
-    <hr /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <div class="col-md-4 col-sm-4 col-xs-4"></div>
-    <div class="col-md-4 col-sm-4 col-xs-4">
-        <div role="main">
-            <div class="x_title">
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Nama Dosen</th>
-                            <th>Jumlah Mahasiswa yang Dibimbing</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($dataTable as $data) { ?>
+    <div class="row col-lg-6 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+            <div role="main">
+                <div class="x_title">
+                    <div class="clearfix"></div>
+                        <h1 style="text-align: center">Kuota Dosen Pembimbing</h1>
+                </div>
+                <div class="x_content">
+                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
                             <tr>
-                                <td style="vertical-align:middle"><?php echo $data['nama_dosen']; ?></td>
-                                <td style="vertical-align:middle">
-                                    <center>
-
-                                        <?php echo ($data['bimbingan'] != NULL ? '(' . $data['bimbingan'] . ' / ' . $data['kuota_mahasiswa'] . ')' : '<i>(Tidak ada data)</i>'); ?>
-
-                                    </center>
-                                </td>
+                                <th style="text-align: center">Nama Dosen</th>
+                                <th style="text-align: center">Jumlah Mahasiswa yang Dibimbing</th>
                             </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($dataTable as $data) { ?>
+                                <tr>
+                                    <td style="vertical-align:middle"><?php echo $data['gelar_depan']; ?> <?php echo $data['nama_dosen']; ?> <?php echo $data['gelar_belakang']; ?></td>
+                                    <td style="vertical-align:middle">
+                                        <center>
+    
+                                            <?php echo ($data['bimbingan'] != NULL ? '(' . $data['bimbingan'] . ' / ' . $data['kuota_mahasiswa'] . ')' : '<i>(Tidak ada data)</i>'); ?>
+    
+                                        </center>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="x_title">
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</body>
 </html>
