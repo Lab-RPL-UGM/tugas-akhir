@@ -12,6 +12,30 @@ class Dashboard extends BaseController {
     function index(){
         $data['dataPeriode'] = $this->Dashboard_model->getPeriodeAktif();
         $data['countProyek'] = $this->Dashboard_model->getProyekCount();
+        $data['dataPengajuanDosen'] = $this->Dashboard_model->getPengajuanPerDosen();
+        $data['rekapDipilih'] = $this->Dashboard_model->getRekapDipilihMahasiswaPerDosen();
+        // Gunakan data tabel rekap sebagai sumber grafik (agar 100% sinkron)
+        $chartLabels        = [];
+        $chartProyekVals    = [];
+        $chartUsulVals      = [];
+        $chartPembimbing2Vals = [];
+        
+        if (!empty($data['rekapDipilih'])) {
+            foreach ($data['rekapDipilih'] as $r) {
+                // Label pakai nama dosen (opsional: tambahkan ID untuk hindari tabrakan nama)
+                $chartLabels[]         = $r['nama']; // atau "{$r['nama']} (ID {$r['id_dosen']})"
+                $chartProyekVals[]     = (int)$r['jumlah_mhs_proyek'];
+                $chartUsulVals[]       = (int)$r['jumlah_mhs_usul'];               // Pembimbing 1
+                $chartPembimbing2Vals[]= (int)$r['jumlah_mhs_pembimbing_ke2'];      // Pembimbing 2
+            }
+        }
+        
+        // lempar ke view
+        $data['chartLabels']          = $chartLabels;
+        $data['chartProyekVals']      = $chartProyekVals;
+        $data['chartUsulVals']        = $chartUsulVals;
+        $data['chartPembimbing2Vals'] = $chartPembimbing2Vals;
+        
         if($data['dataPeriode']){
             $data['countSidang'] = $this->Dashboard_model->getSidangCount($data['dataPeriode'][0]->id_periode);
             $data['countYudisium'] = $this->Dashboard_model->getYudisiumCount($data['dataPeriode'][0]->id_periode);

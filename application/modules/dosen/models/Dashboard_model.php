@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by nad.
  * Date: 27/03/2018
@@ -21,12 +20,9 @@ class Dashboard_model extends CI_Model
             return FALSE;
         }
     }
-    /**
-     * This function is used to get total bimbingan mahasiswa
-     * @param number $userId : This is get from user who is logged in
-     * @return array $result : This is result
-     */
-    function getCountBimbingan($userId)
+
+    /** Total bimbingan mahasiswa */
+    public function getCountBimbingan($userId)
     {
         $this->db->select('d.*, ds.id_user');
         $this->db->from('dosbing d');
@@ -45,12 +41,9 @@ class Dashboard_model extends CI_Model
         $query = $this->db->get();
         return count($query->result());
     }
-    /**
-     * This function is used to get total pendadaran mahasiswa
-     * @param number $userId : This is get from user who is logged in
-     * @return array $result : This is result
-     */
-    function getCountPendadaran($userId)
+
+    /** Total pendadaran mahasiswa */
+    public function getCountPendadaran($userId)
     {
         $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
         p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
@@ -69,12 +62,9 @@ class Dashboard_model extends CI_Model
         $query = $this->db->get();
         return count($query->result());
     }
-    /**
-     * This function is used to get total pendadaran mahasiswa
-     * @param number $userId : This is get from user who is logged in
-     * @return array $result : This is result
-     */
-    function getCountYudisium($userId)
+
+    /** Total yudisium mahasiswa */
+    public function getCountYudisium($userId)
     {
         $this->db->select('d.*, ds.id_user');
         $this->db->from('dosbing d');
@@ -92,20 +82,136 @@ class Dashboard_model extends CI_Model
         $query = $this->db->get();
         return count($query->result());
     }
-    /**
-     * This function is used to get total project
-     * @param number $userId : This is get from user who is logged in
-     * @return array $result : This is result
-     */
-    function getCountProyek($userId)
+
+    /** Total proyek milik dosen (id_user) */
+    public function getCountProyek($userId)
     {
         $this->db->select('p.id_dosen');
         $this->db->from('proyek p');
         $this->db->join('dosen ds', 'ds.id_dosen = p.id_dosen');
         $this->db->where('p.isDeleted', 0);
         $this->db->where('ds.id_user', $userId);
-
         $query = $this->db->get();
         return count($query->result());
+    }
+
+    public function getPermohonanTAListByUser($userId)
+    {
+        $sql = "
+            /* 1) MEMILIH PROYEK milik dosen ini */
+            SELECT DISTINCT
+                m.id_mahasiswa                                                   AS id_mahasiswa,
+                m.nama                                                           AS nama_mahasiswa,
+                ta.id_ta                                                         AS id_ta,
+                p.nama                                                           AS judul,
+                'proyek'                                                         AS jenis,
+                COALESCE(
+                    NULLIF(pt.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NOW()
+                )                                                                AS tanggal_pengajuan
+            FROM pengajuan_ta pt
+            JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
+            JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
+            JOIN proyek p       ON p.id_proyek   = pt.id_proyek
+            WHERE LOWER(TRIM(pt.jenis)) = 'proyek'
+              AND p.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+    
+            UNION ALL
+    
+            /* 2) MEMBAWA USULAN (terima: usulan.id_dosen ATAU pembimbing I dari dosbing) */
+            SELECT DISTINCT
+                m.id_mahasiswa                                                   AS id_mahasiswa,
+                m.nama                                                           AS nama_mahasiswa,
+                ta.id_ta                                                         AS id_ta,
+                u.judul                                                          AS judul,              -- judul usulan (bisa NULL jika belum ada)
+                'usul'                                                           AS jenis,
+                COALESCE(
+                    NULLIF(pt.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NOW()
+                )                                                                AS tanggal_pengajuan
+            FROM pengajuan_ta pt
+            JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
+            JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
+            /* judul usulan (bila ada) */
+            LEFT JOIN usulan u  ON u.id_pengajuan_ta = pt.id_pengajuan_ta
+            /* pembimbing I (dosbing pertama) */
+            LEFT JOIN (
+                SELECT a.id_mahasiswa, MIN(a.id_dosbing) AS first_id
+                FROM dosbing a
+                JOIN mahasiswa m2 ON m2.id_mahasiswa = a.id_mahasiswa AND m2.isDeleted = 0
+                JOIN dosen dz     ON dz.id_dosen     = a.id_dosen     AND dz.isDeleted = 0
+                GROUP BY a.id_mahasiswa
+            ) f  ON f.id_mahasiswa = m.id_mahasiswa
+            LEFT JOIN dosbing db1 ON db1.id_dosbing = f.first_id
+    
+            WHERE LOWER(TRIM(pt.jenis)) = 'usul'
+              AND (
+                    /* usulan langsung menunjuk ke dosen login */
+                    u.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                    /* ATAU, bila usulan belum dicatat dosennya, tapi dosbing pertama adalah dosen login */
+                 OR db1.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+              )
+    
+            UNION ALL
+    
+            /* 3) PEMBIMBING KE-2 (judul & tanggal dari pengajuan TA TERAKHIR untuk TA tsb) */
+            SELECT DISTINCT
+                m.id_mahasiswa                                                   AS id_mahasiswa,
+                m.nama                                                           AS nama_mahasiswa,
+                ta.id_ta                                                         AS id_ta,
+                COALESCE(u_last.judul, p_last.nama, NULL)                        AS judul,
+                'pembimbing_ke2'                                                 AS jenis,
+                COALESCE(
+                    NULLIF(pt_last.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
+                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NOW()
+                )                                                                AS tanggal_pengajuan
+            FROM (
+                SELECT a.id_mahasiswa, MIN(b.id_dosbing) AS second_id
+                FROM dosbing a
+                JOIN dosbing b
+                  ON b.id_mahasiswa = a.id_mahasiswa
+                 AND b.id_dosbing  > a.id_dosbing
+                GROUP BY a.id_mahasiswa
+            ) s
+            JOIN dosbing db2      ON db2.id_dosbing = s.second_id
+            JOIN mahasiswa m      ON m.id_mahasiswa = db2.id_mahasiswa AND m.isDeleted = 0
+            LEFT JOIN tugas_akhir ta ON ta.id_mahasiswa = m.id_mahasiswa
+    
+            /* pengajuan TA TERAKHIR untuk TA ini */
+            LEFT JOIN pengajuan_ta pt_last
+                   ON pt_last.id_ta = ta.id_ta
+                  AND pt_last.createdDtm = (
+                        SELECT MAX(NULLIF(ptx.createdDtm, '0000-00-00 00:00:00'))
+                        FROM pengajuan_ta ptx
+                        WHERE ptx.id_ta = ta.id_ta
+                  )
+    
+            /* judul usulan/proyek dari pengajuan terakhir */
+            LEFT JOIN usulan u_last ON u_last.id_pengajuan_ta = pt_last.id_pengajuan_ta
+            LEFT JOIN proyek p_last ON p_last.id_proyek       = pt_last.id_proyek
+    
+            WHERE db2.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+            ORDER BY tanggal_pengajuan DESC
+        ";
+    
+        // Eksekusi dengan parameter (id_user) untuk ketiga blok
+        $old = $this->db->db_debug;
+        $this->db->db_debug = FALSE;
+        $query = $this->db->query($sql, [ (int)$userId, (int)$userId, (int)$userId, (int)$userId ]);
+        if (!$query) {
+            $err = $this->db->error();
+            log_message('error', 'getPermohonanTAListByUser SQL ERROR: '.$err['message'].' ('.$err['code'].')');
+            $this->db->db_debug = $old;
+            return [];
+        }
+        $this->db->db_debug = $old;
+    
+        return $query->result_array();
     }
 }

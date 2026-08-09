@@ -160,7 +160,7 @@ class Login_model extends CI_Model
 
     function getCountBimbingan($userId)
     {
-        $this->db->select('d.*, ds.id_user');
+        $this->db->select('m.id_mahasiswa');
         $this->db->from('dosbing d');
         $this->db->join('dosen ds', 'ds.id_dosen = d.id_dosen');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = d.id_mahasiswa');
@@ -168,15 +168,24 @@ class Login_model extends CI_Model
         $this->db->join('sidang s', 's.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode');
-        // $this->db->where('p.status_periode', 1);
-        $this->db->group_by('m.nama');
-        $this->db->where('ds.isDeleted', 0);
-        $this->db->where('ta.status_pengambilan IN ("terplotting", "revisi")');
-        // $this->db->where('ta.status_pengambilan', 'terplotting');
-        $this->db->where('y.id_yudisium IS NULL');
+    
+        // Mahasiswa tidak dihapus
+        $this->db->where('m.isDeleted', 0);
+    
+        // Status pengambilan TA
+        $this->db->where_in('ta.status_pengambilan', ['terplotting', 'revisi']);
+    
+        // Belum yudisium
+        $this->db->where('y.id_yudisium IS NULL', null, false);
+    
+        // Dosen pembimbing sesuai
         $this->db->where('ds.id_dosen', $userId);
+    
+        // Hindari duplikasi
+        $this->db->group_by('m.id_mahasiswa');
+    
         $query = $this->db->get();
-        return count($query->result());
+        return $query->num_rows();
     }
 
     public function getSidangCount($id_dosen)

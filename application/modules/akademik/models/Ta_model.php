@@ -8,15 +8,20 @@ class Ta_model extends CI_Model
         $this->db->from('tugas_akhir ta');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa', 'inner');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode', 'inner');
+    
+        // Filter mahasiswa yang tidak dihapus
+        $this->db->where('m.isDeleted', 0);
+    
         if ($id != NULL) {
             $this->db->where('id_ta', $id);
         } else {
             $this->db->order_by('ta.createdDtm DESC');
         }
+    
         $query = $this->db->get();
-
         return $query->result();
     }
+
 
     function getDosenTA()
     {
