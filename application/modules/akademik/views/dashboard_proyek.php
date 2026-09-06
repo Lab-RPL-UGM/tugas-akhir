@@ -1,9 +1,122 @@
+<?php
+// Baris tabel dipakai bareng oleh tabel "Belum Diproses" dan "Sudah Diproses" supaya
+// markup aksi (setujui/tolak/edit/hapus) tidak dobel-ditulis di dua tempat.
+if (!function_exists('render_baris_proyek')) {
+    function render_baris_proyek($data, $withCheckbox, $showPersetujuan = true)
+    {
+        $sudahDiterima = !empty($data->jumlah_diterima);
+?>
+        <tr>
+            <?php if ($withCheckbox) { ?>
+                <th>
+                    <input id="table_records[]" type="checkbox" class="flat" name="table_records[]" value="<?php echo $data->id_proyek; ?>">
+                </th>
+            <?php } ?>
+            <td>
+                <?php echo $data->nama_proyek; ?>
+            </td>
+            <td>
+                <?php echo $data->nama_dosen; ?>
+            </td>
+            <td>
+                <?php echo (!empty($data->semester) ? ucfirst($data->semester) . ' ' . $data->tahun_ajaran : "<i>(belum diklasifikasikan)</i>"); ?>
+            </td>
+            <td>
+                <?php echo (!empty($data->nama_bidang) ? $data->nama_bidang : "<i>(tidak ada)</i>"); ?>
+            </td>
+            <td>
+                <?php echo (isset($data->klien) ? $data->klien : "<i>(tidak ada klien)</i>"); ?>
+            </td>
+            <td>
+                <?php echo (isset($data->deskripsi) ? $data->deskripsi : "<i>(tidak ada deskripsi)</i>"); ?>
+            </td>
+            <td>
+                <?php echo (isset($data->tools) ? $data->tools : "<i>(tidak ada tools)</i>"); ?>
+            </td>
+            <td align="center" style="vertical-align:middle">
+                <?php if ($data->status == 'disetujui') { ?>
+                    <span class="label label-success">Diterima</span>
+                <?php } elseif ($data->status == 'pending') { ?>
+                    <span class="label label-warning">Pending</span>
+                <?php } else { ?>
+                    <span class="label label-danger">Ditolak</span>
+                <?php } ?>
+            </td>
+            <?php if ($showPersetujuan) { ?>
+                <td align="center" style="vertical-align:middle">
+                    <?php if ($data->status == 'pending' || $data->status == 'ditolak') { ?>
+                        <a title="Setujui" data-id="<?php echo $data->id_proyek; ?>" data-toggle='modal' id="accept_modal" data-target='#accModal' class="btn btn-success">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </a>
+                    <?php } else { ?>
+                        <a disabled="disabled" class="btn btn-success">
+                            <i disabled="disabled" class="glyphicon glyphicon-ok"></i>
+                        </a>
+                    <?php } ?>
+                    <?php if ($sudahDiterima) { ?>
+                        <a title="Tidak bisa ditolak: sudah ada mahasiswa yang diterima di proyek ini" class="btn btn-danger disabled" style="pointer-events:none; opacity:0.5;">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    <?php } elseif ($data->status == 'ditolak') { ?>
+                        <a title="Proyek ini sudah ditolak" class="btn btn-danger disabled" style="pointer-events:none; opacity:0.5;">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    <?php } else { ?>
+                        <a title="Tolak" data-id="<?php echo $data->id_proyek; ?>" data-toggle='modal' id="decline_modal" data-target='#declModal' class="btn btn-danger">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                    <?php } ?>
+                </td>
+            <?php } ?>
+
+            <td align="center" style="vertical-align:middle">
+                <a data-toggle="tooltip" title="Lihat mahasiswa yang memilih proyek ini" href="<?php echo base_url(); ?>akademik/proyek/pendaftar/<?php echo $data->id_proyek; ?>" class="btn btn-default">
+                    <i class="fa fa-users"></i> <?php echo (int)($data->jumlah_pendaftar ?? 0); ?>
+                </a>
+                <a data-toggle="tooltip" title="Edit" href="<?php echo base_url(); ?>akademik/proyek/edit_form/<?php echo $data->id_proyek; ?>" class="btn btn-primary">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <?php if ($sudahDiterima) { ?>
+                    <a title="Tidak bisa dihapus: sudah ada mahasiswa yang diterima di proyek ini" class="btn btn-danger disabled" style="pointer-events:none; opacity:0.5;">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                <?php } else { ?>
+                    <a title="Delete" class="btn btn-danger" data-toggle='modal' id="delete_modal" data-target='#deleteModal<?php echo $data->id_proyek; ?>'>
+                        <i class="fa fa-trash"></i>
+                    </a>
+                <?php } ?>
+            </td>
+
+            <div class="modal fade" id="deleteModal<?php echo $data->id_proyek; ?>" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Hapus Proyek</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Apakah anda yakin ingin menghapus proyek ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="<?php echo base_url() . 'akademik/proyek/delete' ?>" method="post">
+                                <input type="hidden" name="id_proyek" id="id_proyek" value="<?php echo $data->id_proyek; ?>">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+<?php
+    }
+}
+?>
 <div class="row">
 
     <!--berkas mahasiswa-->
     <div class="row">
-        <?php //var_dump($lol); 
-        ?>
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
@@ -34,13 +147,17 @@
                 </div>
                 <div class="x_content">
                     <a href="<?php echo base_url(); ?>akademik/proyek/add_form" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Tambah Proyek Baru</a>
+
+                    <h3>Belum Diproses</h3>
                     <form action="<?php echo base_url(); ?>akademik/proyek/multiple_action" method="post">
-                        <table id="tabel" class="table table-striped table-bordered bulk_action dt-responsive">
+                        <table id="tabelBelumDiproses" class="table table-striped table-bordered bulk_action dt-responsive">
                             <thead>
                                 <tr>
                                     <th></th>
                                     <th class="col-md-3">Judul Proyek</th>
                                     <th class="col-md-2">Penanggung Jawab</th>
+                                    <th class="col-md-1">Periode</th>
+                                    <th class="col-md-1">Bidang</th>
                                     <th class="col-md-2">Instansi</th>
                                     <th class="col-md-2">Deskripsi</th>
                                     <th class="col-md-2">Tools</th>
@@ -49,90 +166,33 @@
                                     <th class="col-md-2">Aksi</th>
                                 </tr>
                             </thead>
-
-
                             <tbody>
-                                <?php foreach ($dataTable as $data) { ?>
-                                    <tr>
-                                        <th>
-                                            <input id="table_records[]" type="checkbox" class="flat" name="table_records[]" value="<?php echo $data->id_proyek; ?>">
-                                        </th>
-                                        <td>
-                                            <?php echo $data->nama_proyek; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $data->nama_dosen; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo (isset($data->klien) ? $data->klien : "<i>(tidak ada klien)</i>"); ?>
-                                        </td>
-                                        <td>
-                                            <?php echo (isset($data->deskripsi) ? $data->deskripsi : "<i>(tidak ada deskripsi)</i>"); ?>
-                                        </td>
-                                        <td>
-                                            <?php echo (isset($data->tools) ? $data->tools : "<i>(tidak ada tools)</i>"); ?>
-                                        </td>
-                                        <td align="center" style="vertical-align:middle">
-                                            <?php if ($data->status == 'disetujui') { ?>
-                                                <span class="label label-success">Diterima</span>
-                                            <?php } elseif ($data->status == 'pending') { ?>
-                                                <span class="label label-warning">Pending</span>
-                                            <?php } else { ?>
-                                                <span class="label label-danger">Ditolak</span>
-                                            <?php } ?>
-                                        </td>
-                                        <td align="center" style="vertical-align:middle">
-                                            <?php if ($data->status == 'pending' || $data->status == 'ditolak') { ?>
-                                                <a title="Setujui" data-id="<?php echo $data->id_proyek; ?>" data-toggle='modal' id="accept_modal" data-target='#accModal' class="btn btn-success">
-                                                    <i class="glyphicon glyphicon-ok"></i>
-                                                </a>
-                                            <?php } else { ?>
-                                                <a disabled="disabled" class="btn btn-success">
-                                                    <i disabled="disabled" class="glyphicon glyphicon-ok"></i>
-                                                </a>
-                                            <?php } ?>
-                                            <a title="Tolak" data-id="<?php echo $data->id_proyek; ?>" data-toggle='modal' id="decline_modal" data-target='#declModal' class="btn btn-danger">
-                                                <i class="glyphicon glyphicon-remove"></i>
-                                            </a>
-                                        </td>
-
-                                        <td align="center" style="vertical-align:middle">
-                                            <a data-toggle="tooltip" title="Edit" href="<?php echo base_url(); ?>akademik/proyek/edit_form/<?php echo $data->id_proyek; ?>" class="btn btn-primary">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            <a title="Delete" class="btn btn-danger" data-toggle='modal' id="delete_modal" data-target='#deleteModal<?php echo $data->id_proyek; ?>'>
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </td>
-
-                                        <div class="modal fade" id="deleteModal<?php echo $data->id_proyek; ?>" role="dialog">
-                                            <div class="modal-dialog">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Hapus Proyek</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Apakah anda yakin ingin menghapus proyek ini?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <form action="<?php echo base_url() . 'akademik/proyek/delete' ?>" method="post">
-                                                            <input type="hidden" name="id_proyek" id="id_proyek" value="<?php echo $data->id_proyek; ?>">
-                                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </tr>
-                                <?php } ?>
+                                <?php foreach ($dataBelumDiproses as $data) { render_baris_proyek($data, true); } ?>
                             </tbody>
                         </table>
                         <button type="submit" title="Setujui yang dicentang" name="submit_form" id="submit_form" class="btn btn-success" value="1">Accept Checked</button>
                         <button type="submit" title="Tolak yang dicentang" name="submit_form" id="submit_form" class="btn btn-danger" value="0">Decline Checked</button>
                     </form>
+
+                    <h3 style="margin-top:30px;">Sudah Diproses</h3>
+                    <table id="tabelSudahDiproses" class="table table-striped table-bordered dt-responsive">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">Judul Proyek</th>
+                                <th class="col-md-2">Penanggung Jawab</th>
+                                <th class="col-md-1">Periode</th>
+                                <th class="col-md-1">Bidang</th>
+                                <th class="col-md-2">Instansi</th>
+                                <th class="col-md-2">Deskripsi</th>
+                                <th class="col-md-2">Tools</th>
+                                <th class="col-md-1">Status</th>
+                                <th class="col-md-2">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($dataSudahDiproses as $data) { render_baris_proyek($data, false, false); } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -182,28 +242,6 @@
         </div>
     </div>
 </div>
-<!-- Modal Accept Checked-->
-<div class="modal fade" id="accModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Persetujuan</h4>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin ingin menyetujui?</p>
-            </div>
-            <div class="modal-footer">
-                <form action="<?php echo base_url() . 'akademik/proyek/accept' ?>" method="post">
-                    <input type="text" name="id_proyek" id="id_proyek" value="">
-                    <button type="submit" class="btn btn-success">Setujui</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     $(document).on("click", "#accept_modal", function() {
         var id_proyek = $(this).data('id');
@@ -214,13 +252,31 @@
         $(".modal-footer #id_proyek").val(id_proyek);
     });
     $(function() {
-        $('#tabel').DataTable({
+        $('#tabelBelumDiproses').DataTable({
             'paging': true,
             'lengthChange': true,
             'searching': true,
-            'ordering': false,
+            'ordering': true,
             'info': true,
-            'autoWidth': true
-        })
+            'autoWidth': true,
+            // kolom checkbox (0) & Aksi (10) tidak masuk akal buat disortir
+            'columnDefs': [{ 'orderable': false, 'targets': [0, 10] }],
+            'language': { 'emptyTable': 'Tidak ada proyek yang menunggu diproses' }
+        });
+        $('#tabelSudahDiproses').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': true,
+            // tabel ini tanpa kolom checkbox & Persetujuan, jadi Aksi ada di kolom 8.
+            // order: [] -- JANGAN diurutkan ulang oleh DataTables (default-nya alfabetis
+            // kolom 0), supaya urutan "paling baru diproses" dari server (lihat
+            // Proyek::index()) tetap dipakai.
+            'order': [],
+            'columnDefs': [{ 'orderable': false, 'targets': [8] }],
+            'language': { 'emptyTable': 'Belum ada proyek yang diproses' }
+        });
     })
 </script>

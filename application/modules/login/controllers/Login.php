@@ -105,6 +105,7 @@ class Login extends CI_Controller
                         'role'=>$res->id_user_role,
                         'roleText'=>$res->role,
                         'name'=>$res->nama,
+                        'is_admin' => !empty($res->is_admin) ? 1 : 0,
                         'isLoggedIn' => TRUE);
 
                     $this->session->set_userdata($sessionArray);
@@ -122,6 +123,98 @@ class Login extends CI_Controller
 
                 redirect('login');
             }
+        }
+    }
+
+    /**
+     * This function redirects the user to Casdoor to authenticate via SSO
+     */
+    public function ssoLogin()
+    {
+        $this->load->library('Casdoor_client');
+
+        $state = bin2hex(random_bytes(16));
+        $this->session->set_userdata('sso_state', $state);
+
+        redirect($this->casdoor_client->get_authorize_url($state));
+    }
+
+    /**
+     * This function handles the redirect back from Casdoor, exchanges the code for a token,
+     * matches the Casdoor account to an existing dosen/mahasiswa user by email, and logs in
+     */
+    public function ssoCallback()
+    {
+        $this->load->library('Casdoor_client');
+
+        $code = $this->input->get('code');
+        $state = $this->input->get('state');
+        $storedState = $this->session->userdata('sso_state');
+        $this->session->unset_userdata('sso_state');
+
+        if (empty($code) || empty($state) || $state !== $storedState)
+        {
+            $this->session->set_flashdata('error', 'Login SSO gagal (state tidak valid), silakan coba lagi.');
+            redirect('login');
+        }
+
+        $token = $this->casdoor_client->exchange_code_for_token($code);
+
+        if ($token === NULL)
+        {
+            $this->session->set_flashdata('error', 'Login SSO gagal, tidak bisa menukar kode otorisasi.');
+            redirect('login');
+        }
+
+        $userinfo = $this->casdoor_client->get_userinfo($token['access_token']);
+
+        if ($userinfo === NULL || empty($userinfo['sub']))
+        {
+            $this->session->set_flashdata('error', 'Login SSO gagal, tidak bisa membaca data akun.');
+            redirect('login');
+        }
+
+        $casdoorId = $userinfo['sub'];
+        $email = isset($userinfo['email']) ? $userinfo['email'] : NULL;
+
+        $user = $this->Login_model->findUserByCasdoorId($casdoorId);
+
+        if (!$user && !empty($email))
+        {
+            $user = $this->Login_model->findUserByEmail($email);
+
+            if ($user)
+            {
+                $this->Login_model->linkCasdoorId($user->id_user, $casdoorId);
+            }
+        }
+
+        if (!$user)
+        {
+            $this->session->set_flashdata('error', 'Akun ' . htmlspecialchars($email) . ' belum terhubung dengan data dosen/mahasiswa di sistem ini. Hubungi admin akademik.');
+            redirect('login');
+        }
+
+        $sessionArray = array(
+            'id_user'    => $user->id_user,
+            'role'       => $user->id_user_role,
+            'roleText'   => $user->role,
+            'name'       => $user->nama,
+            'is_admin'   => !empty($user->is_admin) ? 1 : 0,
+            'isLoggedIn' => TRUE);
+
+        $this->session->set_userdata($sessionArray);
+
+        if ($user->id_user_role == ROLE_MAHASISWA) {
+            redirect('mahasiswa');
+        } elseif ($user->id_user_role == ROLE_DOSEN) {
+            redirect('dosen');
+        } elseif ($user->id_user_role == ROLE_AKADEMIK) {
+            redirect('akademik');
+        } elseif ($user->id_user_role == ROLE_KAPRODI) {
+            redirect('kaprodi');
+        } else {
+            redirect('login');
         }
     }
 

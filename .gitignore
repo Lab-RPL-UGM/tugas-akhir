@@ -6,4 +6,25 @@
 vendor/
 idea/
 \.idea/
-.application/config/config.php
+application/config/config.php
+application/config/database.php
+
+# Casdoor client_secret -- kredensial OAuth asli, jangan pernah ikut commit.
+# Salin dari casdoor.php.example lalu isi nilai sungguhannya secara lokal.
+application/config/casdoor.php
+
+# Log runtime CI3 -- bukan source code, beda tiap environment/hari.
+application/logs/*.php
+!application/logs/index.html
+
+# OS junk
+.DS_Store
+
+# File yang diupload user (foto profil, proposal, berkas sidang/yudisium, dll) --
+# ini data runtime, bukan source code, jadi tidak perlu ikut ke-commit. Placeholder
+# (index.html/init.txt) tiap folder tetap dipertahankan supaya struktur foldernya
+# ikut ke-clone biar CI3 tidak error "upload path tidak valid" begitu di-deploy.
+uploads/**/*
+!uploads/**/
+!uploads/**/index.html
+!uploads/**/init.txt

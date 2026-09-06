@@ -41,6 +41,9 @@ class Pengajuan extends BaseController
             $id_mahasiswa = $this->Pengajuan_model->getIdMahasiswa($userId);
             $ta_terplotting = $this->Pengajuan_model->getTATerplotting($id_mahasiswa[0]->id_mahasiswa);
             $data['dataDosbing'] = $this->Pengajuan_model->getDosbing($id_mahasiswa[0]->id_mahasiswa);
+            // Cuma tampilkan peringatan lengkapi profil kalau memang belum lengkap --
+            // sebelumnya selalu tampil (warna merah pula, kesannya sudah error).
+            $data['isProfilLengkap'] = $this->Pengajuan_model->isDataMahasiswaLengkap($id_mahasiswa[0]->id_mahasiswa);
             if ($ta_terplotting) {
                 $array = [
                     'id_ta' => $ta_terplotting['id_ta'],
@@ -57,6 +60,40 @@ class Pengajuan extends BaseController
                 $data['taInfo'] = $taInfo;
                 $data['taDosbing'] = $this->Pengajuan_model->getDosbing($id_mahasiswa[0]->id_mahasiswa);
                 $data['taBimbingan'] = $this->Pengajuan_model->getBimbingan($ta_terplotting['id_ta']);
+
+                // Siapkan prefill utk form Edit multi-pilihan (SOP: 1 pengajuan bisa
+                // berisi 1-3 pilihan, form Edit harus tampilkan & bisa ubah SEMUANYA,
+                // bukan cuma pilihan pertama seperti form lama).
+                $existingPilihan = [];
+                if (!empty($taInfo)) {
+                    foreach ($taInfo as $record) {
+                        $existingPilihan[$record->pilihan] = [
+                            'jenis' => $record->jenis,
+                            'id_proyek' => $record->id_proyek,
+                            'judul' => $record->judul,
+                            'mitra' => $record->mitra,
+                            'id_dosen' => $record->id_dosen_usulan,
+                            'id_dosen2' => $record->id_dosen2_usulan,
+                            'file_persetujuan' => $record->file_persetujuan,
+                        ];
+                    }
+                    $data['id_ta_edit'] = $taInfo[0]->id_ta;
+                }
+                $data['existingPilihan'] = $existingPilihan;
+
+                // Proyek yang sedang dipilih mahasiswa ini harus tetap muncul di
+                // dropdown form Edit walau sudah tidak termasuk katalog periode aktif
+                // -- supaya pilihan lama tidak "hilang" begitu saja saat form dibuka.
+                $idProyekTerdaftar = array_column($data['proyekInfo'], 'id_proyek');
+                foreach ($existingPilihan as $ep) {
+                    if ($ep['jenis'] == 'proyek' && !empty($ep['id_proyek']) && !in_array($ep['id_proyek'], $idProyekTerdaftar)) {
+                        $tambahan = $this->Pengajuan_model->getProyek($ep['id_proyek']);
+                        if (!empty($tambahan)) {
+                            $data['proyekInfo'][] = $tambahan[0];
+                            $idProyekTerdaftar[] = $ep['id_proyek'];
+                        }
+                    }
+                }
             }
             $this->loadViews("tugasakhir", $this->global, $data, NULL);
         }
@@ -70,426 +107,257 @@ class Pengajuan extends BaseController
         if ($this->isMahasiswa() == TRUE) {
             $this->loadThis();
         } else {
-            $this->load->library('form_validation');
-
             $userId = $this->vendorId;
-            // get id mahasiswa yang sedang login
             $id_mahasiswa = $this->Pengajuan_model->getIdMahasiswa($userId);
-
             $isLengkap = $this->Pengajuan_model->isDataMahasiswaLengkap($id_mahasiswa[0]->id_mahasiswa);
-
             $mahasiswaID = $id_mahasiswa[0]->id_mahasiswa;
+
             if (!$isLengkap) {
                 $this->session->set_flashdata('error', 'Lengkapi data diri Anda terlebih dahulu');
                 redirect('mahasiswa/pengajuan/tugasakhir');
-            } else {
-                // get urutan pilihan setiap proyek
-                $pilihan = array(
-                    $this->input->post('satu'),
-                    $this->input->post('dua'),
-                    $this->input->post('tiga')
-                );
-
-                // get pilihan untuk proyek
-                $proyek = array(
-                    $this->input->post('proyeksatu'),
-                    $this->input->post('proyekdua'),
-                    $this->input->post('proyektiga')
-                );
-
-                // array jenis/kategori pilihan
-                $jenis = array(
-                    "proyek",
-                    "proyek",
-                    $this->input->post('jenis_radio')
-                );
-
-                // get pilihan untuk ide/usulan
-                $id_periode = $this->input->post('id_periode');
-
-                if (!empty($id_mahasiswa)) {
-                    $judul = $this->input->post('judul');
-                    $deskripsi = $this->input->post('deskripsi');
-                    $bisnis_rule = $this->input->post('bisnis_rule');
-
-                    if ($jenis[2] == 'proyek' && empty($proyek[2])) {
-                        $this->session->set_flashdata('error', 'Lengkapi data pengajuan dengan benar');
-                        redirect('mahasiswa/pengajuan/tugasakhir');
-                    } elseif ($jenis[2] == 'usul' && empty($judul)) {
-                        $this->session->set_flashdata('error', 'Lengkapi data pengajuan dengan benar');
-                        redirect('mahasiswa/pengajuan/tugasakhir');
-                    } else {
-                        $getProject = $this->Pengajuan_model->getProyek($proyek[2]);
-                        $id_dosen2 = $this->input->post('dosen2');
-                        if ($jenis[2] == 'proyek' && !empty($id_dosen2) && $getProject[0]->id_dosen == $id_dosen2) {
-                            $this->session->set_flashdata('error', 'Dosen Project dan Dosen 2 Harus berbeda');
-
-                            redirect('mahasiswa/pengajuan/tugasakhir');
-                        }
-
-                        if ($jenis[2] == 'usul') {
-                            $this->form_validation->set_rules('dosen', 'Dosen', 'required');
-
-                            $id_dosen = $this->input->post('dosen');
-                            $id_dosen2 = $this->input->post('dosen2');
-                            if (!empty($id_dosen2) && $id_dosen == $id_dosen2) {
-                                $this->session->set_flashdata('error', 'Dosen 1 dan Dosen 2 Harus berbeda');
-
-                                redirect('mahasiswa/pengajuan/tugasakhir');
-                            }
-                        }
-
-                        $ta = array(
-                            'id_mahasiswa' => $id_mahasiswa[0]->id_mahasiswa,
-                            'id_periode' => $id_periode,
-                        );
-
-                        // get id_ta yang barusan dibuat
-                        $id_ta = $this->Pengajuan_model->addNewTa($ta);
-
-                        if ($jenis[2] == "proyek") {
-                            $id_dosen = $getProject[0]->id_dosen;
-                            if (empty($proyek[2])) {
-                                $this->session->set_flashdata('error', 'Lengkapi data secara lengkap');
-                                redirect('mahasiswa/pengajuan/tugasakhir');
-                            } else {
-                                $pengajuan_ta = array(
-                                    'id_ta' => $id_ta,
-                                    'id_proyek' => $proyek[2],
-                                    'pilihan' => 1,
-                                    'jenis' => $jenis[2]
-                                );
-
-                                // insert ke tabel pengajuan TA
-                                $resultta = $this->Pengajuan_model->addNewPengajuanTa($pengajuan_ta);
-                            }
-                        } else {
-                            // apabila jenis pengajuan ta = usulan
-                            $pengajuan_ta = array(
-                                'id_ta' => $id_ta,
-                                'pilihan' => 1,
-                                'jenis' => $jenis[2]
-                            );
-
-                            // get id_pengajuan_ta yang telah dibuat insert ke tabel usulan
-                            $id_pengajuan_ta = $this->Pengajuan_model->addNewPengajuanTa($pengajuan_ta);
-                            if (empty($_FILES['file_persetujuan']['name'])) {
-                                $usulan = array(
-                                    'id_pengajuan_ta' => $id_pengajuan_ta,
-                                    'judul' => strtoupper($judul),
-                                    'deskripsi' => $deskripsi,
-                                    'bisnis_rule' => $bisnis_rule,
-                                    'file_persetujuan' => NULL
-                                );
-                            } else {
-                                $config['upload_path'] = 'uploads/persetujuan';
-                                $config['allowed_types'] = 'pdf';
-                                $config['max_size'] = 8000;
-                                $config['max_width'] = 1024;
-                                $config['max_height'] = 1024;
-                                $new_name = "proposal-" . time();
-                                $config['file_name'] = $new_name;
-
-                                $this->load->library('upload', $config);
-                                if (!$this->upload->do_upload('file_persetujuan')) {
-                                    // if upload revisi not match
-                                    $error = array('error' => $this->upload->display_errors());
-                                    $this->session->set_flashdata('error', $error['error']);
-                                    redirect('mahasiswa/pengajuan/tugasakhir');
-                                } else {
-                                    $terupload = $this->upload->data();
-                                    $usulan = array(
-                                        'id_pengajuan_ta' => $id_pengajuan_ta,
-                                        'judul' => strtoupper($judul),
-                                        'deskripsi' => $deskripsi,
-                                        'bisnis_rule' => $bisnis_rule,
-                                        'file_persetujuan' => $terupload['file_name']
-                                    );
-                                }
-                            }
-                            // add data ke tabel usulan
-                            $resultusulan = $this->Pengajuan_model->addNewUsulan($usulan);
-                        }
-
-                        $this->db->where('id_mahasiswa', $mahasiswaID);
-                        $this->db->delete('dosbing');
-
-                        /* Insert tabel dosbing*/
-                        $data_dosbing = array(
-                            'id_dosen' => $id_dosen,
-                            'id_mahasiswa' => $mahasiswaID
-                        );
-                        $this->db->insert('dosbing', $data_dosbing);
-
-                        if (!empty($id_dosen2)) {
-                            $data_dosbing = array(
-                                'id_dosen' => $id_dosen2,
-                                'id_mahasiswa' => $mahasiswaID
-                            );
-                            $this->db->insert('dosbing', $data_dosbing);
-                        }
-
-                        if ($resultta > 0 || $resultusulan > 0) {
-                            $this->session->set_flashdata('success', 'Pendaftaran tugas akhir telah berhasil dilakukan');
-                        } else {
-                            $this->session->set_flashdata('error', 'Pendaftaran TA gagal dilakukan');
-                        }
-                    }
-                } else {
-                    $this->session->set_flashdata('error', 'Silahkan lengkapi Profil Anda terlebih dahulu');
-                }
-
-                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
             }
+
+            $id_periode = $this->input->post('id_periode');
+
+            // Kumpulkan pilihan 1-3 yang benar-benar diisi (SOP: minimal 1, maksimal 3,
+            // bebas kombinasi proyek existing / usulan sendiri).
+            $pilihanValid = $this->_kumpulkanPilihanDariForm();
+            if ($pilihanValid === false) {
+                // pesan error sudah di-set di dalam _kumpulkanPilihanDariForm()
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+            if (empty($pilihanValid)) {
+                $this->session->set_flashdata('error', 'Isi minimal 1 pilihan (proyek atau usulan)');
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+
+            $ta = array(
+                'id_mahasiswa' => $mahasiswaID,
+                'id_periode' => $id_periode,
+            );
+            $id_ta = $this->Pengajuan_model->addNewTa($ta);
+
+            $hasil = $this->_simpanPilihanKeDb($id_ta, $pilihanValid);
+            if ($hasil === false) {
+                // pesan error sudah di-set (mis. upload file gagal)
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+
+            $this->session->set_flashdata('success', 'Pendaftaran tugas akhir telah berhasil dilakukan (' . count($pilihanValid) . ' pilihan)');
+            redirect('mahasiswa/pengajuan/tugasakhir');
         }
     }
 
     /**
-     * This function is used to edit Tugas Akhir
+     * Baca blok pilihan 1-3 dari POST, validasi, dan kembalikan array pilihan yang
+     * benar-benar diisi (blok yang dibiarkan kosong di form dilewati, bukan error).
+     * Return FALSE (dan set flashdata error) kalau ada input yang salah.
+     */
+    private function _kumpulkanPilihanDariForm()
+    {
+        $pilihanValid = [];
+        $proyekDipilihSet = [];
+
+        for ($n = 1; $n <= 3; $n++) {
+            $jenis = $this->input->post("jenis_$n");
+            if (empty($jenis)) {
+                continue; // blok tidak ditampilkan/tidak diisi sama sekali
+            }
+
+            if ($jenis == 'proyek') {
+                $idProyek = $this->input->post("proyek_$n");
+                if (empty($idProyek)) {
+                    continue; // blok proyek dibiarkan kosong, lewati
+                }
+                if (in_array($idProyek, $proyekDipilihSet)) {
+                    $this->session->set_flashdata('error', 'Proyek yang sama tidak boleh dipilih lebih dari sekali');
+                    return false;
+                }
+                $proyekDipilihSet[] = $idProyek;
+                $pilihanValid[] = ['jenis' => 'proyek', 'n' => $n, 'id_proyek' => $idProyek];
+            } else {
+                $judul = trim((string)$this->input->post("judul_$n"));
+                $idDosen = $this->input->post("dosen_$n");
+                // dosen kedua opsional -- boleh dikosongkan, tapi kalau diisi tidak
+                // boleh dosen yang sama dengan dosen pembimbing pertama.
+                $idDosen2 = $this->input->post("dosen2_$n");
+                if (!empty($idDosen2) && $idDosen2 == $idDosen) {
+                    $this->session->set_flashdata('error', "Usulan Dosen Pembimbing Pertama dan Kedua tidak boleh sama pada pilihan usulan ke-$n");
+                    return false;
+                }
+                $hasFile = !empty($_FILES["file_persetujuan_$n"]['name']);
+                // existing_file_$n cuma terisi saat mode Edit -- artinya blok ini
+                // sudah punya file proposal sebelumnya, jadi tidak upload ulang
+                // dianggap valid (file lama tetap dipakai), bukan error.
+                $existingFile = $this->input->post("existing_file_$n");
+                if (empty($judul) && empty($idDosen) && !$hasFile && empty($existingFile)) {
+                    continue; // blok usulan dibiarkan kosong, lewati
+                }
+                if (empty($judul) || empty($idDosen) || (!$hasFile && empty($existingFile))) {
+                    $this->session->set_flashdata('error', "Lengkapi Judul, Dosen Pembimbing, dan File Proposal pada pilihan usulan ke-$n");
+                    return false;
+                }
+                $pilihanValid[] = [
+                    'jenis' => 'usul',
+                    'n' => $n,
+                    'judul' => $judul,
+                    'mitra' => $this->input->post("mitra_$n"),
+                    'id_dosen' => $idDosen,
+                    'id_dosen2' => !empty($idDosen2) ? $idDosen2 : null,
+                    'existing_file' => $hasFile ? null : $existingFile,
+                ];
+            }
+        }
+
+        return $pilihanValid;
+    }
+
+    /**
+     * Simpan satu pengajuan_ta (+ usulan bila jenis=usul, termasuk upload filenya)
+     * per pilihan yang lolos validasi. Return FALSE (dan set flashdata error) kalau
+     * ada upload yang gagal.
+     */
+    private function _simpanPilihanKeDb($id_ta, $pilihanValid)
+    {
+        $pilihanKe = 0;
+        foreach ($pilihanValid as $p) {
+            $pilihanKe++;
+
+            if ($p['jenis'] == 'proyek') {
+                $pengajuan_ta = array(
+                    'id_ta' => $id_ta,
+                    'id_proyek' => $p['id_proyek'],
+                    'pilihan' => $pilihanKe,
+                    'jenis' => 'proyek',
+                );
+                $this->Pengajuan_model->addNewPengajuanTa($pengajuan_ta);
+            } else {
+                $pengajuan_ta = array(
+                    'id_ta' => $id_ta,
+                    'pilihan' => $pilihanKe,
+                    'jenis' => 'usul',
+                );
+                $id_pengajuan_ta = $this->Pengajuan_model->addNewPengajuanTa($pengajuan_ta);
+
+                $fileField = "file_persetujuan_{$p['n']}";
+                if (!empty($_FILES[$fileField]['name'])) {
+                    $config['upload_path'] = 'uploads/persetujuan';
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 8000;
+                    $config['max_width'] = 1024;
+                    $config['max_height'] = 1024;
+                    $config['file_name'] = "proposal-" . time() . "-{$p['n']}";
+                    $this->load->library('upload');
+                    $this->upload->initialize($config);
+
+                    if (!$this->upload->do_upload($fileField)) {
+                        $this->session->set_flashdata('error', 'Upload file pilihan ke-' . $p['n'] . ' gagal: ' . $this->upload->display_errors('', ''));
+                        return false;
+                    }
+                    $terupload = $this->upload->data();
+                    $namaFile = $terupload['file_name'];
+                } else {
+                    // mode Edit tanpa upload ulang -- pertahankan file lama
+                    $namaFile = $p['existing_file'];
+                }
+
+                $usulan = array(
+                    'id_pengajuan_ta' => $id_pengajuan_ta,
+                    'judul' => strtoupper($p['judul']),
+                    'mitra' => $p['mitra'],
+                    'id_dosen' => $p['id_dosen'],
+                    'id_dosen2' => $p['id_dosen2'],
+                    'file_persetujuan' => $namaFile,
+                );
+                $this->Pengajuan_model->addNewUsulan($usulan);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function is used to edit Tugas Akhir. Sejak pengajuan bisa berisi 1-3
+     * pilihan sekaligus, Edit memakai form yang sama persis dengan Daftar (blok
+     * pilihan 1-3, bebas proyek existing / usulan sendiri) -- bukan cuma 1 pilihan
+     * seperti versi lama. Strateginya: ganti SELURUH set pilihan lama dengan set
+     * baru dari form (hapus semua baris pengajuan_ta milik id_ta ini lalu simpan
+     * ulang), bukan update baris satu-satu, supaya konsisten dengan Daftar dan
+     * bisa menangani pilihan yang ditambah/dihapus/diubah jenisnya sekaligus.
      */
     function edit_ta()
     {
         if ($this->isMahasiswa() == TRUE) {
             $this->loadThis();
         } else {
-            $this->load->library('form_validation');
-
             $userId = $this->vendorId;
-            // get id mahasiswa yang sedang login
             $id_mahasiswa = $this->Pengajuan_model->getIdMahasiswa($userId);
+            $mahasiswaID = $id_mahasiswa[0]->id_mahasiswa;
 
-            // get id_pengajuan_ta
-            $id_pengajuan_ta = array(
-                $this->input->post('pilihan1'),
-                $this->input->post('pilihan2'),
-                $this->input->post('pilihan3')
-            );
+            $id_ta = $this->input->post('id_ta');
 
-            // get input urutan pilihan setiap proyek
-            $pilihan = array(
-                $this->input->post('satu'),
-                $this->input->post('dua'),
-                $this->input->post('tiga')
-            );
-
-            // get pilihan untuk proyek
-            $proyek = array(
-                $this->input->post('proyeksatu'),
-                $this->input->post('proyekdua'),
-                $this->input->post('proyektiga')
-            );
-
-            // get jenis. untuk pilihan 1&2 pasti proyek, namun untuk pilihan 3 disesuaikan dengan user memilih jenis usulan/proyek
-            $jenis = array(
-                "proyek",
-                "proyek",
-                $this->input->post('jenis')
-            );
-
-            // get jenis yang telah dipilih oleh user sebelumnya
-            $jenis_pilihan3 = $this->input->post('jenis_pilihan3');
-
-            // get pilihan untuk ide/usulan
-            $id_usulan = $this->input->post('id_usulan'); //get id id_usulan
-            // $judul = $this->input->post('judul');
-            // $deskripsi = $this->input->post('deskripsi');
-            // $bisnis_rule = $this->input->post('bisnis_rule');
-            // $file = $this->input->post('file');
-
-            if (!empty($id_mahasiswa)) {
-
-                $mahasiswaID = $id_mahasiswa[0]->id_mahasiswa;
-                if ($jenis[2] == "proyek") {
-                    if ($jenis_pilihan3 == "usul" && $jenis[2] != 'usul' && $i = 2) {
-                        // apabila jenis pengajuan ta sebelumnya adalah usulan
-
-                        // delete data pada tabel usulan
-                        $resultUsulan = $this->Pengajuan_model->deleteUsulan($id_usulan);
-                    }
-
-                    $getProject = $this->Pengajuan_model->getProyek($proyek[2]);
-                    $id_dosen2 = $this->input->post('dosenProyek');
-                    if (!empty($id_dosen2) && $getProject[0]->id_dosen == $id_dosen2) {
-                        $this->session->set_flashdata('error', 'Dosen Project dan Dosen 2 Harus berbeda');
-
+            // Pastikan id_ta yang dikirim benar milik mahasiswa yang sedang login
+            // (jangan percaya begitu saja hidden field dari client), dan belum
+            // terplotting (SOP: proyek yang sudah diterima tidak bisa diedit lagi).
+            $taInfo = $this->Pengajuan_model->getTa($mahasiswaID);
+            $milikSendiri = false;
+            foreach ($taInfo as $row) {
+                if ($row->id_ta == $id_ta) {
+                    $milikSendiri = true;
+                    if ($row->status_pengajuan == 'diterima') {
+                        $this->session->set_flashdata('error', 'Pengajuan yang sudah diterima tidak bisa diedit lagi');
                         redirect('mahasiswa/pengajuan/tugasakhir');
+                        return;
                     }
-
-                    // inputan 1&2 pasti jenis pengajuan ta = proyek
-                    $pengajuan_ta = array(
-                        'id_proyek' => $proyek[2],
-                        'pilihan' => 1,
-                        'jenis' => $jenis[2]
-                    );
-
-                    $this->db->where('id_mahasiswa', $mahasiswaID);
-                    $this->db->delete('dosbing');
-
-                    /* Insert tabel dosbing*/
-                    $data_dosbing = array(
-                        'id_dosen' => $getProject[0]->id_dosen,
-                        'id_mahasiswa' => $mahasiswaID
-                    );
-                    $this->db->insert('dosbing', $data_dosbing);
-
-                    if (!empty($id_dosen2)) {
-                        $data_dosbing = array(
-                            'id_dosen' => $id_dosen2,
-                            'id_mahasiswa' => $mahasiswaID
-                        );
-                        $this->db->insert('dosbing', $data_dosbing);
-                    }
-                    // edit data pengajuan ta dengan id_pengajuan_ta masing-masing
-                    $resultPengajuanTA = $this->Pengajuan_model->editPengajuanTa($pengajuan_ta, $id_pengajuan_ta[2]);
-                } else {
-                    //validasi isian usulan
-                    $judul = $this->input->post('judul');
-                    $deskripsi = $this->input->post('deskripsi');
-                    $bisnis_rule = $this->input->post('bisnis_rule');
-
-                    $id_dosen = $this->input->post('dosen');
-                    $id_dosen2 = $this->input->post('dosen2');
-                    if (!empty($id_dosen2) && $id_dosen == $id_dosen2) {
-                        $this->session->set_flashdata(
-                            'error',
-                            'Dosen 1 dan Dosen 2 Harus berbeda'
-                        );
-                        redirect('mahasiswa/pengajuan/tugasakhir');
-                    }
-
-                    if (empty($judul) || empty($_FILES['file_persetujuan']['name'])) {
-                        $this->session->set_flashdata('error', 'Lengkapi data secara lengkap');
-                        redirect('mahasiswa/pengajuan/tugasakhir');
-                    } else {
-                        // cek apakah jenis pilihan yang sebelumnya adalah usulan
-                        if ($jenis_pilihan3 == "usul") {
-                            if (empty($_FILES['file_persetujuan']['name'])) {
-                                $usulan = array(
-                                    'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                    'judul' => strtoupper($judul),
-                                    'deskripsi' => $deskripsi,
-                                    'bisnis_rule' => $bisnis_rule,
-                                    'file_persetujuan' => NULL
-                                );
-                            } else {
-                                // jenis pengajuan ta = usulan
-                                // before choosen = usulan
-                                $config['upload_path'] = 'uploads/persetujuan';
-                                $config['allowed_types'] = 'pdf';
-                                $config['max_size'] = 8000;
-                                $new_name = "proposal-" . time();
-                                $config['file_name'] = $new_name;
-
-                                $this->load->library('upload', $config);
-
-                                if (!$this->upload->do_upload('file_persetujuan')) {
-                                    //if upload revisi not match
-                                    $error = array('error' => $this->upload->display_errors());
-                                    // $this->session->set_flashdata('error', 'Unggah file gagal!');
-                                    $this->session->set_flashdata('error', $error['error']);
-                                    redirect('mahasiswa/pengajuan/tugasakhir');
-                                } else {
-                                    $terupload = $this->upload->data();
-                                    $usulan = array(
-                                        'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                        'judul' => strtoupper($judul),
-                                        'deskripsi' => $deskripsi,
-                                        'bisnis_rule' => $bisnis_rule,
-                                        'file_persetujuan' => $terupload['file_name'],
-                                    );
-                                }
-                            }
-                            // edit data usulan table
-                            $resultUsulan = $this->Pengajuan_model->editUsulan($usulan, $id_usulan);
-                        } else {
-                            //jenis pengajuan ta = usulan
-                            //jika pilihan sebelumnya = proyek
-                            if (empty($_FILES['file_persetujuan']['name'])) {
-                                $usulan = array(
-                                    'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                    'judul' => strtoupper($judul),
-                                    'deskripsi' => $deskripsi,
-                                    'bisnis_rule' => $bisnis_rule,
-                                    'file_persetujuan' => NULL
-                                );
-                            } else {
-                                $config['upload_path'] = 'uploads/persetujuan';
-                                $config['allowed_types'] = 'pdf';
-                                $config['max_size'] = 8000;
-                                $new_name = "proposal-" . time();
-                                $config['file_name'] = $new_name;
-
-                                $this->load->library('upload', $config);
-
-                                if (!$this->upload->do_upload('file_persetujuan')) {
-                                    // if upload revisi not match
-                                    //if upload revisi not match
-                                    $error = array('error' => $this->upload->display_errors());
-                                    // $this->session->set_flashdata('error', 'Unggah file gagal!');
-                                    $this->session->set_flashdata('error', $error['error']);
-                                    redirect('mahasiswa/pengajuan/tugasakhir');
-                                } else {
-                                    $terupload = $this->upload->data();
-                                    $usulan = array(
-                                        'id_pengajuan_ta' => $id_pengajuan_ta[2],
-                                        'judul' => strtoupper($judul),
-                                        'deskripsi' => $deskripsi,
-                                        'bisnis_rule' => $bisnis_rule,
-                                        'file_persetujuan' => $terupload['file_name']
-                                    );
-                                }
-                            }
-                            // insert data to usulan table
-                            $resultUsulan = $this->Pengajuan_model->addNewUsulan($usulan);
-                        }
-
-                        $id_dosen = $this->input->post('dosen');
-                        $id_dosen2 = $this->input->post('dosen2');
-
-                        $this->db->where('id_mahasiswa', $mahasiswaID);
-                        $this->db->delete('dosbing');
-
-                        if (!empty($id_dosen)) {
-                            /* Insert tabel dosbing*/
-                            $data_dosbing = array(
-                                'id_dosen' => $id_dosen,
-                                'id_mahasiswa' => $mahasiswaID
-                            );
-                            $this->db->insert('dosbing', $data_dosbing);
-                        }
-
-                        if (!empty($id_dosen2)) {
-                            $data_dosbing = array(
-                                'id_dosen' => $id_dosen2,
-                                'id_mahasiswa' => $mahasiswaID
-                            );
-                            $this->db->insert('dosbing', $data_dosbing);
-                        }
-                    }
-
-                    // id_proyek di set null karna dia memilih usulan
-                    $pengajuan_ta = array(
-                        'id_proyek' => null,
-                        'pilihan' => $pilihan[2],
-                        'jenis' => $jenis[2]
-                    );
-
-                    // edit data pengajuan_ta by id_pengajuan_ta
-                    $resultPengajuanTA = $this->Pengajuan_model->editPengajuanTa($pengajuan_ta, $id_pengajuan_ta[2]);
                 }
-                if ($resultPengajuanTA == TRUE) {
-                    $pengajuanTa = $this->Pengajuan_model->getPengajuanTa($id_pengajuan_ta[2]);
-                    $resultPengajuanTA = $this->Pengajuan_model->update_ta($pengajuanTa[0]->id_ta, [
-                        'status_pengambilan' => 'proses'
-                    ]);
-                    $this->session->set_flashdata('success', 'Pengajuan TA telah berhasil diubah');
-                } else {
-                    $this->session->set_flashdata('error', 'Pengajuan TA gagal dilakukan');
-                }
-            } else {
-                $this->session->set_flashdata('error', 'Silahkan lengkapi Profil Anda terlebih dahulu');
+            }
+            if (!$milikSendiri) {
+                $this->session->set_flashdata('error', 'Pengajuan tidak ditemukan');
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
             }
 
+            $pilihanValid = $this->_kumpulkanPilihanDariForm();
+            if ($pilihanValid === false) {
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+            if (empty($pilihanValid)) {
+                $this->session->set_flashdata('error', 'Isi minimal 1 pilihan (proyek atau usulan)');
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+
+            // Kumpulkan file lama yang masih dipakai (existing_file_n dari form) SEBELUM
+            // pilihan lama dihapus, supaya file yang benar-benar sudah tidak dipakai lagi
+            // (diganti/dihapus) bisa dibersihkan setelah data baru berhasil disimpan.
+            $fileLamaSemua = $this->Pengajuan_model->getUsulanFileNamesByIdTa($id_ta);
+            $fileMasihDipakai = [];
+            foreach ($pilihanValid as $p) {
+                if ($p['jenis'] == 'usul' && !empty($p['existing_file'])) {
+                    $fileMasihDipakai[] = $p['existing_file'];
+                }
+            }
+
+            $this->Pengajuan_model->deletePengajuanTaByIdTa($id_ta);
+            $hasil = $this->_simpanPilihanKeDb($id_ta, $pilihanValid);
+            if ($hasil === false) {
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
+
+            foreach ($fileLamaSemua as $namaFile) {
+                if ($namaFile && !in_array($namaFile, $fileMasihDipakai)) {
+                    @unlink('./uploads/persetujuan/' . $namaFile);
+                }
+            }
+
+            $this->Pengajuan_model->update_ta($id_ta, ['status_pengambilan' => 'proses']);
+            $this->session->set_flashdata('success', 'Pengajuan TA telah berhasil diubah (' . count($pilihanValid) . ' pilihan)');
             redirect('mahasiswa/pengajuan/tugasakhir');
         }
     }
@@ -517,37 +385,38 @@ class Pengajuan extends BaseController
     function updateBimbingan()
     {
         date_default_timezone_set("Asia/Jakarta");
-        if ($_FILES["file"]) {
+
+        // File bimbingan OPSIONAL -- mahasiswa boleh mencatat bimbingan tanpa
+        // melampirkan file. Cuma jalankan upload kalau memang ada file yang dipilih.
+        $namaFile = null;
+        if (!empty($_FILES['file']['name'])) {
             $new_name = date("YmdHis") . "-" . $_FILES["file"]['name'];
-        } else {
-            delete_files('./uploads/data_bimbingan/');
-            $this->session->set_flashdata('error', 'Pilih file (.pdf) terlebih dahulu');
-            redirect('mahasiswa/pengajuan/tugasakhir');
-        }
 
-        $config['upload_path']          = './uploads/data_bimbingan';
-        $config['allowed_types']        = 'pdf';
-        $config['file_name']            = $new_name;
+            $config['upload_path']          = './uploads/data_bimbingan';
+            $config['allowed_types']        = 'pdf';
+            $config['file_name']            = $new_name;
 
-        $this->load->library('upload', $config);
-        if (!$this->upload->do_upload("file")) {
-            $this->session->set_flashdata('error', $this->upload->display_errors());
-            redirect('mahasiswa/pengajuan/tugasakhir');
-        } else {
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload("file")) {
+                $this->session->set_flashdata('error', $this->upload->display_errors());
+                redirect('mahasiswa/pengajuan/tugasakhir');
+                return;
+            }
             $terupload = $this->upload->data();
-
-            $dataBimbingan = array(
-                'id_ta' => $this->input->post('id_ta'),
-                'subject' => $this->input->post('subject'),
-                'description' => $this->input->post('description'),
-                'status' => $this->input->post('status'),
-                'file' => $terupload['file_name'],
-            );
-            $this->db->insert('bimbingan', $dataBimbingan);
-
-            $this->session->set_flashdata('success', 'Bimbingan berhasil di upload');
-            redirect('mahasiswa/pengajuan/tugasakhir');
+            $namaFile = $terupload['file_name'];
         }
+
+        $dataBimbingan = array(
+            'id_ta' => $this->input->post('id_ta'),
+            'subject' => $this->input->post('subject'),
+            'description' => $this->input->post('description'),
+            'status' => $this->input->post('status'),
+            'file' => $namaFile,
+        );
+        $this->db->insert('bimbingan', $dataBimbingan);
+
+        $this->session->set_flashdata('success', 'Bimbingan berhasil di upload');
+        redirect('mahasiswa/pengajuan/tugasakhir');
     }
     /**
      * This function is used to load the 404 page not found

@@ -38,6 +38,34 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="id_periode">Periode
+                            <span class="required"> *</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="id_periode" name="id_periode" class="form-control" required="required">
+                                <option value="">Pilih periode ...</option>
+                                <?php foreach ($dataPeriode as $p) { ?>
+                                    <option value="<?php echo $p->id_periode; ?>" <?php echo ($p->id_periode == $dataProyek[0]->id_periode) ? 'selected' : ''; ?>>
+                                        <?php echo ucfirst($p->semester) . ' ' . $p->tahun_ajaran . ($p->status_periode == 1 ? ' (Aktif)' : ''); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="id_bidang">Bidang</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <!-- SOP: satu proyek boleh punya lebih dari satu bidang -->
+                            <select id="id_bidang" name="id_bidang[]" class="form-control" multiple="multiple">
+                                <?php foreach ($dataBidang as $b) { ?>
+                                    <option value="<?php echo $b->id_bidang; ?>" <?php echo in_array((int)$b->id_bidang, $selectedBidangIds) ? 'selected' : ''; ?>>
+                                        <?php echo $b->nama; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="nama_proyek">Judul Proyek
                             <span class="required">*</span>
                         </label>
@@ -57,11 +85,13 @@
                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="tools">Tools Proyek <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="tools" id="tools" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $dataProyek[0]->tools ?>">
+                            <!-- required dilepas: input tersembunyi setelah jquery.tagsInput aktif
+                                 bikin browser menolak submit kalau atributnya masih required -->
+                            <input type="text" name="tools" id="tools" class="form-control col-md-7 col-xs-12" value="<?php echo $dataProyek[0]->tools ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="instansi" class="control-label col-md-4 col-sm-4 col-xs-12">Instansi / Klien
+                        <label for="instansi" class="control-label col-md-4 col-sm-4 col-xs-12">Mitra
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input id="instansi" class="form-control col-md-7 col-xs-12" type="text" name="instansi" value="<?php echo $dataProyek[0]->klien; ?>">
@@ -128,4 +158,21 @@
             z.style.display = "block";
         }
     }
+</script>
+
+<!-- Tag input untuk field Tools: value existing (comma-separated) otomatis
+     di-parse jadi tag saat init. JS-nya sudah dimuat global lewat footer. -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/dist/jquery.tagsinput.min.css" rel="stylesheet">
+<script>
+    $(function () {
+        $('#tools').tagsInput({
+            width: '100%',
+            interactive: true,
+            defaultText: 'tambah tool...'
+        });
+        $('#id_bidang').select2({
+            width: '100%',
+            placeholder: 'Pilih satu atau lebih bidang...'
+        });
+    });
 </script>

@@ -112,6 +112,7 @@ class Ta_model extends CI_Model
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_user', $userId);
         $query = $this->db->get();
@@ -120,7 +121,7 @@ class Ta_model extends CI_Model
 
     function getCountActivePendadaran($userId)
     {
-        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
+        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path,
         p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
@@ -131,6 +132,7 @@ class Ta_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
+        $this->db->where('m.isDeleted', 0);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
         $this->db->group_by('m.id_mahasiswa');
@@ -253,6 +255,7 @@ class Ta_model extends CI_Model
     public function terima_ta($id_ta, $id_pengajuan_ta = NULL, $id_mahasiswa, $data, $id_proyek = NULL, $id_dosen = NULL, $id_dosen2 = NULL)
     {
         $this->db->trans_start();
+        $idPengajuanTaBaru = null;
 
         if ($id_pengajuan_ta != NULL) {
             /* Update tabel pengajuan_ta*/
@@ -263,11 +266,15 @@ class Ta_model extends CI_Model
             $this->db->where('id_ta', $id_ta);
             $this->db->delete('pengajuan_ta');
         } else {
+            // $id_pengajuan_ta NULL -- dipakai jalur manual (bukan menerima salah satu
+            // pilihan yang sudah ada): buang semua pilihan lama punya id_ta ini, lalu
+            // insert satu baris baru dari $data.
             $this->db->where('id_ta', $id_ta);
-            $this->db->delete('pengajuan_ta', $data_another_row);
+            $this->db->delete('pengajuan_ta');
 
             /* Insert tabel pengajuan_ta */
             $this->db->insert('pengajuan_ta', $data);
+            $idPengajuanTaBaru = $this->db->insert_id();
         }
 
 
@@ -302,11 +309,38 @@ class Ta_model extends CI_Model
                 $this->db->insert('dosbing', $data_dosbing);
             }
         } elseif ($id_dosen != NULL) {
-            $this->db->where('id_pengajuan_ta', $id_pengajuan_ta);
-            $this->db->update('usulan', array('id_dosen' => $id_dosen));
+            if ($id_pengajuan_ta != NULL) {
+                // menerima pilihan usulan mahasiswa yang sudah ada -- update dosen di
+                // baris usulan itu (akademik boleh mengganti dosen yang diusulkan).
+                $this->db->where('id_pengajuan_ta', $id_pengajuan_ta);
+                $this->db->update('usulan', array('id_dosen' => $id_dosen));
 
-            $result = $this->getUsulan($id_pengajuan_ta);
-            $judul_ta = $result[0]->judul;
+                $result = $this->getUsulan($id_pengajuan_ta);
+                $judul_ta = !empty($result) ? $result[0]->judul : '(Belum ada judul)';
+            } else {
+                // jalur manual TANPA proyek maupun usulan yang sudah ada -- akademik
+                // langsung menentukan dosen pembimbing saja (mis. proyek sudah habis).
+                // Buat baris usulan PLACEHOLDER (judul akan diisi dosen setelah
+                // berdiskusi dengan mahasiswa -- lihat Bimbingan::editJudul()) supaya
+                // tetap konsisten dengan kode lain yang berasumsi setiap pengajuan_ta
+                // berjenis 'usul' punya baris usulan yang menyertainya (detail TA,
+                // rekap dashboard, tampilan mahasiswa, dll -- semua baca dari usulan).
+                //
+                // Teksnya HARUS netral -- nilai judul ini juga ditampilkan apa adanya
+                // di halaman DOSEN sendiri (dosen/bimbingan/progress), jadi kalimat
+                // "silahkan menghubungi dosen" (ditujukan ke mahasiswa) akan terasa
+                // aneh dibaca oleh dosen-nya sendiri. Pesan yang secara spesifik
+                // ditujukan ke mahasiswa (menyuruh mereka menghubungi dosen) tetap
+                // dipakai KHUSUS di notifikasi log_pesan di bawah, bukan di sini.
+                $judulPlaceholder = 'Judul belum ditentukan';
+                $this->db->insert('usulan', array(
+                    'id_pengajuan_ta' => $idPengajuanTaBaru,
+                    'judul' => $judulPlaceholder,
+                    'id_dosen' => $id_dosen,
+                    'id_dosen2' => $id_dosen2,
+                ));
+                $judul_ta = 'Silahkan menghubungi dosen untuk berdiskusi topik tugas akhir anda.';
+            }
             $nama_dosen = $this->getDosen($id_dosen)[0]->nama;
 
             /* Insert tabel dosbing*/

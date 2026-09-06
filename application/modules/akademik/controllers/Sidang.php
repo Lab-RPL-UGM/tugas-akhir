@@ -69,7 +69,7 @@ class Sidang extends BaseController
                 $pilihan_ta = array(
                     'judul' => $detail_usulan[0]->judul,
                     'deskripsi' => $detail_usulan[0]->deskripsi,
-                    'bisnis_rule' => $detail_usulan[0]->bisnis_rule,
+                    'bisnis_rule' => $detail_usulan[0]->mitra,
                     'id_ta' => $data['sidangInfo'][0]->id_ta,
                     'file' => $detail_usulan[0]->file_persetujuan,
                     'pilihan' => $result[0]->pilihan,

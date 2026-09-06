@@ -1,0 +1,603 @@
+/*
+ * Tema modern TA-TRPL — overlay di atas markup Gentelella yang sudah ada.
+ * Sengaja TIDAK mengubah HTML struktur besar: cuma restyle class yang sudah
+ * dipakai (.left_col, .top_nav, .right_col, .x_panel, tombol, tabel, form)
+ * supaya tidak perlu tulis ulang puluhan view. Dimuat PALING TERAKHIR di
+ * <head> (setelah custom.min.css) supaya override-nya menang.
+ *
+ * TIDAK dimuat di halaman login (module login/ tidak menyertakan file ini).
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --color-primary: #2563EB;
+    --color-primary-dark: #1D4ED8;
+    --color-accent: #059669;
+    --color-background: #F8FAFC;
+    --color-card: #FFFFFF;
+    --color-foreground: #0F172A;
+    --color-muted: #F1F5FD;
+    --color-muted-foreground: #64748B;
+    --color-border: #E2E8F0;
+    --color-destructive: #DC2626;
+    --color-warning: #D97706;
+    --color-sidebar-bg: #0F172A;
+    --color-sidebar-bg-hover: #1E293B;
+    --color-sidebar-text: #CBD5E1;
+    --color-sidebar-text-active: #FFFFFF;
+    --sidebar-width: 250px;
+    --sidebar-width-collapsed: 70px;
+    --radius: 10px;
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: var(--color-foreground);
+}
+
+body {
+    background: var(--color-background) !important;
+}
+
+a {
+    color: var(--color-primary);
+}
+
+a:hover,
+a:focus {
+    color: var(--color-primary-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--color-foreground);
+}
+
+/* ============ SIDEBAR — fixed, dark, modern ============ */
+
+.left_col {
+    background: var(--color-sidebar-bg) !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    transition: width 0.2s ease;
+}
+
+.left_col.scroll-view {
+    padding-bottom: 30px;
+}
+
+/* scrollbar dalam sidebar biar tidak norak di atas background gelap */
+.left_col::-webkit-scrollbar {
+    width: 6px;
+}
+.left_col::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+.nav_title {
+    background: transparent !important;
+    padding: 22px 20px 18px;
+}
+
+.nav_title .site_title {
+    color: var(--color-sidebar-text-active) !important;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav_title .site_title i {
+    color: var(--color-primary);
+    font-size: 20px;
+}
+
+.main_menu_side .menu_section h3 {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    margin-top: 8px;
+}
+
+.nav.side-menu > li {
+    border: none;
+}
+
+.nav.side-menu > li > a,
+.nav.child_menu > li > a {
+    color: var(--color-sidebar-text) !important;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 11px 20px;
+    margin: 2px 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.nav.side-menu > li > a i {
+    width: 22px;
+    text-align: center;
+    margin-right: 8px;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 150ms ease;
+}
+
+.nav.side-menu > li:hover > a,
+.nav.side-menu > li > a:focus,
+.nav.child_menu > li:hover > a {
+    background: var(--color-sidebar-bg-hover) !important;
+    color: #FFFFFF !important;
+}
+
+.nav.side-menu > li:hover > a i {
+    color: var(--color-sidebar-text-active);
+}
+
+/* item aktif (current_page) -- highlight biru solid, bukan cuma hover */
+.nav.side-menu > li.active > a,
+.nav.side-menu > li.current-page > a {
+    background: var(--color-primary) !important;
+    color: #FFFFFF !important;
+}
+
+.nav.side-menu > li.active > a i,
+.nav.side-menu > li.current-page > a i {
+    color: #FFFFFF;
+}
+
+.nav.child_menu {
+    background: rgba(0, 0, 0, 0.18) !important;
+    border-radius: 8px;
+    margin: 0 10px 6px;
+    padding: 4px 0;
+}
+
+.nav.child_menu > li > a {
+    padding: 9px 20px 9px 44px;
+    font-size: 13px;
+    margin: 0;
+    border-radius: 6px;
+}
+
+.nav .fa.fa-chevron-down {
+    margin-left: auto;
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+/* ============ TOP NAV ============ */
+
+.top_nav {
+    background: var(--color-card) !important;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.top_nav .nav_menu {
+    background: transparent !important;
+    border: none !important;
+}
+
+#menu_toggle {
+    color: var(--color-muted-foreground) !important;
+    padding: 20px !important;
+}
+
+#menu_toggle:hover {
+    color: var(--color-primary) !important;
+}
+
+.top_nav .user-profile {
+    color: var(--color-foreground) !important;
+    font-weight: 500;
+    font-size: 13.5px;
+}
+
+.top_nav .user-profile i.fa-user {
+    background: var(--color-muted);
+    color: var(--color-primary);
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.dropdown-usermenu {
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.dropdown-usermenu > li > a {
+    font-size: 13px;
+    padding: 10px 16px;
+}
+
+.dropdown-usermenu > li > a:hover {
+    background: var(--color-muted) !important;
+}
+
+/* ============ CONTENT AREA ============ */
+
+.right_col {
+    background: var(--color-background) !important;
+    min-height: 100vh;
+}
+
+.page-title h3 {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* ============ PAGE HEADER / TOMBOL KEMBALI ============ */
+/* Pola berulang di banyak halaman: <h3><a href="..."><i class="fa fa-chevron-left">
+   </i></a> Judul Halaman</h3> -- link kembalinya kecil, nempel mentah di teks judul.
+   Direstyle jadi tombol bundar yang jelas & mudah diklik, sejajar rapi dengan judul. */
+
+.page-title h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-title h3 > a:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--color-muted);
+    color: var(--color-muted-foreground);
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.page-title h3 > a:first-child:hover,
+.page-title h3 > a:first-child:focus {
+    background: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.page-title h3 > a:first-child i.fa-chevron-left {
+    font-size: 14px;
+}
+
+/* ============ CARDS / PANELS ============ */
+
+.x_panel {
+    background: var(--color-card);
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius) !important;
+    box-shadow: var(--shadow-card);
+    padding: 18px 20px !important;
+    margin-bottom: 22px;
+}
+
+.x_title {
+    border-bottom: 1px solid var(--color-border) !important;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+}
+
+.x_title h2,
+.x_title h3,
+.x_title h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ============ BUTTONS ============ */
+
+.btn {
+    border-radius: 7px !important;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 7px 16px;
+    transition: filter 150ms ease, box-shadow 150ms ease;
+}
+
+.btn:active {
+    filter: brightness(0.95);
+}
+
+.btn:focus,
+.btn.focus,
+.form-control:focus,
+select:focus,
+input:focus,
+textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-primary,
+.btn-info {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-primary:hover,
+.btn-info:hover {
+    background: var(--color-primary-dark) !important;
+    border-color: var(--color-primary-dark) !important;
+}
+
+.btn-success {
+    background: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+}
+
+.btn-success:hover {
+    filter: brightness(0.92);
+}
+
+.btn-danger {
+    background: var(--color-destructive) !important;
+    border-color: var(--color-destructive) !important;
+}
+
+.btn-warning {
+    background: var(--color-warning) !important;
+    border-color: var(--color-warning) !important;
+}
+
+.btn-default {
+    background: var(--color-card) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-foreground) !important;
+}
+
+.btn-default:hover {
+    background: var(--color-muted) !important;
+}
+
+/* ============ FORMS ============ */
+
+.form-control {
+    border-radius: 7px !important;
+    border: 1px solid var(--color-border) !important;
+    font-size: 13.5px;
+    box-shadow: none !important;
+}
+
+label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-foreground);
+}
+
+.required {
+    color: var(--color-destructive);
+}
+
+/* ============ TABLES / DATATABLES ============ */
+
+table.table thead th,
+table.dataTable thead th {
+    background: var(--color-muted);
+    color: var(--color-foreground);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+table.table td,
+table.table th,
+table.dataTable td,
+table.dataTable th {
+    border-color: var(--color-border) !important;
+    font-size: 13.5px;
+    vertical-align: middle !important;
+}
+
+table.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #FBFCFE;
+}
+
+table.table-hover > tbody > tr:hover {
+    background-color: var(--color-muted) !important;
+}
+
+/* Sel tabel yang menampung beberapa tombol aksi sekaligus (mis. lihat pendaftar +
+   edit + hapus) -- dibiarkan wrap rapi dengan jarak antar tombol, bukan berdesakan
+   atau saling menutupi tergantung lebar konten baris. */
+table.table td .btn,
+table.dataTable td .btn {
+    padding: 5px 10px;
+    margin: 2px;
+    white-space: nowrap;
+}
+
+table.table td,
+table.dataTable td {
+    white-space: normal;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #FFFFFF !important;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 7px;
+    border: 1px solid var(--color-border);
+}
+
+/* ============ ALERTS / LABELS ============ */
+
+.alert {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 13.5px;
+}
+
+.alert-success {
+    background: #ECFDF5;
+    border-color: #A7F3D0;
+    color: #065F46;
+}
+
+.alert-danger {
+    background: #FEF2F2;
+    border-color: #FECACA;
+    color: #991B1B;
+}
+
+.label {
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 11px;
+    padding: 4px 10px;
+}
+
+.label-success {
+    background: var(--color-accent);
+}
+
+.label-warning {
+    background: var(--color-warning);
+}
+
+.label-danger {
+    background: var(--color-destructive);
+}
+
+/* ============ MODALS ============ */
+
+.modal-content {
+    border-radius: var(--radius);
+    border: none;
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--color-border);
+}
+
+/* Pola "detail read-only di modal" (mis. Detail Proyek) -- label kecil di atas,
+   nilai di bawah, biar rapi walau isinya panjang (deskripsi) atau pendek (periode). */
+.detail-proyek-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.detail-proyek-heading .modal-title {
+    margin: 0;
+    padding-right: 8px;
+}
+
+.detail-proyek-heading .label {
+    flex: 0 0 auto;
+    margin-top: 4px;
+}
+
+.detail-proyek-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.detail-field {
+    margin-bottom: 18px;
+}
+
+.detail-field:last-child {
+    margin-bottom: 0;
+}
+
+.detail-field-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-muted-foreground);
+    margin-bottom: 4px;
+}
+
+.detail-field-value {
+    display: block;
+    font-size: 14px;
+    color: var(--color-foreground);
+    line-height: 1.6;
+}
+
+p.detail-field-value {
+    margin: 0;
+    white-space: pre-line;
+}
+
+/* ============ LAYOUT — kompensasi sidebar fixed ============ */
+
+.nav-md .container.body .right_col,
+.nav-md .top_nav {
+    margin-left: var(--sidebar-width) !important;
+}
+
+.nav-sm .container.body .right_col,
+.nav-sm .top_nav {
+    margin-left: var(--sidebar-width-collapsed) !important;
+}
+
+.nav-md .left_col {
+    width: var(--sidebar-width) !important;
+}
+
+.nav-sm .left_col {
+    width: var(--sidebar-width-collapsed) !important;
+}
+
+/* mode collapsed (nav-sm): sembunyikan teks section header, submenu jadi hover-flyout
+   bawaan Gentelella tetap dipakai -- cuma warnanya kita samakan tema gelap */
+.nav-sm .nav.child_menu {
+    background: var(--color-sidebar-bg-hover) !important;
+}
+
+@media (max-width: 991px) {
+    .left_col {
+        width: var(--sidebar-width) !important;
+    }
+    .nav-md .container.body .right_col,
+    .nav-md .top_nav,
+    .nav-sm .container.body .right_col,
+    .nav-sm .top_nav {
+        margin-left: 0 !important;
+    }
+}

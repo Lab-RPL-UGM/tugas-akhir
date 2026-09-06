@@ -7,17 +7,6 @@
  * Description:
  */
 ?>
-<?php
-$id_dosen = '';
-$nama = '';
-
-if (!empty($dosenInfo)) {
-    foreach ($dosenInfo as $uf) {
-        $id_mahasiswa = $uf->id_dosen;
-        $nama = $uf->nama;
-    }
-}
-?>
 <div class="">
     <div class="page-title">
         <div class="title_left">
@@ -64,20 +53,30 @@ if (!empty($dosenInfo)) {
                     <br />
                     <form id="tambah-proyek" action="<?php echo base_url() ?>dosen/proyek/addNewProject" method="post" role="form" data-parsley-validate class="form-horizontal form-label-left">
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nama-dosen">Penanggung jawab<span class="required"> *</span>
-                            </label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Penanggung jawab</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control col-md-7 col-xs-12" id="nama-dosen" name="id_dosen" required>
-                                    <option value="0" disabled selected>Pilih ..</option>
-                                    <?php
-                                    if (!empty($dosenInfo)) {
-                                        foreach ($dosenInfo as $dosen) {
-                                    ?>
-                                            <option value="<?php echo $dosen->id_dosen ?>"><?php echo $dosen->nama ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
+                                <!-- Proyek yang diajukan selalu atas nama dosen yang login -- tidak bisa
+                                     dilimpahkan ke dosen lain, jadi bukan dropdown lagi. -->
+                                <p class="form-control-static"><strong><?php echo $dosenSaya ? $dosenSaya->nama : '(akun Anda belum tertaut ke data dosen)'; ?></strong></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Periode</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <!-- Selalu periode yang sedang aktif sekarang -- otomatis, tidak perlu dipilih. -->
+                                <p class="form-control-static"><strong>
+                                    <?php echo $periodeAktif ? ucfirst($periodeAktif->semester) . ' ' . $periodeAktif->tahun_ajaran . ' (Aktif)' : '(belum ada periode aktif)'; ?>
+                                </strong></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id_bidang">Bidang</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <!-- SOP: satu proyek boleh punya lebih dari satu bidang -->
+                                <select id="id_bidang" name="id_bidang[]" class="form-control" multiple="multiple">
+                                    <?php foreach ($dataBidang as $b) { ?>
+                                        <option value="<?php echo $b->id_bidang; ?>"><?php echo $b->nama; ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -99,11 +98,14 @@ if (!empty($dosenInfo)) {
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tools">Tools Proyek <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" name="tools" id="tools" required="required" class="form-control col-md-7 col-xs-12">
+                                <!-- required dilepas dari sini: begitu jquery.tagsInput aktif, input asli
+                                     ini disembunyikan, dan constraint "required" pada elemen tersembunyi
+                                     bikin browser (Chrome dkk) menolak submit form sama sekali. -->
+                                <input type="text" name="tools" id="tools" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Instansi</label>
+                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Mitra</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input id="klien" class="form-control col-md-7 col-xs-12" type="text" name="klien">
                             </div>
@@ -120,3 +122,23 @@ if (!empty($dosenInfo)) {
         </div>
     </div>
 </div>
+
+<!-- Tag input untuk field Tools: ketik lalu Enter/koma jadi tag terpisah -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/dist/jquery.tagsinput.min.css" rel="stylesheet">
+<script src="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Select2 untuk multi-select Bidang -- belum dimuat di modul dosen, jadi ditambah di sini -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<script src="<?php echo base_url() ?>elusistatic/vendors/select2/dist/js/select2.full.min.js"></script>
+<script>
+    $(function () {
+        $('#tools').tagsInput({
+            width: '100%',
+            interactive: true,
+            defaultText: 'tambah tool...'
+        });
+        $('#id_bidang').select2({
+            width: '100%',
+            placeholder: 'Pilih satu atau lebih bidang...'
+        });
+    });
+</script>

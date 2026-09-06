@@ -32,6 +32,7 @@ class Daftar_dosen_model extends CI_Model
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('ta.status_pengambilan', 'terplotting');
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_dosen', $userId);
@@ -45,7 +46,7 @@ class Daftar_dosen_model extends CI_Model
      */
     function getCountPendadaran($userId)
     {
-        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
+        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path,
         p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
@@ -56,6 +57,7 @@ class Daftar_dosen_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('d.id_dosen', $userId);
+        $this->db->where('m.isDeleted', 0);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
         $this->db->group_by('m.id_mahasiswa');
@@ -90,6 +92,7 @@ class Daftar_dosen_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $id_dosen);
+        $this->db->where('m.isDeleted', 0);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
         $this->db->group_by('m.id_mahasiswa');
@@ -126,6 +129,7 @@ class Daftar_dosen_model extends CI_Model
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('ta.status_pengambilan', 'terplotting');
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_dosen', $id_dosen);

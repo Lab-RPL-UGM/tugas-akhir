@@ -55,26 +55,25 @@ class Sidang extends BaseController
     {
         //          get id user who is logged in
         $id_user = $this->vendorId;
-        //          get total syarat where active
-        $total_syarat = $this->input->post('total_syarat');
         //            get id_periode
         $id_periode = $this->input->post('id_periode');
-        //            get first id syarat berkas
-        $id_syarat = $this->input->post('id_syarat');
         //            get id_mahasiswa based on who is logged in
         $cek = $this->Sidang_model->cekMahasiswa($id_user);
         $id_mahasiswa = $cek[0]->id_mahasiswa;
         $infoSidang = array("id_mahasiswa" => $id_mahasiswa, "id_periode" => $id_periode);
         //            insert to table sidang / registration sidang new
         $idSidang = $this->Sidang_model->addNewSidang($infoSidang);
-        //            insert to validasi_berkas_sidang table, make files important to Sidang
-        for ($i = 1; $i <= $total_syarat; $i++) {
+        //            insert to validasi_berkas_sidang table, satu baris per syarat AKTIF --
+        //            query ulang daftar ID-nya (bukan nebak lewat id_syarat++) supaya tidak
+        //            salah pasang kalau ada syarat yang dinonaktifkan di tengah urutan ID.
+        $daftarBerkas = $this->Sidang_model->getIdBerkas();
+        $result = 0;
+        foreach ($daftarBerkas as $berkas) {
             $daftarId = array(
                 "id_sidang" => $idSidang,
-                "id_berkas_sidang" => $id_syarat
+                "id_berkas_sidang" => $berkas->id_berkas_sidang
             );
             $result = $this->Sidang_model->addNewValidasi($daftarId);
-            $id_syarat++;
         }
         //            lebih dari 0 berarti ada data yg masuk
         if ($result > 0) {

@@ -42,6 +42,9 @@
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
     </script>
+
+    <!-- Tema modern -- dimuat paling akhir supaya override semua CSS di atas -->
+    <link href="<?php echo base_url() ?>elusistatic/css/theme-modern.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">

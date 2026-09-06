@@ -49,7 +49,13 @@
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-2 col-sm-3 col-xs-12">
+                        <img class="img-responsive img-circle" style="width:120px; height:120px; object-fit:cover;"
+                             src="<?php echo base_url() . 'uploads/foto/mahasiswa/' . $dataMahasiswa[0]->foto ?>"
+                             onerror="this.src='<?php echo base_url(); ?>elusistatic/build/images/default.jpg'"
+                             alt="Foto <?php echo $dataMahasiswa[0]->nama ?>">
+                    </div>
+                    <div class="col-md-5 col-sm-4 col-xs-12">
                         <p>
                             <span class="badge">Nama</span>&emsp;
                             <?php echo $dataMahasiswa[0]->nama ?>
@@ -58,8 +64,16 @@
                             <span class="badge">NIM</span>&emsp;
                             <?php echo $dataMahasiswa[0]->nim ?>
                         </p>
+                        <p>
+                            <span class="badge">Email</span>&emsp;
+                            <?php echo $dataMahasiswa[0]->email ?: '(belum diisi)' ?>
+                        </p>
+                        <p>
+                            <span class="badge">No. HP</span>&emsp;
+                            <?php echo $dataMahasiswa[0]->mobile ?: '(belum diisi)' ?>
+                        </p>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-5 col-sm-5 col-xs-12">
                         <p>
                             <span class="badge">SKS</span>&emsp;
                             <?php echo $dataMahasiswa[0]->jumlah_SKS ?>
@@ -70,9 +84,11 @@
                         </p>
                         <p>
                             <span class="badge">TMT</span>&emsp;
-                            <?php echo $dataMahasiswa[0]->nim . " " . $dataMahasiswa[0]->tahun_ajaran ?>
+                            <?php echo "Semester " . ucfirst($dataMahasiswa[0]->semester) . " " . $dataMahasiswa[0]->tahun_ajaran ?>
                         </p>
                     </div>
+                    <div class="clearfix"></div>
+                    <br>
                     <div class="col-md-12">
                         <p>
                             <span class="badge">Pengalaman & Kemampuan</span>

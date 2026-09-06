@@ -103,10 +103,14 @@ class Profil extends BaseController
 
             $this->load->library('upload', $config);
 
-            if ( ! $this->upload->do_upload('foto')){
-                // if upload foto tidak sesuai
-                $error = array('error' => $this->upload->display_errors());
-                $this->session->set_flashdata('error', 'Ukuran maksimal 1024x1024');
+            if (empty($_FILES['foto']['name'])) {
+                // belum pilih file sama sekali -- jangan disamakan dengan error
+                // ukuran/tipe file, supaya jelas apa yang perlu diperbaiki
+                $this->session->set_flashdata('error', 'Pilih foto terlebih dahulu sebelum menekan Save');
+            } else if ( ! $this->upload->do_upload('foto')){
+                // if upload foto tidak sesuai -- tampilkan alasan aslinya (tipe file,
+                // ukuran, dimensi, dll) daripada pesan generik yang bisa menyesatkan
+                $this->session->set_flashdata('error', strip_tags($this->upload->display_errors('', '')));
             }else{
                 // bila upload foto berhasil
                 $terupload = $this->upload->data();

@@ -21,6 +21,9 @@
         table.table th { background: #f8fafc; }
         .text-center { text-align: center; }
         .muted { color: #6b7280; }
+        .periode-filter { margin: 12px 0 20px; }
+        .periode-filter label { font-weight: 600; margin-right: 8px; }
+        .periode-filter select { padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
         <div class="text-center">
             <?php if (!empty($dataPeriode) && isset($dataPeriode[0])): ?>
                 <h3>
-                    Periode Semester
+                    Periode Semester Aktif
                     <span><strong><?= ucfirst($dataPeriode[0]->semester) . " " . $dataPeriode[0]->tahun_ajaran; ?></strong></span>
                 </h3>
             <?php else: ?>
@@ -47,6 +50,24 @@
             <?php endif; ?>
             <p class="muted"><i><?= DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->format('j F Y'); ?></i></p>
         </div>
+
+        <!-- Filter Periode: data di bawah (proyek, sidang, yudisium, grafik, rekap)
+             disaring per periode terpilih, bukan digabung semua periode sekaligus. -->
+        <?php if (!empty($arrayAllPeriode)): ?>
+            <div class="periode-filter text-center">
+                <form method="get" action="<?= base_url('akademik/dashboard'); ?>" id="formFilterPeriode">
+                    <label for="id_periode">Filter Periode:</label>
+                    <select name="id_periode" id="id_periode" onchange="document.getElementById('formFilterPeriode').submit()">
+                        <?php foreach ($arrayAllPeriode as $p): ?>
+                            <option value="<?= (int)$p->id_periode; ?>" <?= ((int)$p->id_periode === (int)$idPeriodeFilter) ? 'selected' : ''; ?>>
+                                <?= htmlspecialchars(ucfirst($p->semester) . ' ' . $p->tahun_ajaran, ENT_QUOTES, 'UTF-8'); ?>
+                                <?= ((int)$p->status_periode === 1) ? ' (Aktif)' : ''; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
+        <?php endif; ?>
 
         <!-- Tiles -->
         <div class="row top_tiles">
@@ -116,11 +137,10 @@
                             <table id="rekap-dosen" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>ID Dosen</th>
                                         <th>Nama Dosen</th>
                                         <th>Mahasiswa Memilih Proyek</th>
-                                        <th>Mahasiswa Membawa Usulan (Pembimbing 1)</th>
-                                        <th>Mahasiswa Memilih sebagai Pembimbing ke‑2</th>
+                                        <th>Mengajukan Usulan sbg Pembimbing 1</th>
+                                        <th>Diusulkan sbg Pembimbing 2</th>
                                         <th>Total Dipilih Mahasiswa (unik)</th>
                                     </tr>
                                 </thead>
@@ -128,7 +148,6 @@
                                     <?php if (!empty($rekapDipilih)): ?>
                                         <?php foreach ($rekapDipilih as $r): ?>
                                             <tr>
-                                                <td><?= htmlspecialchars($r['id_dosen'], ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?= htmlspecialchars($r['nama'], ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?= (int)$r['jumlah_mhs_proyek']; ?></td>
                                                 <td><?= (int)$r['jumlah_mhs_usul']; ?></td>
@@ -137,7 +156,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr><td colspan="6" class="text-center">Tidak ada data</td></tr>
+                                        <tr><td colspan="5" class="text-center">Tidak ada data</td></tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -185,14 +204,14 @@
           borderWidth: 1
         },
         {
-          label: 'Mahasiswa Membawa Usulan (Pembimbing 1)',
+          label: 'Mengajukan Usulan sbg Pembimbing 1',
           data: usulVals,
           backgroundColor: 'rgba(255, 159, 64, 0.55)',
           borderColor: 'rgba(255, 159, 64, 1)',
           borderWidth: 1
         },
         {
-          label: 'Mahasiswa Memilih sebagai Pembimbing ke‑2',
+          label: 'Diusulkan sbg Pembimbing 2',
           data: pembimbing2Vals,
           backgroundColor: 'rgba(75, 192, 192, 0.55)',
           borderColor: 'rgba(75, 192, 192, 1)',
@@ -222,7 +241,7 @@
   // DataTables untuk tabel (opsional)
   $('#rekap-dosen').DataTable({
     pageLength: 25,
-    order: [[5, 'desc']],
+    order: [[4, 'desc']],
     language: {
       search: 'Cari:',
       lengthMenu: 'Tampilkan _MENU_ baris',

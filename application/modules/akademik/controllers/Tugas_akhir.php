@@ -42,7 +42,7 @@ class Tugas_akhir extends BaseController
             $pilihan_ta = array(
                 'judul' => $detail_usulan[0]->judul,
                 'deskripsi' => $detail_usulan[0]->deskripsi,
-                'bisnis_rule' => $detail_usulan[0]->bisnis_rule,
+                'bisnis_rule' => $detail_usulan[0]->mitra,
                 'id_ta' => $id,
                 'file' => $detail_usulan[0]->file_persetujuan,
                 'pilihan' => $result[0]->pilihan,
@@ -89,6 +89,9 @@ class Tugas_akhir extends BaseController
                     'nama_dosen' => $detail_proyek[0]->nama_dosen,
                     'deskripsi' => $detail_proyek[0]->deskripsi,
                     'tools' => $detail_proyek[0]->tools,
+                    // proyek ini sudah ditetapkan buat mahasiswa lain? kalau iya, pilihan
+                    // ini harus dikunci di form (SOP: 1 proyek cuma buat 1 mahasiswa).
+                    'sudah_diambil' => $this->Ta_model->check_proyek($result->id_proyek),
                 );
                 array_push($pilihan_ta, $array);
             } else {
@@ -96,11 +99,16 @@ class Tugas_akhir extends BaseController
                 $array = array(
                     'judul' => $detail_usulan[0]->judul,
                     'deskripsi' => $detail_usulan[0]->deskripsi,
-                    'bisnis_rule' => $detail_usulan[0]->bisnis_rule,
+                    'bisnis_rule' => $detail_usulan[0]->mitra,
                     'file' => $detail_usulan[0]->file_persetujuan,
                     'pilihan' => $result->pilihan,
                     'jenis' => $result->jenis,
-                    'id_pengajuan_ta' => $result->id_pengajuan_ta
+                    'id_pengajuan_ta' => $result->id_pengajuan_ta,
+                    // dosen yang DIUSULKAN mahasiswa sendiri -- dipakai untuk pre-fill
+                    // pilihan dosen pembimbing di halaman plotting kalau akademik
+                    // menyetujui pilihan usulan ini (akademik masih bebas mengganti).
+                    'id_dosen' => $detail_usulan[0]->id_dosen,
+                    'id_dosen2' => $detail_usulan[0]->id_dosen2,
                 );
                 array_push($pilihan_ta, $array);
             }
@@ -133,27 +141,38 @@ class Tugas_akhir extends BaseController
             $tipe_plotting = $this->input->post('terima');
             /* Cek apakah dipilihkan ke proyek secara manual dari akademik atau tidak*/
             if ($tipe_plotting == 'manual') {
-                $this->form_validation->set_rules('proyek', 'Proyek', 'required');
-                if ($this->form_validation->run() == FALSE) {
-                    $this->session->set_flashdata('error', 'Pilih salah satu proyek terlebih dahulu');
-                    redirect('akademik/tugas_akhir/plotting/' . $this->input->post('id_ta'));
-                } else {
-                    $id_proyek = $this->input->post('proyek');
-                    $id_ta = $this->input->post('id_ta');
-                    $id_mahasiswa = $this->input->post('id_mahasiswa');
+                $id_ta = $this->input->post('id_ta');
+                $id_mahasiswa = $this->input->post('id_mahasiswa');
+                $id_proyek = $this->input->post('proyek');
+                $id_dosen_manual = $this->input->post('dosen');
+                $id_dosen2 = $this->input->post('dosen2');
+
+                // Jalur manual: dipakai kalau SEMUA pilihan mahasiswa sudah tidak bisa
+                // dipakai lagi (proyek keburu diambil mhs lain / usulan tidak disetujui).
+                // Proyek OPSIONAL di sini -- kalau proyek yang tersedia juga sudah habis,
+                // akademik boleh langsung menentukan Dosen Pembimbing saja tanpa proyek.
+                if (empty($id_proyek) && empty($id_dosen_manual)) {
+                    $this->session->set_flashdata('error', 'Pilih salah satu proyek, atau tentukan Dosen Pembimbing kalau proyek sudah habis');
+                    redirect('akademik/tugas_akhir/plotting/' . $id_ta);
+                    return;
+                }
+
+                if (!empty($id_proyek)) {
                     if ($this->Ta_model->check_proyek($id_proyek)) {
                         $this->session->set_flashdata('error', 'Proyek yang terpilih sudah terplotting di mahasiswa lain');
 
                         redirect('akademik/tugas_akhir/plotting/' . $id_ta);
                     } else {
+                        // id_pengajuan_ta = NULL supaya terima_ta() menghapus SEMUA pilihan
+                        // lama punya mahasiswa ini lalu insert 1 baris baru (lihat terima_ta()).
                         $data = array(
                             'id_ta' => $id_ta,
-                            'pilihan' => 4,
+                            'pilihan' => 1,
                             'id_proyek' => $id_proyek,
                             'status' => 'diterima',
                             'jenis' => 'proyek'
                         );
-                        $result = $this->Ta_model->revisi_ta($id_ta, NULL, $id_mahasiswa, $data, $id_proyek, NULL);
+                        $result = $this->Ta_model->terima_ta($id_ta, NULL, $id_mahasiswa, $data, $id_proyek, NULL, $id_dosen2);
 
                         if ($result) {
                             $this->session->set_flashdata('success', 'Tugas akhir telah terploting');
@@ -162,6 +181,24 @@ class Tugas_akhir extends BaseController
                         };
                         redirect('akademik/tugas_akhir');
                     }
+                } else {
+                    // Tanpa proyek sama sekali -- akademik cuma menentukan dosen
+                    // pembimbing (mis. semua proyek yang tersedia sudah habis).
+                    $data = array(
+                        'id_ta' => $id_ta,
+                        'pilihan' => 1,
+                        'id_proyek' => null,
+                        'status' => 'diterima',
+                        'jenis' => 'usul'
+                    );
+                    $result = $this->Ta_model->terima_ta($id_ta, NULL, $id_mahasiswa, $data, NULL, $id_dosen_manual, $id_dosen2);
+
+                    if ($result) {
+                        $this->session->set_flashdata('success', 'Tugas akhir telah terploting');
+                    } else {
+                        $this->session->set_flashdata('error', 'Tugas akhir gagal terploting');
+                    };
+                    redirect('akademik/tugas_akhir');
                 }
             } else {
                 $id_ta = $this->input->post('id_ta');

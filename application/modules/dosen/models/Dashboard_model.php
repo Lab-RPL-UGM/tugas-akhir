@@ -35,6 +35,7 @@ class Dashboard_model extends CI_Model
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('ta.status_pengambilan', 'terplotting');
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_user', $userId);
@@ -45,7 +46,7 @@ class Dashboard_model extends CI_Model
     /** Total pendadaran mahasiswa */
     public function getCountPendadaran($userId)
     {
-        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
+        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path,
         p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
@@ -56,6 +57,7 @@ class Dashboard_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
+        $this->db->where('m.isDeleted', 0);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
         $this->db->group_by('m.id_mahasiswa');
@@ -77,6 +79,7 @@ class Dashboard_model extends CI_Model
         // $this->db->where('p.status_periode', 1);
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('y.id_yudisium IS NOT NULL');
         $this->db->where('ds.id_user', $userId);
         $query = $this->db->get();
@@ -126,7 +129,14 @@ class Dashboard_model extends CI_Model
                 m.nama                                                           AS nama_mahasiswa,
                 ta.id_ta                                                         AS id_ta,
                 u.judul                                                          AS judul,              -- judul usulan (bisa NULL jika belum ada)
-                'usul'                                                           AS jenis,
+                CASE
+                    -- dosen login diusulkan sebagai pembimbing kedua di usulan ini (bukan
+                    -- pertama) -- beri label beda supaya tidak terbaca sebagai Pembimbing 1
+                    WHEN u.id_dosen2 IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                         AND u.id_dosen NOT IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                    THEN 'usul_pembimbing2'
+                    ELSE 'usul'
+                END                                                              AS jenis,
                 COALESCE(
                     NULLIF(pt.createdDtm, '0000-00-00 00:00:00'),
                     NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
@@ -150,8 +160,10 @@ class Dashboard_model extends CI_Model
     
             WHERE LOWER(TRIM(pt.jenis)) = 'usul'
               AND (
-                    /* usulan langsung menunjuk ke dosen login */
+                    /* usulan langsung menunjuk ke dosen login (pembimbing pertama) */
                     u.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                    /* ATAU usulan mengusulkan dosen login sebagai pembimbing kedua */
+                 OR u.id_dosen2 IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
                     /* ATAU, bila usulan belum dicatat dosennya, tapi dosbing pertama adalah dosen login */
                  OR db1.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
               )
@@ -203,7 +215,7 @@ class Dashboard_model extends CI_Model
         // Eksekusi dengan parameter (id_user) untuk ketiga blok
         $old = $this->db->db_debug;
         $this->db->db_debug = FALSE;
-        $query = $this->db->query($sql, [ (int)$userId, (int)$userId, (int)$userId, (int)$userId ]);
+        $query = $this->db->query($sql, array_fill(0, 7, (int)$userId));
         if (!$query) {
             $err = $this->db->error();
             log_message('error', 'getPermohonanTAListByUser SQL ERROR: '.$err['message'].' ('.$err['code'].')');

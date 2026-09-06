@@ -95,6 +95,10 @@ class Sidang_model extends CI_Model
         $this->db->order_by('s.createdDtm DESC');
         if ($sidangId != null) {
             $this->db->where('s.id_sidang', $sidangId);
+        } else {
+            // Cuma difilter di mode listing (semua sidang) — kalau ambil satu sidang
+            // spesifik by id, tetap tampilkan meski mahasiswanya sudah dihapus (data historis).
+            $this->db->where('(m.id_mahasiswa IS NULL OR m.isDeleted = 0)', NULL, FALSE);
         }
         $query = $this->db->get();
         return $query->result();
@@ -112,6 +116,8 @@ class Sidang_model extends CI_Model
         $this->db->order_by('ds.id_dosbing ASC');
         if ($sidangId != null) {
             $this->db->where('s.id_sidang', $sidangId);
+        } else {
+            $this->db->where('(m.id_mahasiswa IS NULL OR m.isDeleted = 0)', NULL, FALSE);
         }
         $this->db->group_by('s.id_sidang');
         $query = $this->db->get();

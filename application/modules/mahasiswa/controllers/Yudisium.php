@@ -48,10 +48,6 @@ class Yudisium extends BaseController
     function daftar(){
         //get id user who is logged in
         $id_user = $this->vendorId;
-        //get total syarat where active
-        $total_syarat = $this->input->post('total_syarat');
-//            get first id syarat berkas
-        $id_syarat = $this->input->post('id_syarat');
 //            get id_mahasiswa based on who is logged in
         $cek = $this->Yudisium_model->cekMahasiswa($id_user);
         $id_mahasiswa = $cek[0]->id_mahasiswa;
@@ -64,14 +60,17 @@ class Yudisium extends BaseController
         );
 //            insert to table yudisium / registration yudisium new
         $idYudisium = $this->Yudisium_model->addNewYudisium($infoYudisium);
-//            insert to validasi yudisium table, based on active files important to yudisium
-        for ($i=1;$i<=$total_syarat;$i++){
+//            insert to validasi yudisium table, satu baris per syarat AKTIF -- query ulang
+//            daftar ID-nya (bukan nebak lewat id_syarat++) supaya tidak salah pasang kalau
+//            ada syarat yang dinonaktifkan di tengah urutan ID.
+        $daftarBerkas = $this->Yudisium_model->getIdBerkas();
+        $result = 0;
+        foreach ($daftarBerkas as $berkas) {
             $daftarId = array(
                 "id_yudisium"=>$idYudisium,
-                "id_berkas_yudisium"=>$id_syarat
+                "id_berkas_yudisium"=>$berkas->id_berkas_yudisium
             );
             $result = $this->Yudisium_model->addNewValidasi($daftarId);
-            $id_syarat++;
         }
 //            lebih dari 0 berarti ada data yg masuk
         if ($result>0)

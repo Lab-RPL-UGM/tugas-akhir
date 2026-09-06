@@ -21,6 +21,8 @@ class Yudisium_model extends CI_Model
         $this->db->order_by('s.createdDtm DESC');
         if ($yudisiumId!=null){
             $this->db->where('id_yudisium', $yudisiumId);
+        } else {
+            $this->db->where('(m.id_mahasiswa IS NULL OR m.isDeleted = 0)', NULL, FALSE);
         }
         $query = $this->db->get();
         return $query->result();

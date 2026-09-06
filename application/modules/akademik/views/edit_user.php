@@ -56,6 +56,15 @@
                                 <input id="nim" type="text" name="nim" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $dataUser[0]->nim?>">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email UGM
+                                <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input id="email" type="email" name="email" required="required" placeholder="nama@mail.ugm.ac.id" class="form-control col-md-7 col-xs-12" value="<?php echo $dataUser[0]->email?>">
+                                <small>Email ini yang dipakai untuk mencocokkan login SSO — harus sama dengan akun Google/UGM mahasiswa.</small>
+                            </div>
+                        </div>
                             <input type="hidden" value="<?php  echo $ta[0]->id_mahasiswa ;  ?>" name="id_mahasiswa" id="id_mahasiswa" />
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Status TA
@@ -104,6 +113,7 @@
                             </div>
                         </div>
                         <?php } ?>
+                        <?php if ($role != ROLE_MAHASISWA) { ?>
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Username
                                 <span class="required">*</span>
@@ -137,6 +147,7 @@
                                 </div>
                             </div>
                         </div>
+                        <?php } ?>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <?php if($role == ROLE_MAHASISWA) {?>

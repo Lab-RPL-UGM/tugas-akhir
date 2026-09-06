@@ -28,11 +28,18 @@ class Pengajuan_model extends CI_Model
      */
     function getTa($id_mahasiswa)
     {
-        $this->db->select('ta.id_ta, ta.reason, ta.status_pengambilan, pt.id_pengajuan_ta, pt.pilihan, pt.jenis, p.id_proyek, p.nama, p.deskripsi as deskripsi_proyek, p.tools, u.id_usulan, u.judul, u.deskripsi, u.bisnis_rule, u.file_persetujuan');
+        // dosen ikut di-select per baris (proyek/usulan) -- sejak pengajuan bisa berisi
+        // 1-3 pilihan sekaligus, dosbing global (per mahasiswa) tidak lagi diisi saat
+        // mendaftar (baru diisi akademik saat menerima salah satu pilihan), jadi tiap
+        // pilihan harus bawa info dosennya sendiri-sendiri untuk ditampilkan.
+        $this->db->select('ta.id_ta, ta.reason, ta.status_pengambilan, pt.id_pengajuan_ta, pt.pilihan, pt.jenis, pt.status as status_pengajuan, p.id_proyek, p.nama, p.deskripsi as deskripsi_proyek, p.tools, dp.nama as nama_dosen_proyek, u.id_usulan, u.judul, u.deskripsi, u.mitra, u.file_persetujuan, u.id_dosen as id_dosen_usulan, du.nama as nama_dosen_usulan, u.id_dosen2 as id_dosen2_usulan, du2.nama as nama_dosen2_usulan');
         $this->db->from('tugas_akhir as ta');
         $this->db->join('pengajuan_ta as pt', 'pt.id_ta=ta.id_ta');
         $this->db->join('proyek as p', 'pt.id_proyek=p.id_proyek', 'left');
+        $this->db->join('dosen as dp', 'dp.id_dosen=p.id_dosen', 'left');
         $this->db->join('usulan as u', 'pt.id_pengajuan_ta=u.id_pengajuan_ta', 'left');
+        $this->db->join('dosen as du', 'du.id_dosen=u.id_dosen', 'left');
+        $this->db->join('dosen as du2', 'du2.id_dosen=u.id_dosen2', 'left');
         $this->db->where('ta.id_mahasiswa', $id_mahasiswa);
         $this->db->order_by('pt.pilihan');
         $query = $this->db->get();
@@ -165,6 +172,36 @@ class Pengajuan_model extends CI_Model
         $this->db->trans_complete();
 
         return $this->db->trans_status();
+    }
+
+    /**
+     * Nama file usulan yang masih terpakai untuk satu id_ta -- dipakai saat Edit
+     * pengajuan untuk tahu file mana yang boleh dihapus fisik setelah pilihan lama
+     * diganti/dihapus (supaya tidak ada file yatim menumpuk di uploads/persetujuan).
+     */
+    function getUsulanFileNamesByIdTa($id_ta)
+    {
+        $this->db->select('u.file_persetujuan');
+        $this->db->from('usulan u');
+        $this->db->join('pengajuan_ta pt', 'pt.id_pengajuan_ta = u.id_pengajuan_ta');
+        $this->db->where('pt.id_ta', $id_ta);
+        $this->db->where('u.file_persetujuan IS NOT NULL', null, false);
+        $rows = $this->db->get()->result();
+        return array_map(function ($r) {
+            return $r->file_persetujuan;
+        }, $rows);
+    }
+
+    /**
+     * Hapus semua baris pengajuan_ta (1-3 pilihan) milik satu id_ta -- dipakai saat
+     * Edit untuk mengganti seluruh set pilihan sekaligus. usulan ikut terhapus
+     * otomatis lewat FK ON DELETE CASCADE.
+     */
+    function deletePengajuanTaByIdTa($id_ta)
+    {
+        $this->db->where('id_ta', $id_ta);
+        $this->db->delete('pengajuan_ta');
+        return true;
     }
 
     function deleteUsulan($id_usulan)
@@ -313,10 +350,14 @@ class Pengajuan_model extends CI_Model
     public function getProyek($id_proyek = NULL)
     {
         if ($id_proyek == NULL) {
+            // Cuma proyek periode aktif yang boleh muncul di katalog pilihan mahasiswa --
+            // proyek lama (id_periode beda/NULL) tidak lagi nongol selamanya lintas semester.
             $query = $this->db->query(
                 'SELECT *,p.nama nama_proyek,d.nama nama_dosen FROM proyek p
                 INNER JOIN dosen d ON d.id_dosen = p.id_dosen
-                WHERE p.id_proyek 
+                WHERE p.isDeleted = 0
+                AND p.id_periode = (SELECT id_periode FROM periode WHERE status_periode = 1 LIMIT 1)
+                AND p.id_proyek
                 NOT IN (
                 SELECT id_proyek FROM pengajuan_ta pt WHERE pt.status = \'diterima\' AND id_proyek IS NOT NULL
                 ) AND p.status = \'disetujui\''

@@ -6,16 +6,20 @@ class User_model extends CI_Model{
         $data_user = array(
             'nama' => $data['nama'],
             'username' => $data['username'],
-            'password' => $data['password'],
             'id_user_role' => $data['id_user_role']
         );
+        // Mahasiswa login lewat SSO saja — tidak ada password lokal untuk di-set.
+        if (isset($data['password'])) {
+            $data_user['password'] = $data['password'];
+        }
         $this->db->insert('user', $data_user);
         $insert_id = $this->db->insert_id();
         if($data['id_user_role'] == ROLE_MAHASISWA){
             $data_another_table = array(
                 'id_user' => $insert_id,
                 'nama' => $data['nama'],
-                'nim' => $data['nomor_induk']
+                'nim' => $data['nomor_induk'],
+                'email' => $data['email']
             );
             $this->db->insert('mahasiswa', $data_another_table);
         } elseif($data['id_user_role'] == ROLE_DOSEN){
@@ -131,17 +135,14 @@ class User_model extends CI_Model{
 
     function update($data,$id,$role){
         $this->db->trans_start();
-        if(empty($data['password'])){
-            $data_user = array(
-                'nama' => $data['nama'],
-                'username' => $data['username']
-            );
-        } else {
-            $data_user = array(
-                'nama' => $data['nama'],
-                'username' => $data['username'],
-                'password' => $data['password']
-            );
+        // Mahasiswa tidak lagi kirim username/password dari form (login murni SSO) —
+        // nama tetap di-update, username & password lama dibiarkan apa adanya.
+        $data_user = array('nama' => $data['nama']);
+        if (isset($data['username'])) {
+            $data_user['username'] = $data['username'];
+        }
+        if (!empty($data['password'])) {
+            $data_user['password'] = $data['password'];
         }
         $this->db->where('id_user',$id);
         $this->db->update('user',$data_user);
@@ -149,7 +150,8 @@ class User_model extends CI_Model{
         if($role == ROLE_MAHASISWA){
             $data_mahasiswa = array(
                 'nama' => $data['nama'],
-                'nim' => $data['nim']
+                'nim' => $data['nim'],
+                'email' => $data['email']
             );
             $this->db->where('id_user',$id);
             $this->db->update('mahasiswa', $data_mahasiswa);
@@ -202,12 +204,14 @@ class User_model extends CI_Model{
     }
 
     function checkEmail($email,$userId = 0){
-        $this->db->select("email");
-        $this->db->from("user");
-        $this->db->where("email", $email);   
-        $this->db->where("isDeleted", 0);
+        // Kolom "email" ada di tabel mahasiswa, bukan user — sama seperti checkNIM().
+        $this->db->select("m.email");
+        $this->db->from("user u");
+        $this->db->join("mahasiswa m","u.id_user = m.id_user","inner");
+        $this->db->where("m.email", $email);
+        $this->db->where("u.isDeleted", 0);
         if($userId != 0){
-            $this->db->where("id_user !=", $userId);
+            $this->db->where("u.id_user !=", $userId);
         }
         $query = $this->db->get();
 
@@ -267,12 +271,18 @@ class User_model extends CI_Model{
     }
 
     public function getUserTableWithTA(){
-        $this->db->select('u.*, m.nim, m.id_mahasiswa, t.status_pengambilan');
+        // Subquery (bukan JOIN langsung ke tugas_akhir) supaya mahasiswa dengan lebih dari
+        // satu baris tugas_akhir (mis. pernah ganti pengajuan) tidak muncul dobel di listing —
+        // cuma diambil baris tugas_akhir yang paling baru per mahasiswa.
+        $this->db->select("u.*, m.nim, m.email, m.id_mahasiswa,
+            (SELECT t.status_pengambilan FROM tugas_akhir t
+             WHERE t.id_mahasiswa = m.id_mahasiswa
+             ORDER BY t.id_ta DESC LIMIT 1) AS status_pengambilan", FALSE);
         $this->db->from('user u');
         $this->db->join('mahasiswa m','u.id_user = m.id_user','inner');
-        $this->db->join('tugas_akhir t','m.id_mahasiswa = t.id_mahasiswa','left');
         $this->db->where('u.id_user_role',ROLE_MAHASISWA);
         $this->db->where('u.isDeleted',0);
+        $this->db->where('m.isDeleted',0);
         $this->db->order_by('u.createdDtm DESC');
         $query = $this->db->get();
 
@@ -291,7 +301,7 @@ class User_model extends CI_Model{
     }
 
     function getUserDosenTable($role){
-        $this->db->select('u.*, d.gelar_depan, d.gelar_belakang');
+        $this->db->select('u.*, d.gelar_depan, d.gelar_belakang, d.is_admin');
         $this->db->from('user u');
         $this->db->join("dosen d","u.id_user = d.id_user","inner");
         $this->db->where('u.id_user_role',$role);
@@ -300,6 +310,24 @@ class User_model extends CI_Model{
         $query = $this->db->get();
 
         if($query->num_rows() > 0) { return $query->result(); } else { return FALSE; }
+    }
+
+    /**
+     * Toggles admin (akademik panel) access for a dosen account — lets a dosen
+     * be granted/revoked admin privileges without a separate fixed admin account.
+     */
+    function toggleAdmin($id_user){
+        $this->db->select('is_admin');
+        $this->db->from('dosen');
+        $this->db->where('id_user', $id_user);
+        $current = $this->db->get()->row();
+
+        if (!$current) {
+            return FALSE;
+        }
+
+        $this->db->where('id_user', $id_user);
+        return $this->db->update('dosen', array('is_admin' => $current->is_admin ? 0 : 1));
     }
 
     public function getUser($id,$role = NULL){

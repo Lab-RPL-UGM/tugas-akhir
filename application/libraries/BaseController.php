@@ -15,6 +15,8 @@ class BaseController extends CI_Controller
 	protected $roleText = '';
 	protected $global = array();
 	protected $lastLogin = '';
+	// Dosen dengan flag dosen.is_admin juga bisa akses panel akademik — lihat isAkademik().
+	protected $isAdmin = false;
 
 	/**
 	 * Takes mixed data and optionally a status code, then creates the response
@@ -45,11 +47,13 @@ class BaseController extends CI_Controller
 			$this->name = $this->session->userdata('name');
 			$this->roleText = $this->session->userdata('roleText');
 			$this->lastLogin = $this->session->userdata('lastLogin');
+			$this->isAdmin = $this->session->userdata('is_admin') == 1;
 
 			$this->global['name'] = $this->name;
 			$this->global['role'] = $this->role;
 			$this->global['role_text'] = $this->roleText;
 			$this->global['last_login'] = $this->lastLogin;
+			$this->global['is_admin'] = $this->isAdmin;
 		}
 	}
 	/**
@@ -72,7 +76,8 @@ class BaseController extends CI_Controller
 	 */
 	function isAkademik()
 	{
-		if ($this->role != ROLE_AKADEMIK) {
+		$isDosenAdmin = $this->role == ROLE_DOSEN && $this->isAdmin;
+		if ($this->role != ROLE_AKADEMIK && !$isDosenAdmin) {
 			redirect('error_404');
 		} else {
 			return false;
@@ -122,7 +127,17 @@ class BaseController extends CI_Controller
 	{
 		$this->session->sess_destroy();
 
-		redirect('login');
+		// Sesi lokal saja tidak cukup: Casdoor menyimpan sesinya sendiri di
+		// browser (cookie terpisah). Tanpa dibersihkan juga, klik "Login dengan
+		// SSO TRPL" berikutnya langsung auto-approve akun yang sama tanpa prompt,
+		// sehingga logout terasa tidak berpengaruh.
+		$this->config->load('casdoor');
+		$casdoorConfig = $this->config->item('casdoor');
+
+		$this->load->view('logout', array(
+			'casdoorLogoutUrl' => $casdoorConfig['endpoint'] . '/api/logout',
+			'loginUrl'         => base_url('login'),
+		));
 	}
 
 	/**

@@ -9,26 +9,11 @@
 //var_dump($periodeInfo)
 ?>
 <?php
-$pilihan = array();
-//diset null karna untuk pilihan ke tiga
-$proyek = array();
-$id_pengajuan_ta = array();
-$id_usulan = '';
-$judul = '';
-$deskripsi = '';
-$bisnis_rule = '';
-$arr_jenis = array();
-//cek jenis khusus inputan ke-3
-$jenis = '';
 // get periode
 $periode = '';
 $awal = '';
 $akhir = '';
 $id_periode = '';
-
-// active pane saat edit form
-$active_proyek = 0;
-$active_usulan = 0;
 
 //get date_now
 $date_now = date("Y-m-d");
@@ -42,48 +27,147 @@ if (!empty($periodeInfo)) {
     }
 }
 
-if (!empty($taInfo)) {
-    $i = 0;
-    $p = 0;
-    foreach ($taInfo as $record) {
-        if ($record->jenis == "proyek") {
-            $pilihan[$p] = $record->pilihan;
-            $id_pengajuan_ta[$p] = $record->id_pengajuan_ta;
-            $arr_jenis[$i] = $record->jenis;
-            // apabila jenis pilihannya = proyek
-            $proyek[$p] = $record->id_proyek;
-            $p++;
-        } else {
-            // apabila jenis pilihannya = usulan
-            // langsung dikasih indeks yang ke-3 (array mulai dari 0) karna tempatnya adalah dipaling bawah/pilihan ke-3
-            $pilihan[$p] = $record->pilihan;
-            $id_usulan = $record->id_usulan;
-            $id_pengajuan_ta[$p] = $record->id_pengajuan_ta;
-            $arr_jenis[$i] = $record->jenis;
+// dipakai tab ringkasan status di bawah -- status_pengambilan sama untuk semua
+// baris pilihan jadi cukup ambil dari yang pertama.
+$record = !empty($taInfo) ? $taInfo[0] : null;
 
-            $judul = $record->judul;
-            $deskripsi = $record->deskripsi;
-            $bisnis_rule = $record->bisnis_rule;
+// dari controller: kosong kalau belum pernah mendaftar sama sekali, atau berisi
+// 1-3 entri (keyed by nomor pilihan) hasil pengajuan yang sudah ada -- dipakai untuk
+// pre-fill form Edit di bawah.
+$existingPilihan = isset($existingPilihan) ? $existingPilihan : [];
+
+/**
+ * Render satu blok "Pilihan ke-n". Dipakai bareng oleh form Daftar (pertama kali,
+ * $existingPilihan kosong sehingga semua blok kosong) dan form Edit (pre-filled
+ * dari $existingPilihan) supaya keduanya konsisten & tidak duplikat kode/JS.
+ */
+$renderPilihanBlock = function ($n) use ($dataDosen, $proyekInfo, $existingPilihan) {
+    $prefill = isset($existingPilihan[$n]) ? $existingPilihan[$n] : null;
+    $jenisBlok = $prefill ? $prefill['jenis'] : 'usul';
+    $judulBlok = $prefill ? (string) $prefill['judul'] : '';
+    $mitraBlok = $prefill ? (string) $prefill['mitra'] : '';
+    $idDosenBlok = $prefill ? $prefill['id_dosen'] : '';
+    $idDosen2Blok = ($prefill && !empty($prefill['id_dosen2'])) ? $prefill['id_dosen2'] : '';
+    $idProyekBlok = $prefill ? $prefill['id_proyek'] : '';
+    $fileLamaBlok = ($prefill && $jenisBlok == 'usul') ? $prefill['file_persetujuan'] : '';
+    $tampilkanBlok = ($n == 1) || $prefill;
+
+    $deskripsiAwal = '';
+    $toolsAwal = '';
+    if ($jenisBlok == 'proyek' && $idProyekBlok && !empty($proyekInfo)) {
+        foreach ($proyekInfo as $pr) {
+            if ($pr->id_proyek == $idProyekBlok) {
+                $deskripsiAwal = $pr->deskripsi;
+                $toolsAwal = $pr->tools;
+                break;
+            }
         }
-        $i++;
     }
-    foreach ($arr_jenis as $value) {
-        if ($value == "usul") {
-            $active_proyek = 0;
-            $active_usulan = 1;
-            $jenis = 'usul';
-            break;
-        } else {
-            $active_proyek = 1;
-            $jenis = 'proyek';
-        }
-    }
-}
-// var_dump($arr_jenis);
-// echo "pilihan \n";
-// var_dump($pilihan);
-// echo "proyek \n";
-// var_dump($proyek);
+?>
+    <div class="x_panel pilihan-block" id="pilihan-block-<?= $n ?>" data-has-file="<?= $fileLamaBlok ? 1 : 0 ?>" style="<?= $tampilkanBlok ? '' : 'display:none;' ?>">
+        <div class="x_title">
+            <h4>Pilihan <?= $n ?><?= $n == 1 ? ' <span class="required">*</span>' : ' <small>(opsional)</small>'; ?>
+                <?php if ($n > 1) { ?>
+                    <button type="button" class="btn btn-xs btn-danger pull-right btn-hapus-pilihan" data-target="<?= $n ?>">Hapus</button>
+                <?php } ?>
+            </h4>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Jenis</label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default<?= $jenisBlok == 'usul' ? ' active' : '' ?>">
+                        <input type="radio" name="jenis_<?= $n ?>" value="usul" class="jenis-radio" data-target="<?= $n ?>" <?= $jenisBlok == 'usul' ? 'checked' : '' ?>> Usul Ide
+                    </label>
+                    <label class="btn btn-default<?= $jenisBlok == 'proyek' ? ' active' : '' ?>">
+                        <input type="radio" name="jenis_<?= $n ?>" value="proyek" class="jenis-radio" data-target="<?= $n ?>" <?= $jenisBlok == 'proyek' ? 'checked' : '' ?>> Pilih Proyek
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- sub-form: usulan sendiri -->
+        <div class="usul-fields" id="usul-fields-<?= $n ?>" style="<?= $jenisBlok == 'usul' ? '' : 'display:none;' ?>">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Judul <span class="required wajib-usul-<?= $n ?>">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" name="judul_<?= $n ?>" class="form-control" placeholder="Tuliskan judul anda" value="<?= htmlspecialchars($judulBlok, ENT_QUOTES) ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <textarea name="mitra_<?= $n ?>" class="form-control" placeholder="Nama perusahaan mitra anda (opsional)"><?= htmlspecialchars($mitraBlok, ENT_QUOTES) ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">File Proposal <span class="required wajib-file-<?= $n ?>" <?= $fileLamaBlok ? 'style="display:none;"' : '' ?>>*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="file" name="file_persetujuan_<?= $n ?>" class="form-control">
+                    <?php if ($fileLamaBlok) { ?>
+                        <input type="hidden" name="existing_file_<?= $n ?>" value="<?= htmlspecialchars($fileLamaBlok, ENT_QUOTES) ?>">
+                        <p class="help-block">File saat ini: <a target="_blank" href="<?php echo base_url(); ?>uploads/persetujuan/<?= $fileLamaBlok ?>"><?= $fileLamaBlok ?></a>. Kosongkan supaya file lama tetap dipakai.</p>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Dosen Pembimbing Pertama <span class="required wajib-usul-<?= $n ?>">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select name="dosen_<?= $n ?>" class="form-control dosen1-select" data-target="<?= $n ?>">
+                        <option value="">Pilih Dosen pembimbing pertama..</option>
+                        <?php foreach ($dataDosen as $data) { ?>
+                            <option value="<?php echo $data->id_dosen ?>" <?= ($idDosenBlok == $data->id_dosen) ? 'selected' : '' ?>><?php echo $data->nama; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Dosen Pembimbing Kedua <small>(opsional)</small></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select name="dosen2_<?= $n ?>" class="form-control dosen2-select" data-target="<?= $n ?>">
+                        <option value="">Pilih Dosen pembimbing kedua..</option>
+                        <?php foreach ($dataDosen as $data) { ?>
+                            <option value="<?php echo $data->id_dosen ?>" <?= ($idDosen2Blok == $data->id_dosen) ? 'selected' : '' ?>><?php echo $data->nama; ?></option>
+                        <?php } ?>
+                    </select>
+                    <small>Harus berbeda dengan Dosen Pembimbing Pertama</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- sub-form: pilih dari katalog proyek existing -->
+        <div class="proyek-fields" id="proyek-fields-<?= $n ?>" style="<?= $jenisBlok == 'proyek' ? '' : 'display:none;' ?>">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek <span class="required wajib-proyek-<?= $n ?>" style="<?= $jenisBlok == 'proyek' ? '' : 'display:none;' ?>">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <select name="proyek_<?= $n ?>" class="form-control proyek-select" data-target="<?= $n ?>">
+                        <option value="">Pilih ..</option>
+                        <?php if (!empty($proyekInfo)) {
+                            foreach ($proyekInfo as $record2) { ?>
+                                <option data-deskripsi="<?= $record2->deskripsi ?>" data-tools="<?= $record2->tools ?>" value="<?php echo $record2->id_proyek ?>" <?= ($idProyekBlok == $record2->id_proyek) ? 'selected' : '' ?>><?php echo $record2->nama_proyek ?></option>
+                        <?php }
+                        } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <textarea cols="4" readonly class="form-control" id="deskripsi-proyek-<?= $n ?>"><?= htmlspecialchars($deskripsiAwal, ENT_QUOTES) ?></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input readonly class="form-control" id="tools-proyek-<?= $n ?>" value="<?= htmlspecialchars($toolsAwal, ENT_QUOTES) ?>">
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
+};
 ?>
 <div class="">
     <div class="page-title">
@@ -142,12 +226,18 @@ if (!empty($taInfo)) {
                                         <div class="form-group">
                                             <?php
                                             foreach ($taInfo as $record) {
+                                                $labelStatus = ($record->status_pengajuan == 'diterima')
+                                                    ? '<span class="label label-success">DITERIMA</span>'
+                                                    : '<span class="label label-warning">MENUNGGU KEPUTUSAN</span>';
                                                 if ($record->jenis == "proyek") {
                                             ?>
                                                     <!--proyek-->
                                                     <div class="row">
-                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan</label>
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan ke-<?= $record->pilihan ?></label>
                                                         <div class="well col-md-8">
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12"><?= $labelStatus ?></div>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -173,66 +263,51 @@ if (!empty($taInfo)) {
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing Proyek</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <span>
-                                                                    <?php echo $dataDosbing[0]->nama ?>
+                                                                    <?php echo $record->nama_dosen_proyek ?>
                                                                 </span>
                                                             </div>
-                                                            <?php if (isset($dataDosbing[1]->id_dosen)) { ?>
-                                                                <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 2</label>
-                                                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                    <span>
-                                                                        <?php echo $dataDosbing[1]->nama ?>
-                                                                    </span>
-                                                                </div>
-                                                            <?php } ?>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                         </div>
                                                     </div>
                                                 <?php } else { ?>
                                                     <!--usulan-->
                                                     <div class="row">
-                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan</label>
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Pilihan ke-<?= $record->pilihan ?></label>
                                                         <div class="well col-md-8">
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12"><?= $labelStatus ?></div>
+                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Judul</label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <span><?php echo $record->judul ?></span>
                                                             </div>
-                                                            <!-- <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem</label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                <span>
-                                                                    <?php echo $record->deskripsi ?>
-                                                                </span>
-                                                            </div> -->
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <span>
-                                                                    <?php echo $record->bisnis_rule ?>
+                                                                    <?php echo $record->mitra ?: '(tidak diisi)' ?>
                                                                 </span>
                                                             </div>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek</label>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">File Proposal</label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <a target="_blank" href="<?php echo base_url(); ?>uploads/persetujuan/<?php echo $record->file_persetujuan; ?>"><?php echo $record->file_persetujuan ?></a>
                                                             </div>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 1</label>
+                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Dosen Pembimbing Pertama</label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <span>
-                                                                    <?php echo $dataDosbing[0]->nama ?>
+                                                                    <?php echo $record->nama_dosen_usulan ?: '(tidak ditentukan)' ?>
                                                                 </span>
                                                             </div>
-                                                            <?php if (isset($dataDosbing[1]->id_dosen)) { ?>
-                                                                <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing 2</label>
-                                                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                    <span>
-                                                                        <?php echo $dataDosbing[1]->nama ?>
-                                                                    </span>
-                                                                </div>
-                                                            <?php } ?>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <?php if (!empty($record->nama_dosen2_usulan)) { ?>
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Dosen Pembimbing Kedua</label>
+                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                    <span><?php echo $record->nama_dosen2_usulan ?></span>
+                                                                </div>
+                                                                <div class="clearfix" style="margin-bottom: 2%"></div>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                             <?php
@@ -253,166 +328,24 @@ if (!empty($taInfo)) {
                                 <div class="tab-pane fade in" id="edit">
                                     <a href="#content" data-toggle="tab" class="btn btn-round btn-primary"><i class="fa fa-chevron-left"></i> Back</a>
 
-
-
                                     <div class="x_content">
-                                        <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/edit_ta" method="POST" data-parsley-validate class="form-horizontal form-label-left" role="form" enctype="multipart/form-data">
+                                        <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/edit_ta" method="POST" class="form-horizontal form-label-left" enctype="multipart/form-data">
                                             <input type="hidden" name="id_periode" value="<?php echo $id_periode ?>">
-                                            <center><span class="badge" style="margin-bottom:15px">DAFTAR TUGAS AKHIR</span></center>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
-                                                <!-- Get Id Pengajuan TA -->
-                                                <input type="hidden" name="pilihan3" value="<?php echo $id_pengajuan_ta[0] ?>">
-                                                <input type="hidden" name="jenis_pilihan3" value="<?php echo $jenis ?>">
-                                                <input type="hidden" name="id_usulan" value="<?php echo $id_usulan ?>">
-                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <div class="btn-group" data-toggle="buttons" id="pilihan3">
-                                                        <a class="<?php if ($active_usulan != 0) {
-                                                                        echo 'active ';
-                                                                    } ?>btn btn-default" href="#tab_content3" role="tab" data-toggle="tab" aria-expanded="true"><input type="radio" name="jenis" value="usul" <?php if ($active_usulan != 0) {
-                                                                                                                                                                                                                    echo 'checked ';
-                                                                                                                                                                                                                } ?>>Usulan</a>
-                                                        <a class="<?php if ($active_proyek != 0) {
-                                                                        echo 'active ';
-                                                                    } ?>btn btn-default" href="#tab_content4" role="tab" data-toggle="tab" aria-expanded="true"><input type="radio" name="jenis" value="proyek" <?php if ($active_proyek != 0) {
-                                                                                                                                                                                                                    echo 'checked ';
-                                                                                                                                                                                                                } ?>>Project</a>
-                                                    </div>
-                                                </div>
-                                                <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                <!--pane 2-->
-                                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                                    <div id="myTabContent" class="tab-content">
-                                                        <!--pane ide-->
-                                                        <div role="tabpanel" class="<?php if ($active_usulan != 0) {
-                                                                                        echo 'active ';
-                                                                                    } ?>tab-pane fade in" id="tab_content3" aria-labelledby="home-tab">
-                                                            <!--pilihan usulan-->
-                                                            <div class="row">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Judul <span class="required">*</span>
-                                                                    </label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <input type="text" name="judul" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan judul anda" value="<?php echo $judul ?>">
-                                                                    </div>
-                                                                </div>
-                                                                <!-- <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem <span class="required">*</span>
-                                                                    </label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <textarea type="text" name="deskripsi" id="deskripsi" class="form-control col-md-7 col-xs-12" placeholder="Deskripsikan dengan singkat dan jelas"><?php echo $deskripsi ?></textarea>
-                                                                    </div>
-                                                                </div> -->
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra
-                                                                    </label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Nama Perusahaan Mitra"><?php echo $bisnis_rule ?></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek <span class="required">*</span></label>
-                                                                    <!-- <small>Bagi yang mengajukan project dari institusi</small> -->
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 1 <span class="required">*</span></label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <select name="dosen" id="dosen" class="form-control">
-                                                                            <option value="">Pilih Dosen pembimbing 1..</option>
-                                                                            <?php foreach ($dataDosen as $data) { ?>
-                                                                                <option <?= ($active_usulan != 0 && isset($dataDosbing[0]->id_dosen) && $dataDosbing[0]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
-                                                                                    <?php echo $data->nama; ?>
-                                                                                </option>
-                                                                            <?php } ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <select name="dosen2" id="dosen2" class="form-control">
-                                                                            <option value="">Pilih Dosen pembimbing 2..</option>
-                                                                            <?php foreach ($dataDosen as $data) { ?>
-                                                                                <option <?= ($active_usulan != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
-                                                                                    <?php echo $data->nama; ?>
-                                                                                </option>
-                                                                            <?php } ?>
-                                                                        </select>
-                                                                        <small>Dosen 2 harus berbeda dengan Dosen 1</small>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-md-9">
-                                                                    <input type="submit" class="btn btn-success pull-right" value="Submit">
-                                                                </div>
-                                                            </div>
-                                                            <!--end usulan-->
-                                                        </div>
-                                                        <!--end ide-->
+                                            <input type="hidden" name="id_ta" value="<?php echo isset($id_ta_edit) ? $id_ta_edit : '' ?>">
+                                            <center><span class="badge" style="margin-bottom:15px">UBAH PENGAJUAN TUGAS AKHIR</span></center>
+                                            <p class="text-center text-muted">Ubah 1 sampai 3 pilihan Anda -- tiap pilihan bebas: pilih proyek yang sudah ada, atau usulkan judul/proyek sendiri.</p>
 
-                                                        <!--start project-->
-                                                        <div role="tabpanel" class="<?php if ($active_proyek != 0) {
-                                                                                        echo 'active ';
-                                                                                    } ?>tab-pane fade in" id="tab_content4" aria-labelledby="home-tab">
-                                                            <div class="row">
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek <span class="required">*</span></label>
-                                                                    <!-- Get Id Pengajuan TA Proyek -->
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <select name="proyektiga" class="form-control proyek">
-                                                                            <option value="">Pilih ..</option>
-                                                                            <?php
-                                                                            if (!empty($proyekInfo)) {
-                                                                                foreach ($proyekInfo as $record) {
-                                                                            ?>
-                                                                                    <option data-deskripsi="<?= $record->deskripsi ?>" data-tools="<?= $record->tools ?>" value="<?php echo $record->id_proyek ?>" <?php if (!empty($proyek[0])) {
-                                                                                                                                                                                                                        if ($proyek[0] == $record->id_proyek) {
-                                                                                                                                                                                                                            echo "selected";
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                    } ?>><?php echo $record->nama_proyek ?> (<?php echo $record->nama ?>)</option>
-                                                                            <?php
-                                                                                }
-                                                                            }
-                                                                            ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi</label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools</label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <input readonly class="form-control tools_proyek">
-                                                                    </div>
-                                                                </div>
-                                                                <!-- <div class="form-group">
-                                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
-                                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                        <select name="dosenProyek" id="dosen" class="form-control">
-                                                                            <option value="">Pilih Dosen pembimbing 2..</option>
-                                                                            <?php foreach ($dataDosen as $data) { ?>
-                                                                                <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
-                                                                                    <?php echo $data->nama; ?>
-                                                                                </option>
-                                                                            <?php } ?>
-                                                                        </select>
-                                                                    </div>
-                                                                </div> -->
-                                                                <div class="form-group col-md-9">
-                                                                    <input type="submit" class="btn btn-success pull-right" style="margin-top: 3%" value="Submit">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end project-->
-                                                    </div>
+                                            <div id="pilihan-list">
+                                                <?php for ($n = 1; $n <= 3; $n++) {
+                                                    $renderPilihanBlock($n);
+                                                } ?>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-9 col-md-offset-3">
+                                                    <button type="button" id="btn-tambah-pilihan" class="btn btn-default"><i class="fa fa-plus"></i> Tambah Pilihan (maks. 3)</button>
+                                                    <input type="submit" class="btn btn-success pull-right" value="Simpan Perubahan">
                                                 </div>
-                                                <!--end pane 2-->
                                             </div>
                                         </form>
                                     </div>
@@ -448,156 +381,33 @@ if (!empty($taInfo)) {
                         <!-- end bila sudah terplotting di TA-->
                     <?php } else { ?>
                         <div class="x_panel">
-                            <div class="x_title">
-                                <h5 class="badge bg-red">Pastikan Anda telah melengkapi
-                                    <a href="<?php base_url() ?>../profil" style="color: white"><u>PROFIL</u></a>
-                                    dengan benar
-                                </h5>
-                                <div class="clearfix"></div>
-                            </div>
+                            <?php if (empty($isProfilLengkap)) { ?>
+                                <div class="x_title">
+                                    <h5 class="badge bg-orange">Pastikan Anda telah melengkapi
+                                        <a href="<?php echo base_url() ?>mahasiswa/profil" style="color: white"><u>PROFIL</u></a>
+                                        dengan benar sebelum mendaftar
+                                    </h5>
+                                    <div class="clearfix"></div>
+                                </div>
+                            <?php } ?>
                             <div class="x_content">
                                 <br>
-                                <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/daftar_ta" method="POST" data-parsley-validate class="form-horizontal form-label-left" role="form" enctype="multipart/form-data">
+                                <form role="form" id="daftar" action="<?php echo base_url() ?>mahasiswa/pengajuan/daftar_ta" method="POST" class="form-horizontal form-label-left" enctype="multipart/form-data">
                                     <input type="hidden" name="id_periode" value="<?php echo $id_periode ?>">
                                     <center><span class="badge" style="margin-bottom:15px">DAFTAR TUGAS AKHIR</span></center>
+                                    <p class="text-center text-muted">Ajukan 1 sampai 3 pilihan -- tiap pilihan bebas: pilih proyek yang sudah ada, atau usulkan judul/proyek sendiri.</p>
+
+                                    <div id="pilihan-list">
+                                        <?php for ($n = 1; $n <= 3; $n++) {
+                                            $renderPilihanBlock($n);
+                                        } ?>
+                                    </div>
+
                                     <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="btn-group" data-toggle="buttons" id="pilihan3">
-                                                <a class="active btn btn-default" href="#tab_content3" role="tab" id="ide" data-toggle="tab" aria-expanded="true"><input type="radio" name="jenis_radio" value="usul" checked>Usul Ide</a>
-                                                <a class="btn btn-default" href="#tab_content4" role="tab" id="proyek" data-toggle="tab" aria-expanded="true"><input type="radio" name="jenis_radio" value="proyek">Project</a>
-                                            </div>
+                                        <div class="col-md-9 col-md-offset-3">
+                                            <button type="button" id="btn-tambah-pilihan" class="btn btn-default"><i class="fa fa-plus"></i> Tambah Pilihan (maks. 3)</button>
+                                            <input type="submit" class="btn btn-success pull-right" value="Submit">
                                         </div>
-                                        <div class="clearfix" style="margin-bottom: 2%"></div>
-                                        <!--pane 2-->
-                                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
-                                            <div id="myTabContent" class="tab-content">
-                                                <!--pane ide-->
-                                                <div role="tabpanel" class="active tab-pane fade in" id="tab_content3" aria-labelledby="home-tab">
-                                                    <!--status perpanjangan-->
-                                                    <div class="row">
-                                                        <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Usulan Judul <span class="required">*</span>
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" name="judul" class="form-control col-md-7 col-xs-12" placeholder="Tuliskan judul anda">
-                                                            </div>
-                                                        </div>
-                                                        <!-- <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Sistem <span class="required">*</span>
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <textarea type="text" name="deskripsi" id="deskripsi" class="form-control col-md-7 col-xs-12" placeholder="Deskripsikan dengan singkat dan jelas"></textarea>
-                                                            </div>
-                                                        </div> -->
-                                                        <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Perusahaan Mitra
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <textarea type="text" name="bisnis_rule" id="bisnis" class="form-control col-md-7 col-xs-12" placeholder="Nama perusahaan mitra anda"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi Proyek <span class="required">*</span>
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="file" name="file_persetujuan" class="form-control col-md-7 col-xs-12">
-                                                                <!-- <small>Bagi yang mengajukan project dari institusi </small> -->
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 1 <span class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <select name="dosen" id="dosen" class="form-control">
-                                                                    <option value="">Pilih Dosen pembimbing 1..</option>
-                                                                    <?php foreach ($dataDosen as $data) { ?>
-                                                                        <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
-                                                                            <?php echo $data->nama; ?>
-                                                                        </option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <select name="dosen2" id="dosen2" class="form-control">
-                                                                    <option value="">Pilih Dosen pembimbing 2..</option>
-                                                                    <?php foreach ($dataDosen as $data) { ?>
-                                                                        <option <?= ($active_proyek != 0 && isset($dataDosbing[1]->id_dosen) && $dataDosbing[1]->id_dosen == $data->id_dosen) ? "selected" : "" ?> value="<?php echo $data->id_dosen ?>">
-                                                                            <?php echo $data->nama; ?>
-                                                                        </option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                                <small>Dosen 2 harus berbeda dengan Dosen 1</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group col-md-9">
-                                                            <input type="submit" class="btn btn-success pull-right" value="Submit">
-                                                        </div>
-                                                    </div>
-                                                    <!--end perpanjangan-->
-                                                </div>
-                                                <!--end ide-->
-                                                <!--start project-->
-                                                <div role="tabpanel" class="tab-pane fade in" id="tab_content4" aria-labelledby="home-tab">
-                                                    <!--status baru-->
-                                                    <div class="row">
-                                                        <div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Proyek <span class="required">*</span>
-                                                                </label>
-                                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                    <select name="proyektiga" class="form-control proyek">
-                                                                        <option value="">Pilih ..</option>
-                                                                        <?php
-                                                                        if (!empty($proyekInfo)) {
-                                                                            foreach ($proyekInfo as $record) {
-                                                                        ?>
-                                                                                <option data-deskripsi="<?= $record->deskripsi ?>" data-tools="<?= $record->tools ?>" value="<?php echo $record->id_proyek ?>"><?php echo $record->nama_proyek ?> (<?= $record->nama ?>)</option>
-                                                                        <?php
-                                                                            }
-                                                                        }
-                                                                        ?>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi</label>
-                                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                    <textarea cols="4" readonly class="form-control deskripsi_proyek"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tools</label>
-                                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                    <input readonly class="form-control tools_proyek">
-                                                                </div>
-                                                            </div>
-                                                            <!-- <div class="form-group">
-                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Tentukan dosen pembimbing 2</label>
-                                                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                    <select name="dosenProyek" id="dosen2" class="form-control">
-                                                                        <option value="">Pilih Dosen pembimbing 2..</option>
-                                                                        <?php foreach ($dataDosen as $data) { ?>
-                                                                            <option value="<?php echo $data->id_dosen ?>">
-                                                                                <?php echo $data->nama; ?>
-                                                                            </option>
-                                                                        <?php } ?>
-                                                                    </select>
-                                                                    <small>Dosen 2 harus berbeda dengan Dosen Pemilik Proyek</small>
-                                                                </div>
-                                                            </div> -->
-                                                            <div class="form-group col-md-9">
-                                                                <input type="submit" class="btn btn-success pull-right" value="Submit">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--end project-->
-                                            </div>
-                                        </div>
-                                        <!--end pane 2-->
                                     </div>
                                 </form>
                             </div>
@@ -698,7 +508,7 @@ if (!empty($taInfo)) {
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-4 col-sm-4 col-xs-12">File Bimbingan <small>(pdf)</small> <span class="required">*</span>
+                            <label class="control-label col-md-4 col-sm-4 col-xs-12">File Bimbingan <small>(pdf, opsional)</small>
                             </label>
                             <div class="col-md-8 col-sm-8 col-xs-12">
                                 <div style="border:2px dashed #E0E0E0">
@@ -754,91 +564,227 @@ if (!empty($taInfo)) {
 <script>
     $(document).ready(function() {
 
-        jQuery.validator.addMethod("notEqualToGroup", function(value, element, options) {
-            // get all the elements passed here with the same class
-            var elems = $(element).parents('form').find(options[0]);
-            // the value of the current element
-            var valueToCompare = value;
-            // count
-            var matchesFound = 0;
-            // loop each element and compare its value with the current value
-            // and increase the count every time we find one
-            jQuery.each(elems, function() {
-                thisVal = $(this).val();
-                if (thisVal == valueToCompare) {
-                    matchesFound++;
-                }
-            });
-            // count should be either 0 or 1 max
-            if (this.optional(element) || matchesFound <= 1) {
-                //elems.removeClass('error');
-                return true;
+        // ==== Form pendaftaran / edit (1-3 pilihan bebas, usul atau proyek existing) ====
+        // Dipakai untuk DUA form yang saling eksklusif di halaman ini (Daftar & Edit --
+        // cuma salah satu yang ada di DOM sekaligus, tergantung mahasiswa sudah pernah
+        // mendaftar atau belum), jadi logikanya harus berjalan sama baik saat semua blok
+        // kosong (Daftar) maupun saat sebagian/semua blok sudah pre-filled (Edit).
+        var MAKS_PILIHAN = 3;
+
+        function setRequiredPilihan(n, jenis) {
+            var $block = $('#pilihan-block-' + n);
+            var sudahAdaFile = $block.data('has-file') == 1;
+            var $usul = $('#usul-fields-' + n);
+            var $proyek = $('#proyek-fields-' + n);
+            if (jenis === 'usul') {
+                $usul.show();
+                $proyek.hide();
+                $usul.find('[name="judul_' + n + '"]').prop('required', true);
+                // kalau sudah ada file dari sebelumnya (mode Edit), tidak wajib upload ulang
+                $usul.find('[name="file_persetujuan_' + n + '"]').prop('required', !sudahAdaFile);
+                $usul.find('[name="dosen_' + n + '"]').prop('required', true);
+                $('.wajib-usul-' + n).show();
+                $('.wajib-file-' + n).toggle(!sudahAdaFile);
+                $proyek.find('[name="proyek_' + n + '"]').prop('required', false);
+                $('.wajib-proyek-' + n).hide();
             } else {
-                //elems.addClass('error');
+                $usul.hide();
+                $proyek.show();
+                $usul.find('[name="judul_' + n + '"]').prop('required', false);
+                $usul.find('[name="file_persetujuan_' + n + '"]').prop('required', false);
+                $usul.find('[name="dosen_' + n + '"]').prop('required', false);
+                $('.wajib-usul-' + n).hide();
+                $('.wajib-file-' + n).hide();
+                $proyek.find('[name="proyek_' + n + '"]').prop('required', true);
+                $('.wajib-proyek-' + n).show();
             }
-        }, jQuery.validator.format("<font color='red'>Setiap nomor pilihan harus berbeda.</font>"))
+        }
 
-        $("#daftar").validate({
-            rules: {
-                proyektiga: {
-                    required: true
-                },
-                satu: {
-                    required: true,
-                    notEqualToGroup: ['.distinctemails']
-                },
-                dua: {
-                    required: true,
-                    notEqualToGroup: ['.distinctemails']
-                },
-                tiga: {
-                    required: true,
-                    notEqualToGroup: ['.distinctemails']
-                },
-            },
-            messages: {
-                proyeksatu: {
-                    required: "Proyek harus diisi"
-                },
-                satu: {
-                    required: "Nomor pilihan tidak boleh kosong"
-                },
-                dua: {
-                    required: "Nomor pilihan tidak boleh kosong"
-                },
-                tiga: {
-                    required: "Nomor pilihan tidak boleh kosong"
-                },
+        // Blok "Pilihan ke-n" di form Edit ada di dalam tab Bootstrap yang TIDAK aktif
+        // secara default (tab "Edit" baru aktif setelah tombolnya diklik) -- selama tab
+        // itu belum aktif, jQuery :visible SELALU mengembalikan false untuk semua elemen
+        // di dalamnya (ikut ancestor-nya yang display:none), padahal blok itu sendiri
+        // sudah kita render/tandai tampil lewat style-nya sendiri. Makanya pengecekan
+        // "apakah blok ini tampil" TIDAK BOLEH pakai :visible (ikut status tab) -- harus
+        // baca display milik elemennya sendiri saja, supaya benar baik saat tab lagi
+        // tersembunyi (baru dibuka pertama kali) maupun sudah aktif.
+        function blokTampil(n) {
+            return $('#pilihan-block-' + n).css('display') !== 'none';
+        }
+
+        // Cari blok tersembunyi PALING KECIL nomornya -- dipakai tombol "+Tambah Pilihan"
+        // supaya benar menemukan slot kosong sekalipun bukan urutan buntut (mis. pilihan 1
+        // & 3 tampil tapi pilihan 2 sempat dihapus -- kasus nyata di form Edit yang semua
+        // blok pre-filled-nya bisa dihapus dalam urutan bebas, bukan cuma dari belakang).
+        function cariBlokTersembunyi() {
+            for (var i = 1; i <= MAKS_PILIHAN; i++) {
+                if (!blokTampil(i)) return i;
+            }
+            return null;
+        }
+
+        function jumlahBlokTampil() {
+            var jumlah = 0;
+            for (var i = 1; i <= MAKS_PILIHAN; i++) {
+                if (blokTampil(i)) jumlah++;
+            }
+            return jumlah;
+        }
+
+        function sinkronkanTombolTambah() {
+            if (jumlahBlokTampil() >= MAKS_PILIHAN) {
+                $('#btn-tambah-pilihan').hide();
+            } else {
+                $('#btn-tambah-pilihan').show();
+            }
+        }
+
+        // init: blok yang tampil ditentukan dari server-render -- 1 untuk Daftar, atau
+        // sebanyak pilihan yang sudah ada untuk Edit (bisa 1-3, tidak selalu berurutan
+        // penuh dari 1). Blok yang tersembunyi field-nya HARUS dilepas required-nya, karena
+        // browser (Chrome dkk) tetap ikut memvalidasi elemen required yang "tidak
+        // focusable" itu lalu diam-diam menolak submit tanpa pesan apapun kalau kosong
+        // ("not focusable" di console).
+        for (var i = 1; i <= MAKS_PILIHAN; i++) {
+            if (blokTampil(i)) {
+                var jenisAwal = $('input[name="jenis_' + i + '"]:checked').val() || 'usul';
+                setRequiredPilihan(i, jenisAwal);
+            } else {
+                $('#pilihan-block-' + i).find('input, select, textarea').prop('required', false);
+            }
+        }
+        sinkronkanTombolTambah();
+        // Mode Edit bisa memuat beberapa blok proyek yang sudah terisi sekaligus --
+        // pengecualian harus dihitung sejak awal, jangan menunggu event pertama.
+        recomputeProyekExclusion();
+
+        $(document).on('change', '.jenis-radio', function() {
+            var n = $(this).data('target');
+            setRequiredPilihan(n, $(this).val());
+            // pindah ke "Pilih Proyek" baru memunculkan select proyek blok ini --
+            // segarkan pengecualian supaya proyek yang sudah dipilih di blok lain
+            // langsung ke-disable begitu select ini kelihatan, bukan menunggu event lain.
+            recomputeProyekExclusion();
+        });
+
+        // Jaring pengaman: tombol Bootstrap (data-toggle="buttons") kadang tidak
+        // konsisten memicu event "change" murni di semua browser. Tepat sebelum
+        // submit, sinkronkan ulang required untuk semua blok berdasarkan jenis yang
+        // BENERAN aktif sekarang -- supaya tidak ada field ke-skip required-nya (atau
+        // sebaliknya, field di blok tersembunyi kelupaan masih required).
+        $('#daftar input[type=submit]').on('click', function () {
+            for (var i = 1; i <= MAKS_PILIHAN; i++) {
+                if (blokTampil(i)) {
+                    var jenisAktif = $('input[name="jenis_' + i + '"]:checked').val() || 'usul';
+                    setRequiredPilihan(i, jenisAktif);
+                } else {
+                    $('#pilihan-block-' + i).find('input, select, textarea').prop('required', false);
+                }
             }
         });
 
-        //hapus isi inputan saat klik button proyek
-        $('#tab_content3').click(function() {
-            $('input[name=judul]').prop('required', true);
-            $('input[name=deskripsi]').prop('required', true);
-            $('input[name=bisnis_rule]').prop('required', true);
-            $('input[name=file_persetujuan]').prop('required', true);
-            $('input[name=proyektiga]').prop('required', false);
-        });
-        $('#tab_content4').click(function() {
-            $('input[name=judul]').prop('required', false);
-            $('input[name=deskripsi]').prop('required', false);
-            $('input[name=bisnis_rule]').prop('required', false);
-            $('input[name=file_persetujuan]').prop('required', false);
-            $('input[name=proyektiga]').prop('required', true);
-        });
-
-        // // kembalikan pilihan saat klik button ide
-        // $('#ide').click(function() {
-        //     $('select[name=proyektiga]').val('').change();
-        // });
-
-        $('.proyek').change(function() {
-            $('.deskripsi_proyek').val($(this).find(':selected').data('deskripsi'));
-            $('.tools_proyek').val($(this).find(':selected').data('tools'));
+        // tombol tambah pilihan: buka blok berikutnya yang masih tersembunyi --
+        // begitu ditampilkan, baru pasang required sesuai jenis yang aktif di blok itu
+        // (default "Usul Ide" kalau belum ada radio yang ke-checked), dan segarkan
+        // pengecualian proyek yang sudah dipilih.
+        $('#btn-tambah-pilihan').click(function() {
+            var n = cariBlokTersembunyi();
+            if (n === null) return;
+            var $block = $('#pilihan-block-' + n);
+            $block.show();
+            var jenisAktif = $('input[name="jenis_' + n + '"]:checked').val();
+            if (!jenisAktif) {
+                var $radioUsul = $block.find('input[name="jenis_' + n + '"][value="usul"]');
+                $radioUsul.prop('checked', true);
+                $block.find('.btn-group[data-toggle="buttons"] label').removeClass('active');
+                $radioUsul.closest('label').addClass('active');
+                jenisAktif = 'usul';
+            }
+            setRequiredPilihan(n, jenisAktif);
+            recomputeProyekExclusion();
+            sinkronkanTombolTambah();
         });
 
-        $('.proyek').trigger('change');
+        // tombol hapus pilihan: sembunyikan blok, kosongkan isinya (termasuk penanda
+        // file lama supaya tidak ke-anggap "masih ada file" kalau blok ini dipakai lagi
+        // untuk pilihan baru), lepas required
+        $(document).on('click', '.btn-hapus-pilihan', function() {
+            var n = $(this).data('target');
+            var $block = $('#pilihan-block-' + n);
+            $block.find('input[type=text], textarea, input[type=file], input[name="existing_file_' + n + '"]').val('');
+            $block.find('select').val('');
+            $block.find('input[type=radio]').prop('checked', false);
+            $block.find('.btn-group[data-toggle="buttons"] label').removeClass('active');
+            $block.data('has-file', 0);
+            $block.find('input, select, textarea').prop('required', false);
+            $block.hide();
+            sinkronkanTombolTambah();
+            recomputeProyekExclusion();
+        });
+
+        // Select proyek yang "aktif" = blok-nya sedang tampil DAN jenisnya sedang "Pilih
+        // Proyek" (bukan :visible biasa, dengan alasan sama seperti blokTampil() di atas).
+        function proyekSelectAktif($select) {
+            var n = $select.data('target');
+            return blokTampil(n) && $('#proyek-fields-' + n).css('display') !== 'none';
+        }
+
+        // pilih proyek existing: tampilkan deskripsi/tools proyek itu, & jangan biarkan
+        // proyek yang sama muncul lagi di pilihan lain (SOP: sudah dipilih tidak boleh dobel)
+        function recomputeProyekExclusion() {
+            var $aktif = $('.proyek-select').filter(function() {
+                return proyekSelectAktif($(this));
+            });
+            var dipilih = [];
+            $aktif.each(function() {
+                if ($(this).val()) dipilih.push($(this).val());
+            });
+            $aktif.each(function() {
+                var current = $(this).val();
+                $(this).find('option').each(function() {
+                    var v = $(this).val();
+                    if (!v) return;
+                    $(this).prop('disabled', dipilih.indexOf(v) !== -1 && v !== current);
+                });
+            });
+        }
+
+        $(document).on('change', '.proyek-select', function() {
+            var n = $(this).data('target');
+            var selected = $(this).find(':selected');
+            $('#deskripsi-proyek-' + n).val(selected.data('deskripsi'));
+            $('#tools-proyek-' + n).val(selected.data('tools'));
+            recomputeProyekExclusion();
+        });
+
+        // Usulan Dosen Pembimbing Pertama & Kedua dalam SATU pilihan yang sama tidak
+        // boleh dosen yang sama -- exclude timbal-balik: dosen yang lagi ke-pilih di satu
+        // sisi jadi disabled di sisi lainnya, supaya tidak bisa kepilih dobel dari awal.
+        function recomputeDosenExclusion(n) {
+            var $dosen1 = $('[name="dosen_' + n + '"]');
+            var $dosen2 = $('[name="dosen2_' + n + '"]');
+            var v1 = $dosen1.val();
+            var v2 = $dosen2.val();
+            $dosen2.find('option').each(function() {
+                var v = $(this).val();
+                if (!v) return;
+                $(this).prop('disabled', v === v1);
+            });
+            $dosen1.find('option').each(function() {
+                var v = $(this).val();
+                if (!v) return;
+                $(this).prop('disabled', v === v2);
+            });
+        }
+
+        $(document).on('change', '.dosen1-select, .dosen2-select', function() {
+            recomputeDosenExclusion($(this).data('target'));
+        });
+
+        for (var dn = 1; dn <= MAKS_PILIHAN; dn++) {
+            recomputeDosenExclusion(dn);
+        }
+
         $("#datatable-nopage_filter").ready(function() {
             $(".dataTables_filter").hide();
         });

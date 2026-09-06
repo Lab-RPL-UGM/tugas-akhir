@@ -56,6 +56,8 @@
         var baseURL = "<?php echo base_url(); ?>";
     </script>
 
+    <!-- Tema modern -- dimuat paling akhir supaya override semua CSS di atas -->
+    <link href="<?php echo base_url() ?>elusistatic/css/theme-modern.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -72,7 +74,7 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>Akademik</h3>
+                            <h3>Admin</h3>
                             <ul class="nav side-menu">
                                 <li><a href="<?php echo base_url() ?>akademik/dashboard/"><i class="fa fa-home"></i> Dashboard</a></li>
                                 <li><a href="<?php echo base_url() ?>akademik/pengumuman/"><i class="fa fa-cloud-upload"></i> Pengumuman</a></li>
@@ -106,8 +108,15 @@
                                 </li>
                                 <li><a href="<?php echo base_url() ?>akademik/periode/"><i class="fa fa-clock-o"></i> Periode Registrasi</a></li>
                                 <li><a href="<?php echo base_url() ?>akademik/proyek/"><i class="fa fa-files-o"></i> Proyek</a></li>
+                                <li><a href="<?php echo base_url() ?>akademik/bidang/"><i class="fa fa-tags"></i> Bidang</a></li>
                                 <?php if ($this->session->userdata('isKaprodi')) { ?>
                                     <li><a href="<?php echo base_url() ?>kaprodi/"><i class="fa fa-arrow-circle-right"></i> Ganti ke Kaprodi</a></li>
+                                <?php } ?>
+                                <?php if (isset($role) && $role == ROLE_DOSEN && !empty($is_admin)) { ?>
+                                    <!-- Dosen dengan hak admin bisa masuk Panel Admin tanpa lewat switch-role
+                                         kaprodi (lihat BaseController::isAkademik(), $isDosenAdmin) -- session
+                                         role-nya TETAP dosen, jadi perlu jalan pulang eksplisit ke sini. -->
+                                    <li><a href="<?php echo base_url() ?>dosen/"><i class="fa fa-arrow-circle-right"></i> Kembali ke Panel Dosen</a></li>
                                 <?php } ?>
                             </ul>
                         </div>

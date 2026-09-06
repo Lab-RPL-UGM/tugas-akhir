@@ -39,9 +39,10 @@
                     <table id="tabel" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="col-md-4">Nama</th>
-                                <th class="col-md-3">Username</th>
-                                <th class="col-md-3">Status TA</th>
+                                <th class="col-md-3">Nama</th>
+                                <th class="col-md-3">Email (login SSO)</th>
+                                <th class="col-md-2">NIM</th>
+                                <th class="col-md-2">Status TA</th>
                                 <th class="col-md-2"><center>Action</center></th>
                             </tr>
                         </thead>
@@ -56,7 +57,10 @@
                                     <?php echo $data->nama; ?>
                                 </td>
                                 <td style="vertical-align:middle">
-                                    <?php echo $data->username; ?>
+                                    <?php echo $data->email; ?>
+                                </td>
+                                <td style="vertical-align:middle">
+                                    <?php echo $data->nim; ?>
                                 </td>
                                 <td style="vertical-align:middle">
                                     <?php

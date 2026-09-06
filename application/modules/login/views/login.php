@@ -386,19 +386,19 @@
             .glass-card.table-card {
                 padding: 15px;
             }
-            
+
             .login-header h1 {
                 font-size: 1.8rem;
             }
-            
+
             .table-header h2 {
                 font-size: 1.3rem;
             }
-            
+
             .modern-table {
                 font-size: 0.85rem;
             }
-            
+
             .modern-table thead th,
             .modern-table tbody td {
                 padding: 8px 5px;
@@ -446,13 +446,10 @@
                     <div class="login-header">
                         <br/><br/><br/><br/>
                         <h1>LOGIN</h1>
-                        <p><i class="fas fa-graduation-cap" style="font-size: 1rem;"></i> Masukkan Username dan Password</p>
+                        <p><i class="fas fa-graduation-cap" style="font-size: 1rem;"></i> Masuk pakai akun UGM Anda</p>
                     </div>
 
                     <!-- Alerts -->
-                    <?php $this->load->helper('form'); ?>
-                    <?php echo validation_errors('<div class="custom-alert alert-danger">', '<button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="alert"></button></div>'); ?>
-                    
                     <?php
                     $error = $this->session->flashdata('error');
                     if ($error) {
@@ -471,28 +468,9 @@
                         </div>
                     <?php } ?>
 
-                    <!-- Login Form -->
-                    <form action="<?php echo base_url(); ?>login/loginMe" method="post">
-                        <div class="input-group">
-                            <i class="fas fa-user input-icon"></i>
-                            <input type="text" name="username" class="form-control form-control-icon" placeholder="Username" required>
-                        </div>
-                        
-                        <div class="input-group">
-                            <i class="fas fa-lock input-icon"></i>
-                            <input type="password" name="password" class="form-control form-control-icon" placeholder="Password" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <a href="#" class="forgot-password">
-                                <i class="fas fa-question-circle"></i> Lupa password? Hubungi akademik
-                            </a>
-                        </div>
-
-                        <button type="submit" class="btn-login">
-                            <i class="fas fa-sign-in-alt"></i> Log In
-                        </button>
-                    </form>
+                    <a href="<?php echo base_url(); ?>login/ssoLogin" class="btn-login" style="display:block; text-align:center; text-decoration:none;">
+                        <i class="fas fa-shield-alt"></i> Login dengan SSO TRPL
+                    </a>
 
                     <div class="login-footer">
                         <h3><i class="fas fa-graduation-cap pulse" style="font-size: 1rem;"></i> Proyek Akhir TRPL</h3>
@@ -522,8 +500,8 @@
                                     <tr data-aos="fade-up" data-aos-delay="100">
                                         <td>
                                             <strong>
-                                                <?php echo $data['gelar_depan']; ?> 
-                                                <?php echo $data['nama_dosen']; ?> 
+                                                <?php echo $data['gelar_depan']; ?>
+                                                <?php echo $data['nama_dosen']; ?>
                                                 <?php echo $data['gelar_belakang']; ?>
                                             </strong>
                                         </td>
@@ -535,7 +513,7 @@
                                                 $bimbingan = intval($data['bimbingan']);
                                                 $kuota = intval($data['kuota_mahasiswa']);
                                                 $percentage = ($kuota > 0) ? ($bimbingan / $kuota * 100) : 0;
-                                                
+
                                                 if ($percentage >= 100) {
                                                     echo '<span class="quota-badge quota-full">';
                                                 } elseif ($percentage >= 50) {
@@ -543,7 +521,7 @@
                                                 } else {
                                                     echo '<span class="quota-badge quota-available">';
                                                 }
-                                                
+
                                                 echo '<i class="fas fa-user-graduate" style="font-size: 0.8rem;"></i> ' . $bimbingan . ' / ' . $kuota;
                                                 echo '</span>';
                                             }
@@ -562,7 +540,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
+
     <script>
         // Initialize AOS
         AOS.init({
@@ -586,21 +564,21 @@
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-            
+
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
             ripple.classList.add('ripple');
-            
+
             this.appendChild(ripple);
-            
+
             setTimeout(() => ripple.remove(), 600);
         });
 
         // Password visibility toggle
         const passwordInput = document.querySelector('input[name="password"]');
         const lockIcon = passwordInput.previousElementSibling;
-        
+
         lockIcon.style.cursor = 'pointer';
         lockIcon.addEventListener('click', function() {
             if (passwordInput.type === 'password') {

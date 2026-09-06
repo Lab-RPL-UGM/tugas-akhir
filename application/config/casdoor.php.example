@@ -1,0 +1,11 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+// Salin file ini jadi casdoor.php lalu isi dengan kredensial Casdoor yang
+// sungguhan (client_secret JANGAN pernah di-commit -- lihat .gitignore).
+$config['casdoor'] = array(
+	'endpoint'      => 'http://localhost:8000',
+	'client_id'     => '',
+	'client_secret' => '',
+	'redirect_uri'  => 'http://localhost:8070/index.php/login/ssoCallback',
+	'scope'         => 'openid profile email',
+);

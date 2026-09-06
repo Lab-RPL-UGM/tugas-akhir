@@ -56,8 +56,8 @@ if(!empty($profilInfo))
                                                 <div class="file-select">
                                                     <center>
                                                         <i class="fa fa-upload"> &nbsp;Pilih Foto</i>
-                                                        <input class="input-sm" type="file" name="foto" id="chooseFile" style="border: black 2px">
-                                                        <input type="hidden" class="form-control required" id="id_mahasiswa" name="id_mahasiswa" value="<?php echo $id_mahasiswa; ?>" >
+                                                        <input class="input-sm" type="file" name="foto" id="chooseFile" required style="border: black 2px">
+                                                        <input type="hidden" class="form-control required" id="id_mahasiswa_foto" name="id_mahasiswa" value="<?php echo $id_mahasiswa; ?>" >
                                                     </center>
                                                 </div>
                                             </div>

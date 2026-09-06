@@ -11,9 +11,18 @@ class Dashboard extends BaseController {
 
     function index(){
         $data['dataPeriode'] = $this->Dashboard_model->getPeriodeAktif();
+        $data['arrayAllPeriode'] = $this->Dashboard_model->getAllPeriode();
+
+        // Periode yang difilter: dari dropdown (?id_periode=), default ke periode aktif
+        $idPeriodeFilter = $this->input->get('id_periode');
+        if (empty($idPeriodeFilter) && $data['dataPeriode']) {
+            $idPeriodeFilter = $data['dataPeriode'][0]->id_periode;
+        }
+        $data['idPeriodeFilter'] = $idPeriodeFilter;
+
         $data['countProyek'] = $this->Dashboard_model->getProyekCount();
-        $data['dataPengajuanDosen'] = $this->Dashboard_model->getPengajuanPerDosen();
-        $data['rekapDipilih'] = $this->Dashboard_model->getRekapDipilihMahasiswaPerDosen();
+        $data['dataPengajuanDosen'] = $this->Dashboard_model->getPengajuanPerDosen($idPeriodeFilter);
+        $data['rekapDipilih'] = $this->Dashboard_model->getRekapDipilihMahasiswaPerDosen(null, $idPeriodeFilter);
         // Gunakan data tabel rekap sebagai sumber grafik (agar 100% sinkron)
         $chartLabels        = [];
         $chartProyekVals    = [];
@@ -37,8 +46,8 @@ class Dashboard extends BaseController {
         $data['chartPembimbing2Vals'] = $chartPembimbing2Vals;
         
         if($data['dataPeriode']){
-            $data['countSidang'] = $this->Dashboard_model->getSidangCount($data['dataPeriode'][0]->id_periode);
-            $data['countYudisium'] = $this->Dashboard_model->getYudisiumCount($data['dataPeriode'][0]->id_periode);
+            $data['countSidang'] = $this->Dashboard_model->getSidangCount($idPeriodeFilter);
+            $data['countYudisium'] = $this->Dashboard_model->getYudisiumCount($idPeriodeFilter);
             $data['dataNilai'] = $this->getNilaiPerPeriode();
             // $data['dataNilaiAkhirSidang'] = $this->getPenilaianSidang();
             $data['arrayPeriode'] = $this->Dashboard_model->getArrayPeriode(5);

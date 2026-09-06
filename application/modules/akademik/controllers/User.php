@@ -13,12 +13,23 @@ class User extends BaseController
     public function add_user($role)
     {
         if ($role == ROLE_MAHASISWA) {
+            $nim = trim($this->input->post('nim'));
+            $email = trim($this->input->post('email'));
+
+            if ($this->User_model->checkEmail($email)) {
+                $this->session->set_flashdata('error', 'Email ' . htmlspecialchars($email) . ' sudah dipakai mahasiswa lain.');
+                redirect('akademik/akun_mahasiswa/add_form');
+                return;
+            }
+
             $data = array(
                 'nama' => trim($this->input->post('fname')),
-                'username' => trim($this->input->post('username')),
-                'password' => getHashedPassword(trim($this->input->post('password'))),
+                // Username cuma identifier internal — login mahasiswa sekarang murni lewat
+                // SSO (dicocokkan via email), jadi tidak lagi diminta manual dari admin.
+                'username' => 'mhs' . $nim,
                 'id_user_role' => $role,
-                'nomor_induk' => trim($this->input->post('nim')),
+                'nomor_induk' => $nim,
+                'email' => $email,
             );
         } elseif ($role == ROLE_DOSEN || $role == ROLE_KAPRODI) {
             $data = array(
@@ -191,24 +202,23 @@ class User extends BaseController
     public function edit_user($role)
     {
         if ($role == ROLE_MAHASISWA) {
-            if (empty($this->input->post('password'))) {
-                $data = array(
-                    'nama' => trim($this->input->post('fname')),
-                    'username' => trim($this->input->post('username')),
-                    'nim' => trim($this->input->post('nim')),
-                    'id_mahasiswa' => trim($this->input->post('id_mahasiswa')),
-                    'status_pengambilan' => trim($this->input->post('status_pengambilan'))
-                );
-            } else {
-                $data = array(
-                    'nama' => trim($this->input->post('fname')),
-                    'username' => trim($this->input->post('username')),
-                    'nim' => trim($this->input->post('nim')),
-                    'status_pengambilan' => trim($this->input->post('status_pengambilan')),
-                    'id_mahasiswa' => trim($this->input->post('id_mahasiswa')),
-                    'password' => getHashedPassword(trim($this->input->post('password')))
-                );
+            $user_id = $this->input->post('userId');
+            $email = trim($this->input->post('email'));
+
+            if ($this->User_model->checkEmail($email, $user_id)) {
+                $this->session->set_flashdata('error', 'Email ' . htmlspecialchars($email) . ' sudah dipakai mahasiswa lain.');
+                redirect('akademik/akun_mahasiswa/edit_form/' . $user_id);
+                return;
             }
+
+            // Username/password tidak lagi diminta dari form — login mahasiswa murni SSO.
+            $data = array(
+                'nama' => trim($this->input->post('fname')),
+                'nim' => trim($this->input->post('nim')),
+                'email' => $email,
+                'id_mahasiswa' => trim($this->input->post('id_mahasiswa')),
+                'status_pengambilan' => trim($this->input->post('status_pengambilan'))
+            );
         } elseif ($role == ROLE_DOSEN || $role == ROLE_KAPRODI) {
             if (empty($this->input->post('password'))) {
                 $data = array(
@@ -338,6 +348,18 @@ class User extends BaseController
         } else {
             echo json_encode(TRUE);
         }
+    }
+
+    public function toggle_admin()
+    {
+        $user_id = $this->input->post('userId');
+        $result = $this->User_model->toggleAdmin($user_id);
+        if ($result) {
+            $this->session->set_flashdata('success', 'Status admin dosen telah diubah');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal mengubah status admin');
+        }
+        redirect('akademik/akun_dosen/');
     }
 
     public function delete_user()

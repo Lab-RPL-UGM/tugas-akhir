@@ -27,6 +27,7 @@ class Pendadaran_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $userId);
+        $this->db->where('m.isDeleted', 0);
         // $this->db->where('v.id_berkas_sidang', 1);
         // $this->db->where('v.isValid', '2');
         $this->db->order_by('j.tanggal', 'DESC');

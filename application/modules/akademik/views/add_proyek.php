@@ -31,6 +31,32 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="id_periode">Periode
+                            <span class="required"> *</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="id_periode" name="id_periode" class="form-control" required="required">
+                                <option value="">Pilih periode ...</option>
+                                <?php foreach ($dataPeriode as $p) { ?>
+                                    <option value="<?php echo $p->id_periode; ?>" <?php echo ($p->status_periode == 1) ? 'selected' : ''; ?>>
+                                        <?php echo ucfirst($p->semester) . ' ' . $p->tahun_ajaran . ($p->status_periode == 1 ? ' (Aktif)' : ''); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="id_bidang">Bidang</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <!-- SOP: satu proyek boleh punya lebih dari satu bidang -->
+                            <select id="id_bidang" name="id_bidang[]" class="form-control" multiple="multiple">
+                                <?php foreach ($dataBidang as $b) { ?>
+                                    <option value="<?php echo $b->id_bidang; ?>"><?php echo $b->nama; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="nama_proyek">Judul Proyek
                             <span class="required">*</span>
                         </label>
@@ -49,11 +75,13 @@
                         <label class="control-label col-md-4 col-sm-4 col-xs-12" for="tools">Tools Proyek <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="tools" id="tools" required="required" class="form-control col-md-7 col-xs-12">
+                            <!-- required dilepas: input tersembunyi setelah jquery.tagsInput aktif
+                                 bikin browser menolak submit kalau atributnya masih required -->
+                            <input type="text" name="tools" id="tools" class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="instansi" class="control-label col-md-4 col-sm-4 col-xs-12">Instansi / Klien
+                        <label for="instansi" class="control-label col-md-4 col-sm-4 col-xs-12">Mitra
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input id="instansi" class="form-control col-md-7 col-xs-12" type="text" name="instansi">
@@ -72,3 +100,22 @@
 </div>
 
 <script src="<?php echo base_url() . 'elusistatic/js/addEditProyek.js' ?>"></script>
+
+<!-- Tag input untuk field Tools: ketik lalu Enter/koma jadi tag terpisah.
+     jquery.tagsinput JS-nya sudah dimuat global lewat includes/footer.php,
+     di sini cuma tambah CSS-nya (belum ikut dimuat) + inisialisasi. -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/dist/jquery.tagsinput.min.css" rel="stylesheet">
+<script>
+    $(function () {
+        $('#tools').tagsInput({
+            width: '100%',
+            interactive: true,
+            defaultText: 'tambah tool...'
+        });
+        // Select2 JS/CSS sudah dimuat global lewat includes/header.php & footer.php
+        $('#id_bidang').select2({
+            width: '100%',
+            placeholder: 'Pilih satu atau lebih bidang...'
+        });
+    });
+</script>

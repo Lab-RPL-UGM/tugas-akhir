@@ -27,6 +27,7 @@ class Bimbingan_model extends CI_Model
         $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
 
         $this->db->where('d.id_user', $userId);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('t.status_pengambilan', 'terplotting');
         $query = $this->db->get();
@@ -46,6 +47,7 @@ class Bimbingan_model extends CI_Model
         $this->db->join('yudisium y', 'y.id_mahasiswa = m.id_mahasiswa', 'left');
 
         $this->db->where('m.id_mahasiswa', $mahasiswaId);
+        $this->db->where('m.isDeleted', 0);
         $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('t.status_pengambilan', 'terplotting');
         $query = $this->db->get();
@@ -74,6 +76,7 @@ class Bimbingan_model extends CI_Model
                 $record_proyek = $this->db->get()->result();
                 $array_ta = [
                     'id_ta' => $record[0]->id_ta,
+                    'jenis' => 'proyek',
                     'judul_ta' => $record_proyek[0]->nama_proyek,
                     'dosbing' => $record_proyek[0]->nama_dosen,
                     'progress' => $record[0]->progress,
@@ -90,11 +93,12 @@ class Bimbingan_model extends CI_Model
 
                 $array_ta = [
                     'id_ta' => $record[0]->id_ta,
+                    'jenis' => 'usul',
                     'judul_ta' => $record_usulan[0]->judul,
                     'dosbing' => $record_usulan[0]->nama_dosen,
                     'progress' => $record[0]->progress,
                     'file' => $record_usulan[0]->file_persetujuan,
-                    'mitra' => $record_usulan[0]->bisnis_rule,
+                    'mitra' => $record_usulan[0]->mitra,
                     'deskripsi' => $record_usulan[0]->deskripsi,
                 ];
                 return $array_ta;
@@ -110,6 +114,34 @@ class Bimbingan_model extends CI_Model
         $this->db->join('dosen ds', 'ds.id_dosen=d.id_dosen', 'left');
         $this->db->where('d.id_mahasiswa', $id_mahasiswa);
         return $this->db->get()->result();
+    }
+
+    /**
+     * Dosen menentukan/mengubah judul Tugas Akhir mahasiswa bimbingannya (jenis usul
+     * saja -- judul proyek datang dari katalog proyek, bukan usulan mahasiswa) setelah
+     * berdiskusi. $userId dicocokkan ke dosbing supaya cuma dosen pembimbing mahasiswa
+     * ini yang bisa mengubahnya, bukan sembarang dosen yang login.
+     * @return bool TRUE kalau berhasil, FALSE kalau tidak ditemukan / bukan pembimbingnya
+     */
+    function updateJudulUsulan($id_ta, $judul, $userId)
+    {
+        $this->db->select('pt.id_pengajuan_ta');
+        $this->db->from('pengajuan_ta pt');
+        $this->db->join('tugas_akhir ta', 'ta.id_ta = pt.id_ta');
+        $this->db->join('dosbing db', 'db.id_mahasiswa = ta.id_mahasiswa');
+        $this->db->join('dosen d', 'd.id_dosen = db.id_dosen');
+        $this->db->where('pt.id_ta', $id_ta);
+        $this->db->where('pt.status', 'diterima');
+        $this->db->where('pt.jenis', 'usul');
+        $this->db->where('d.id_user', $userId);
+        $row = $this->db->get()->row();
+
+        if (!$row) {
+            return FALSE;
+        }
+
+        $this->db->where('id_pengajuan_ta', $row->id_pengajuan_ta);
+        return $this->db->update('usulan', array('judul' => $judul));
     }
 
     function getBimbinganProgress($id_ta)

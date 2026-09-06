@@ -50,7 +50,7 @@ if (!empty($berkasInfo)) {
                                         <li>Maksimal ukuran berkas 10Mb</li>
                                     </ul>
                                     <h5 class="badge bg-red">Pastikan Anda telah melengkapi
-                                        <a href="<?php base_url() ?>../profil" style="color: white"><u>PROFIL</u></a>
+                                        <a href="<?php echo base_url() ?>mahasiswa/profil" style="color: white"><u>PROFIL</u></a>
                                         dengan benar
                                     </h5>
                                 </small></h2>

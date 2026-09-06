@@ -9,9 +9,12 @@ class Login_model extends CI_Model
      */
     function loginAll($username, $password)
     {
-        $this->db->select('BaseTbl.id_user, BaseTbl.password, BaseTbl.nama, BaseTbl.id_user_role, Roles.role');
+        // Left join dosen: dosen dengan is_admin=1 dapat akses panel akademik juga
+        // (lihat BaseController::isAkademik()) — admin tidak lagi cuma 1 akun tetap.
+        $this->db->select('BaseTbl.id_user, BaseTbl.password, BaseTbl.nama, BaseTbl.id_user_role, Roles.role, Dosen.is_admin');
         $this->db->from('user as BaseTbl');
         $this->db->join('user_role as Roles','Roles.id_user_role = BaseTbl.id_user_role');
+        $this->db->join('dosen as Dosen', 'Dosen.id_user = BaseTbl.id_user', 'left');
         $this->db->where('BaseTbl.username', $username);
         $this->db->where('BaseTbl.isDeleted', 0);
         $this->db->where('BaseTbl.id_user_role !=', 1); // Login kecuali kaprodi,
@@ -140,6 +143,65 @@ class Login_model extends CI_Model
         $this->db->delete('user_reset_password', array('username'=>$username));
     }
 
+    /**
+     * Finds a local user account already linked to a Casdoor account, for repeat SSO logins.
+     * @param string $casdoorId : Casdoor user "sub" claim
+     */
+    function findUserByCasdoorId($casdoorId)
+    {
+        $this->db->select('BaseTbl.id_user, BaseTbl.nama, BaseTbl.id_user_role, Roles.role, Dosen.is_admin');
+        $this->db->from('user as BaseTbl');
+        $this->db->join('user_role as Roles', 'Roles.id_user_role = BaseTbl.id_user_role');
+        $this->db->join('dosen as Dosen', 'Dosen.id_user = BaseTbl.id_user', 'left');
+        $this->db->where('BaseTbl.casdoor_id', $casdoorId);
+        $this->db->where('BaseTbl.isDeleted', 0);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
+    /**
+     * Finds the local user account linked to an existing dosen/mahasiswa row by email, so a
+     * first-time Casdoor login can be matched to the academic data already in this system.
+     * @param string $email : Email returned by Casdoor userinfo
+     */
+    function findUserByEmail($email)
+    {
+        $this->db->select('BaseTbl.id_user, BaseTbl.nama, BaseTbl.id_user_role, Roles.role, Dosen.is_admin');
+        $this->db->from('dosen as Dosen');
+        $this->db->join('user as BaseTbl', 'BaseTbl.id_user = Dosen.id_user');
+        $this->db->join('user_role as Roles', 'Roles.id_user_role = BaseTbl.id_user_role');
+        $this->db->where('Dosen.email', $email);
+        $this->db->where('Dosen.isDeleted', 0);
+        $this->db->where('BaseTbl.isDeleted', 0);
+        $user = $this->db->get()->row();
+
+        if ($user) {
+            return $user;
+        }
+
+        $this->db->select('BaseTbl.id_user, BaseTbl.nama, BaseTbl.id_user_role, Roles.role');
+        $this->db->from('mahasiswa as Mahasiswa');
+        $this->db->join('user as BaseTbl', 'BaseTbl.id_user = Mahasiswa.id_user');
+        $this->db->join('user_role as Roles', 'Roles.id_user_role = BaseTbl.id_user_role');
+        $this->db->where('Mahasiswa.email', $email);
+        $this->db->where('Mahasiswa.isDeleted', 0);
+        $this->db->where('BaseTbl.isDeleted', 0);
+
+        return $this->db->get()->row();
+    }
+
+    /**
+     * Links a Casdoor account to a local user row so future logins skip the email lookup.
+     * @param int $id_user : Local user id
+     * @param string $casdoorId : Casdoor user "sub" claim
+     */
+    function linkCasdoorId($id_user, $casdoorId)
+    {
+        $this->db->where('id_user', $id_user);
+        $this->db->update('user', array('casdoor_id' => $casdoorId));
+    }
+
     public function getDosen($id_dosen = NULL)
     {
         $this->db->select("*");
@@ -201,6 +263,7 @@ class Login_model extends CI_Model
         $this->db->join('dosen d', 'd.id_dosen = a.id_dosen');
         $this->db->join('user u', 'u.id_user = d.id_user');
         $this->db->where('u.id_user', $id_dosen);
+        $this->db->where('m.isDeleted', 0);
         $this->db->group_by('m.id_mahasiswa');
         $query = $this->db->get();
 

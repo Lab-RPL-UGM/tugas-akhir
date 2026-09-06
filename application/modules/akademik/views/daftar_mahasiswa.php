@@ -109,14 +109,11 @@
                                             </span>
                                             <?php } ?>
                                         </td>
-                                        <td align="center" style="vertical-align:middle">
-                                            <?php if($data['nilai_akhir'] != FALSE || $data['nilai_akhir'] != 0 ) {
-                                                            echo $data['nilai_akhir']; 
-                                                          } else {
-                                                            echo "-";
-                                                          }
-                                                    ?>
-                                        </td>
+                                        <!-- Nilai Akhir: <td> ini sengaja tidak ikut dirender —
+                                             header-nya (<th>) juga sudah di-comment di atas.
+                                             Sebelumnya <td> ini tertinggal aktif sementara <th>
+                                             sudah di-comment, jumlah kolom head vs body jadi beda
+                                             (7 vs 8) dan bikin DataTables gagal init + freeze menu. -->
                                         <td align="center" style="vertical-align:middle">
                                             <?php if($data['yudisium']) {?>
                                             <span class="badge bg-green">

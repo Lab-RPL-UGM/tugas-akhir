@@ -80,22 +80,84 @@ class Bimbingan extends BaseController
         if ($this->isDosen() == TRUE) {
             $this->loadThis();
         } else {
+            $id_ta = $this->input->post('id_ta');
+            $progress = $this->input->post('progress');
+            $reason = $this->input->post('reason');
+            $status = $this->input->post('status');
 
             $updateBimbingan = array(
-                'reason' => $this->input->post('reason'),
-                'progress_percentage' => $this->input->post('progress'),
-                'status' => $this->input->post('status')
+                'reason' => $reason,
+                'progress_percentage' => $progress,
+                'status' => $status
             );
             $this->db->where('id', $this->input->post('id_bimbingan'));
             $this->db->update('bimbingan', $updateBimbingan);
 
             $updateTA = array(
-                'progress' => $this->input->post('progress')
+                'progress' => $progress
             );
-            $this->db->where('id_ta', $this->input->post('id_ta'));
+            $this->db->where('id_ta', $id_ta);
             $this->db->update('tugas_akhir', $updateTA);
 
+            // Beri tahu mahasiswa lewat Pemberitahuan bahwa dosen sudah merespon
+            // bimbingannya -- sebelumnya mahasiswa cuma dapat notifikasi sekali waktu
+            // TA-nya diterima/terplotting, tidak pernah diberi tahu lagi soal
+            // perkembangan bimbingan berikutnya.
+            $ta = $this->db->select('id_mahasiswa')->from('tugas_akhir')->where('id_ta', $id_ta)->get()->row();
+            if ($ta) {
+                $dosen = $this->db->select('nama')->from('dosen')->where('id_user', $this->vendorId)->get()->row();
+                $namaDosen = $dosen ? $dosen->nama : 'Dosen Pembimbing';
+                $catatan = !empty($reason) ? htmlspecialchars($reason, ENT_QUOTES, 'UTF-8') : '(tidak ada catatan)';
+
+                $data_log = array(
+                    'id_mahasiswa' => $ta->id_mahasiswa,
+                    'nama' => 'Progress bimbingan diperbarui',
+                    'deskripsi' => htmlspecialchars($namaDosen, ENT_QUOTES, 'UTF-8') . ' telah merespon bimbingan Anda.<br>
+                                    <table>
+                                    <tr>
+                                    <td style="padding: 5px;" ><h4>Progress Tugas Akhir</h4></td>
+                                    <td style="padding: 5px;" ><h4>:</h4></td>
+                                    <td style="padding: 5px;" ><h4><strong>' . (int) $progress . '%</strong></h4></td>
+                                    </tr>
+                                    <tr>
+                                    <td style="padding: 5px;" ><h4>Catatan Dosen</h4></td>
+                                    <td style="padding: 5px;" ><h4>:</h4></td>
+                                    <td style="padding: 5px;" ><h4><strong>' . $catatan . '</strong></h4></td>
+                                    </tr>
+                                    </table>',
+                );
+                $this->db->insert('log_pesan', $data_log);
+            }
+
             redirect('dosen/bimbingan');
+        }
+    }
+
+    /**
+     * Dosen menentukan/mengubah judul Tugas Akhir mahasiswa bimbingannya setelah
+     * berdiskusi -- terutama buat mahasiswa yang di-plot manual oleh akademik tanpa
+     * usulan judul (lihat placeholder "Silahkan menghubungi dosen..." di Ta_model).
+     */
+    function editJudul()
+    {
+        if ($this->isDosen() == TRUE) {
+            $this->loadThis();
+        } else {
+            $id_ta = $this->input->post('id_ta');
+            $id_mahasiswa = $this->input->post('id_mahasiswa');
+            $judul = trim((string) $this->input->post('judul'));
+
+            if (empty($judul)) {
+                $this->session->set_flashdata('error', 'Judul Tugas Akhir tidak boleh kosong');
+            } else {
+                $result = $this->bimbingan_model->updateJudulUsulan($id_ta, strtoupper($judul), $this->vendorId);
+                if ($result) {
+                    $this->session->set_flashdata('success', 'Judul Tugas Akhir berhasil diubah');
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal mengubah judul -- pastikan Anda adalah dosen pembimbing mahasiswa ini');
+                }
+            }
+            redirect('dosen/bimbingan/progress/' . $id_mahasiswa);
         }
     }
     /**

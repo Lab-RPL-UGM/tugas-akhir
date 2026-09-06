@@ -40,6 +40,7 @@
                             <tr>
                                 <th>Nama</th>
                                 <th>Username</th>
+                                <th>Admin Panel Akademik?</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -57,6 +58,20 @@
                                 </td>
                                 <td style="vertical-align:middle">
                                     <?php echo $data->username; ?>
+                                </td>
+                                <td style="vertical-align:middle">
+                                    <form action="<?php echo base_url() . 'akademik/user/toggle_admin' ?>" method="post" style="display:inline">
+                                        <input type="hidden" name="userId" value="<?php echo $data->id_user; ?>">
+                                        <?php if ($data->is_admin) { ?>
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="fa fa-check"></i> Admin — klik untuk cabut
+                                            </button>
+                                        <?php } else { ?>
+                                            <button type="submit" class="btn btn-sm btn-default">
+                                                Jadikan Admin
+                                            </button>
+                                        <?php } ?>
+                                    </form>
                                 </td>
                                 <td>
                                     <a href="<?php echo base_url()?>akademik/akun_dosen/edit_form/<?php echo $data->id_user ?>" class="btn btn-sm btn-primary">

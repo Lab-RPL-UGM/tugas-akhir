@@ -46,6 +46,9 @@
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
     </script>
+
+    <!-- Tema modern -- dimuat paling akhir supaya override semua CSS di atas -->
+    <link href="<?php echo base_url() ?>elusistatic/css/theme-modern.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -75,6 +78,9 @@
                                 <li><a href="<?php echo base_url() ?>dosen/proyek"><i class="fa fa-files-o"></i> Project</a></li>
                                 <?php if ($this->session->userdata('isKaprodi')) { ?>
                                     <li><a href="<?php echo base_url() ?>kaprodi/"><i class="fa fa-arrow-circle-right"></i> Ganti ke Kaprodi</a></li>
+                                <?php } ?>
+                                <?php if ($this->session->userdata('is_admin')) { ?>
+                                    <li><a href="<?php echo base_url() ?>akademik/akun_mahasiswa"><i class="fa fa-arrow-circle-right"></i> Panel Akademik</a></li>
                                 <?php } ?>
                             </ul>
                         </div>

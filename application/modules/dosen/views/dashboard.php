@@ -130,11 +130,13 @@
                                             $jenis = strtolower(trim($row['jenis'] ?? ''));
                                             $label = $jenis === 'proyek' ? 'Memilih Proyek Dosen'
                                                     : ($jenis === 'usul' ? 'Mengusulkan Judul (Pembimbing 1)'
-                                                    : ($jenis === 'pembimbing_ke2' ? 'Mengusulkan Judul (Pembimbing 2)' : ucfirst($jenis)));
+                                                    : ($jenis === 'usul_pembimbing2' ? 'Diusulkan sebagai Pembimbing 2 (Menunggu Keputusan)'
+                                                    : ($jenis === 'pembimbing_ke2' ? 'Mengusulkan Judul (Pembimbing 2)' : ucfirst($jenis))));
 
                                             $badgeClass = $jenis === 'proyek' ? 'label label-primary'
                                                         : ($jenis === 'usul' ? 'label label-success'
-                                                        : ($jenis === 'pembimbing_ke2' ? 'label label-warning' : 'label label-default'));
+                                                        : ($jenis === 'usul_pembimbing2' ? 'label label-info'
+                                                        : ($jenis === 'pembimbing_ke2' ? 'label label-warning' : 'label label-default')));
 
                                             $namaMhs = $row['nama_mahasiswa'] ?? '—';
                                             $judul   = $row['judul'] ?? '—';

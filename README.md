@@ -57,4 +57,14 @@ username : mahasiswa
 
 password : mahasiswa
 
+> **Note:** the passwords above are what a *fresh* seed of `tugas_akhir.sql` / `elusi.sql`
+> creates. On a database that's been running for a while, someone may have changed them --
+> if login fails with these, don't try to guess a replacement. Instead, reset the account
+> you need directly in the database:
+> ```sql
+> -- generate a bcrypt hash for a new password (run in a PHP shell: php -a)
+> -- echo password_hash('your-new-password', PASSWORD_DEFAULT);
+> UPDATE `user` SET `password` = '<paste the hash above>' WHERE `username` = 'akademik';
+> ```
+
 Once you logged in with System Administrator account, you can create user or edit previous user if you want.

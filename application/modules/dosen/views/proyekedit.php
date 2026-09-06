@@ -15,6 +15,7 @@ $nama_dosen = '';
 $klien = '';
 $deskripsi = '';
 $tools = '';
+$id_periode = '';
 
 if (!empty($proyekInfo)) {
     foreach ($proyekInfo as $uf) {
@@ -25,8 +26,10 @@ if (!empty($proyekInfo)) {
         $klien = $uf->klien;
         $deskripsi = $uf->deskripsi;
         $tools = $uf->tools;
+        $id_periode = $uf->id_periode;
     }
 }
+$selectedBidangIds = $selectedBidangIds ?? [];
 //var_dump($proyekInfo);
 ?>
 <div class="">
@@ -76,19 +79,38 @@ if (!empty($proyekInfo)) {
                     <form id="edit-proyek" action="<?php echo base_url() ?>dosen/proyek/editProject" method="post" role="form" data-parsley-validate class="form-horizontal form-label-left">
                         <div class="form-group">
                             <input type="hidden" name="id-proyek" id="id-proyek" class="form-control col-md-7 col-xs-12" value="<?php echo $id_proyek ?>">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nama-dosen">Penanggung jawab<span class="required"> *</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Penanggung jawab</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <!-- Proyek yang diajukan selalu atas nama dosen yang login -- tidak bisa
+                                     dilimpahkan ke dosen lain, jadi bukan dropdown lagi. -->
+                                <p class="form-control-static"><strong><?php echo $nama_dosen; ?></strong></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id_periode">Periode
+                                <span class="required"> *</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control col-md-7 col-xs-12" id="nama-dosen" name="id_dosen">
-                                    <?php
-                                    if (!empty($dosenInfo)) {
-                                        foreach ($dosenInfo as $dosen) {
-                                    ?>
-                                            <option value="<?php echo $dosen->id_dosen ?>" <?php echo ($dosen->id_dosen == $proyek_dosen) ? "selected=\"selected\"" : ""; ?>><?php echo $dosen->nama ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
+                                <select id="id_periode" name="id_periode" class="form-control" required="required">
+                                    <option value="">Pilih periode ...</option>
+                                    <?php foreach ($dataPeriode as $p) { ?>
+                                        <option value="<?php echo $p->id_periode; ?>" <?php echo ($p->id_periode == $id_periode) ? 'selected' : ''; ?>>
+                                            <?php echo ucfirst($p->semester) . ' ' . $p->tahun_ajaran . ($p->status_periode == 1 ? ' (Aktif)' : ''); ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id_bidang">Bidang</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <!-- SOP: satu proyek boleh punya lebih dari satu bidang -->
+                                <select id="id_bidang" name="id_bidang[]" class="form-control" multiple="multiple">
+                                    <?php foreach ($dataBidang as $b) { ?>
+                                        <option value="<?php echo $b->id_bidang; ?>" <?php echo in_array((int)$b->id_bidang, $selectedBidangIds) ? 'selected' : ''; ?>>
+                                            <?php echo $b->nama; ?>
+                                        </option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -110,11 +132,13 @@ if (!empty($proyekInfo)) {
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tools">Tools Proyek <span class="required">*</span>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" name="tools" id="tools" required="required" class="form-control col-md-7 col-xs-12" value="<?php echo $tools ?>">
+                                <!-- required dilepas: input tersembunyi setelah jquery.tagsInput aktif
+                                     bikin browser menolak submit kalau atributnya masih required -->
+                                <input type="text" name="tools" id="tools" class="form-control col-md-7 col-xs-12" value="<?php echo $tools ?>">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Instansi</label>
+                            <label for="instansi" class="control-label col-md-3 col-sm-3 col-xs-12">Mitra</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input id="klien" class="form-control col-md-7 col-xs-12" type="text" name="klien" value="<?php echo $klien ?>">
                             </div>
@@ -131,3 +155,24 @@ if (!empty($proyekInfo)) {
         </div>
     </div>
 </div>
+
+<!-- Tag input untuk field Tools: ketik lalu Enter/koma jadi tag terpisah.
+     Value existing (comma-separated) otomatis di-parse jadi tag saat init. -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/dist/jquery.tagsinput.min.css" rel="stylesheet">
+<script src="<?php echo base_url() ?>elusistatic/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+<!-- Select2 untuk multi-select Bidang -- belum dimuat di modul dosen, jadi ditambah di sini -->
+<link href="<?php echo base_url() ?>elusistatic/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
+<script src="<?php echo base_url() ?>elusistatic/vendors/select2/dist/js/select2.full.min.js"></script>
+<script>
+    $(function () {
+        $('#tools').tagsInput({
+            width: '100%',
+            interactive: true,
+            defaultText: 'tambah tool...'
+        });
+        $('#id_bidang').select2({
+            width: '100%',
+            placeholder: 'Pilih satu atau lebih bidang...'
+        });
+    });
+</script>

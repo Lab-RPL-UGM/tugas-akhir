@@ -99,6 +99,9 @@ if (!empty($taInfo)) {
                     <center>
                         <h3>
                             <strong> <?= $taTerplotting['judul_ta'] ?> </strong>
+                            <?php if ($taTerplotting['jenis'] == 'usul') { ?>
+                                <a href="#" data-toggle="modal" data-target="#modalEditJudul" title="Ubah Judul Tugas Akhir"><i class="fa fa-pencil"></i></a>
+                            <?php } ?>
                         </h3>
                         <h5>Dosen Pembimbing <strong><?= $taDosbing[0]->nama ?> <?= (isset($taDosbing[1]->nama)) ? " dan " . $taDosbing[1]->nama : "" ?></strong></h5>
                         <?php if (isset($taTerplotting['file'])) { ?>
@@ -199,6 +202,31 @@ if (!empty($taInfo)) {
                     <input type="hidden" name="status" id="status" value="diterima">
                     <input type="hidden" name="id_bimbingan" id="id_bimbingan">
                     <input type="hidden" name="id_ta" id="id_ta" value=<?php echo $taTerplotting['id_ta'] ?>>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Ubah Judul Tugas Akhir -->
+<div class="modal fade" id="modalEditJudul" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ubah Judul Tugas Akhir</h4>
+            </div>
+            <form action="<?php echo base_url(); ?>dosen/bimbingan/editJudul" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Judul Tugas Akhir <span class="required">*</span></label>
+                        <textarea name="judul" rows="3" class="form-control" placeholder="Tuliskan judul tugas akhir setelah berdiskusi dengan mahasiswa" required><?php echo ($taTerplotting['jenis'] == 'usul') ? $taTerplotting['judul_ta'] : '' ?></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id_ta" value="<?php echo $taTerplotting['id_ta'] ?>">
+                    <input type="hidden" name="id_mahasiswa" value="<?php echo $mhsInfo[0]->id_mahasiswa ?>">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
