@@ -64,19 +64,30 @@
                                 </div>
                             </div>
                         <?php } ?>
+                        <?php if ($role == ROLE_DOSEN) { ?>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Email UGM
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input id="email" type="email" name="email" required="required" placeholder="nama@ugm.ac.id" class="form-control col-md-7 col-xs-12">
+                                    <small>Email ini yang dipakai untuk mencocokkan login SSO -- harus sama dengan akun Google/UGM dosen.</small>
+                                </div>
+                            </div>
+                        <?php } ?>
                         <?php if ($role == ROLE_DOSEN || $role == ROLE_KAPRODI) { ?>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Gelar Depan
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="gelar_depan" type="text" name="gelar_depan" required="required" placeholder="Drs." class="form-control col-md-7 col-xs-12">
+                                    <input id="gelar_depan" type="text" name="gelar_depan" placeholder="Drs." class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Gelar Belakang
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input id="gelar_belakang" type="text" name="gelar_belakang" required="required" placeholder="S.Kom, M.Kom" class="form-control col-md-7 col-xs-12">
+                                    <input id="gelar_belakang" type="text" name="gelar_belakang" placeholder="S.Kom, M.Kom" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -106,19 +117,18 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Password
-                                <span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <small>(opsional)</small>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="password" type="password" name="password" required="required" class="form-control col-md-7 col-xs-12">
+                                <input id="password" type="password" name="password" class="form-control col-md-7 col-xs-12">
+                                <small>Kosongkan kalau login cukup lewat SSO (yang dipakai berdasarkan email).</small>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Password
-                                <span class="required">*</span>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Password <small>(opsional)</small>
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="cpassword" type="password" name="cpassword" required="required" class="form-control col-md-7 col-xs-12">
+                                <input id="cpassword" type="password" name="cpassword" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
                         <?php } ?>

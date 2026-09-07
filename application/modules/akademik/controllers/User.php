@@ -32,16 +32,40 @@ class User extends BaseController
                 'email' => $email,
             );
         } elseif ($role == ROLE_DOSEN || $role == ROLE_KAPRODI) {
+            $email = trim($this->input->post('email'));
+
+            // Email cuma diminta (dan cuma dipakai) untuk dosen -- kaprodi tidak punya
+            // kolom email sendiri, identitasnya nempel ke dosen/akademik yang sudah ada.
+            if ($role == ROLE_DOSEN) {
+                if (empty($email)) {
+                    $this->session->set_flashdata('error', 'Email UGM wajib diisi -- ini yang dipakai untuk login SSO.');
+                    redirect('akademik/akun_dosen/add_form');
+                    return;
+                }
+                if ($this->User_model->checkEmailDosen($email)) {
+                    $this->session->set_flashdata('error', 'Email ' . htmlspecialchars($email) . ' sudah dipakai dosen lain.');
+                    redirect('akademik/akun_dosen/add_form');
+                    return;
+                }
+            }
+
             $data = array(
                 'nama' => trim($this->input->post('fname')),
                 'username' => trim($this->input->post('username')),
-                'password' => getHashedPassword(trim($this->input->post('password'))),
                 'id_user_role' => $role,
                 'nomor_induk' => trim($this->input->post('nid')),
                 'gelar_depan' => trim($this->input->post('gelar_depan')),
                 'gelar_belakang' => trim($this->input->post('gelar_belakang')),
                 'kuota_mahasiswa' => trim($this->input->post('kuota_mahasiswa')),
+                'email' => $email,
             );
+
+            // Password OPSIONAL -- dosen/kaprodi login lewat SSO (dicocokkan by email),
+            // password lokal cuma jalur cadangan. Kosongkan berarti tidak ada login lokal.
+            $password = trim($this->input->post('password'));
+            if (!empty($password)) {
+                $data['password'] = getHashedPassword($password);
+            }
         } else {
             $data = array(
                 'nama' => trim($this->input->post('fname')),
@@ -220,6 +244,24 @@ class User extends BaseController
                 'status_pengambilan' => trim($this->input->post('status_pengambilan'))
             );
         } elseif ($role == ROLE_DOSEN || $role == ROLE_KAPRODI) {
+            $user_id = $this->input->post('userId');
+            $email = trim($this->input->post('email'));
+
+            // Email cuma diminta (dan cuma dipakai) untuk dosen -- kaprodi tidak punya
+            // kolom email sendiri, identitasnya nempel ke dosen/akademik yang sudah ada.
+            if ($role == ROLE_DOSEN) {
+                if (empty($email)) {
+                    $this->session->set_flashdata('error', 'Email UGM wajib diisi -- ini yang dipakai untuk login SSO.');
+                    redirect('akademik/akun_dosen/edit_form/' . $user_id);
+                    return;
+                }
+                if ($this->User_model->checkEmailDosen($email, $user_id)) {
+                    $this->session->set_flashdata('error', 'Email ' . htmlspecialchars($email) . ' sudah dipakai dosen lain.');
+                    redirect('akademik/akun_dosen/edit_form/' . $user_id);
+                    return;
+                }
+            }
+
             if (empty($this->input->post('password'))) {
                 $data = array(
                     'nama' => trim($this->input->post('fname')),
@@ -227,7 +269,8 @@ class User extends BaseController
                     'nid' => trim($this->input->post('nid')),
                     'gelar_depan' => trim($this->input->post('gelar_depan')),
                     'gelar_belakang' => trim($this->input->post('gelar_belakang')),
-                    'kuota_mahasiswa' => trim($this->input->post('kuota_mahasiswa'))
+                    'kuota_mahasiswa' => trim($this->input->post('kuota_mahasiswa')),
+                    'email' => $email,
                 );
             } else {
                 $data = array(
@@ -237,7 +280,8 @@ class User extends BaseController
                     'gelar_depan' => trim($this->input->post('gelar_depan')),
                     'gelar_belakang' => trim($this->input->post('gelar_belakang')),
                     'password' => getHashedPassword(trim($this->input->post('password'))),
-                    'kuota_mahasiswa' => trim($this->input->post('kuota_mahasiswa'))
+                    'kuota_mahasiswa' => trim($this->input->post('kuota_mahasiswa')),
+                    'email' => $email,
                 );
             }
         } else {

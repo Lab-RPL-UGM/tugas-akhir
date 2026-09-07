@@ -20,6 +20,17 @@ class BaseController extends CI_Controller
 
 	public function __construct()
 	{
+		// PHP 8.1+ mengubah default mysqli jadi MELEMPAR EXCEPTION saat query SQL
+		// gagal (dulu cuma return FALSE). Kode lama di aplikasi ini (2018) ditulis
+		// dengan asumsi lama itu -- banyak tempat pakai pola aman "if (!$query) {
+		// ... return []; }" (mis. Dashboard_model::getPermohonanTAListByUser()) yang
+		// otomatis TIDAK BERFUNGSI LAGI di PHP 8.1+: exception-nya lolos begitu saja
+		// dari pengecekan itu dan bikin request crash 500, padahal kodenya sendiri
+		// sudah didesain untuk gagal dengan aman. Baris ini mengembalikan perilaku
+		// lama (query gagal -> FALSE, bukan exception) supaya pola pengaman yang
+		// sudah ada di seluruh aplikasi kembali berfungsi seperti seharusnya.
+		mysqli_report(MYSQLI_REPORT_OFF);
+
 		parent::__construct();
 
 		// Banyak query lama di aplikasi ini pakai GROUP BY pada satu kolom sambil

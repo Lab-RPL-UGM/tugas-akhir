@@ -7,8 +7,11 @@
  */
 
 $(document).ready(function () {
-	$.validator.addMethod("noSpace", function(value, element) { 
-        return value.trim().length != 0;  
+	$.validator.addMethod("noSpace", function(value, element) {
+        // this.optional(element) -- kalau field-nya opsional (mis. password, tidak
+        // punya rule required) DAN kosong, lolos saja. Tanpa ini, field opsional yang
+        // dikosongkan tetap ditolak sebagai "cuma berisi spasi" walau memang kosong.
+        return this.optional(element) || value.trim().length != 0;
 	}, "No space please");
 	
 	$("#addEditUserForm").validate({
@@ -45,13 +48,16 @@ $(document).ready(function () {
 					data : { userId : function(){ return $("#userId").val(); } }
 				}
 			},
+			// Password opsional -- dosen/kaprodi login lewat SSO (dicocokkan by email),
+			// jadi tidak wajib diisi. Kalau memang diisi, tetap divalidasi normal
+			// (jQuery Validate otomatis skip rule lain kalau field kosong & required:false).
 			password: {
-				required: true,
+				required: false,
 				noSpace: true,
 				minlength: 5
 			},
 			cpassword: {
-				required: true,
+				required: false,
 				equalTo: "#password"
 			}
 		},

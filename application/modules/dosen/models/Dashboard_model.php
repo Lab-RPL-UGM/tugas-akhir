@@ -109,9 +109,9 @@ class Dashboard_model extends CI_Model
                 p.nama                                                           AS judul,
                 'proyek'                                                         AS jenis,
                 COALESCE(
-                    NULLIF(pt.createdDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(CAST(pt.createdDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NOW()
                 )                                                                AS tanggal_pengajuan
             FROM pengajuan_ta pt
@@ -138,9 +138,9 @@ class Dashboard_model extends CI_Model
                     ELSE 'usul'
                 END                                                              AS jenis,
                 COALESCE(
-                    NULLIF(pt.createdDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(CAST(pt.createdDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NOW()
                 )                                                                AS tanggal_pengajuan
             FROM pengajuan_ta pt
@@ -178,9 +178,9 @@ class Dashboard_model extends CI_Model
                 COALESCE(u_last.judul, p_last.nama, NULL)                        AS judul,
                 'pembimbing_ke2'                                                 AS jenis,
                 COALESCE(
-                    NULLIF(pt_last.createdDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.updatedDtm, '0000-00-00 00:00:00'),
-                    NULLIF(ta.createdDtm, '0000-00-00 00:00:00'),
+                    NULLIF(CAST(pt_last.createdDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
+                    NULLIF(CAST(ta.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NOW()
                 )                                                                AS tanggal_pengajuan
             FROM (
@@ -199,7 +199,7 @@ class Dashboard_model extends CI_Model
             LEFT JOIN pengajuan_ta pt_last
                    ON pt_last.id_ta = ta.id_ta
                   AND pt_last.createdDtm = (
-                        SELECT MAX(NULLIF(ptx.createdDtm, '0000-00-00 00:00:00'))
+                        SELECT MAX(NULLIF(CAST(ptx.createdDtm AS CHAR), '0000-00-00 00:00:00'))
                         FROM pengajuan_ta ptx
                         WHERE ptx.id_ta = ta.id_ta
                   )

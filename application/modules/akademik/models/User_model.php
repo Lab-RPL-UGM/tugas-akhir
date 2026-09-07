@@ -29,7 +29,11 @@ class User_model extends CI_Model{
                 'nid' => $data['nomor_induk'],
                 'gelar_depan' => $data['gelar_depan'],
                 'gelar_belakang' => $data['gelar_belakang'],
-                'kuota_mahasiswa' => $data['kuota_mahasiswa']
+                'kuota_mahasiswa' => $data['kuota_mahasiswa'],
+                // Wajib diisi -- ini yang dipakai Login_model::findUserByEmail() buat
+                // mencocokkan akun SSO Casdoor ke dosen ini. Tanpa ini dosen tidak akan
+                // pernah bisa login (password lokal bukan jalur login yang dipakai).
+                'email' => $data['email'],
             );
             $this->db->insert('dosen', $data_another_table);
         } elseif($data['id_user_role'] == ROLE_AKADEMIK){
@@ -164,7 +168,8 @@ class User_model extends CI_Model{
                 'nid' => $data['nid'],
                 'gelar_depan' => $data['gelar_depan'],
                 'gelar_belakang' => $data['gelar_belakang'],
-                'kuota_mahasiswa' => $data['kuota_mahasiswa']
+                'kuota_mahasiswa' => $data['kuota_mahasiswa'],
+                'email' => $data['email'],
             );
             $this->db->where('id_user',$id);
             $this->db->update('dosen', $data_dosen);
@@ -209,6 +214,23 @@ class User_model extends CI_Model{
         $this->db->from("user u");
         $this->db->join("mahasiswa m","u.id_user = m.id_user","inner");
         $this->db->where("m.email", $email);
+        $this->db->where("u.isDeleted", 0);
+        if($userId != 0){
+            $this->db->where("u.id_user !=", $userId);
+        }
+        $query = $this->db->get();
+
+        if( $query->num_rows() > 0 ){ return TRUE; } else { return FALSE; }
+    }
+
+    function checkEmailDosen($email, $userId = 0){
+        // Sama seperti checkEmail() tapi untuk dosen -- email jadi kunci pencocokan
+        // login SSO, jadi tidak boleh dobel antar dosen (Login_model::findUserByEmail()
+        // cuma ambil baris pertama yang cocok kalau ada duplikat).
+        $this->db->select("d.email");
+        $this->db->from("user u");
+        $this->db->join("dosen d","u.id_user = d.id_user","inner");
+        $this->db->where("d.email", $email);
         $this->db->where("u.isDeleted", 0);
         if($userId != 0){
             $this->db->where("u.id_user !=", $userId);
