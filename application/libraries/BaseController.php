@@ -18,6 +18,25 @@ class BaseController extends CI_Controller
 	// Dosen dengan flag dosen.is_admin juga bisa akses panel akademik — lihat isAkademik().
 	protected $isAdmin = false;
 
+	public function __construct()
+	{
+		parent::__construct();
+
+		// Banyak query lama di aplikasi ini pakai GROUP BY pada satu kolom sambil
+		// SELECT kolom lain yang tidak ikut di-GROUP BY / di-agregasi (mis.
+		// "SELECT d.*, ds.id_user ... GROUP BY m.nama"). Ini valid di MariaDB (default
+		// dev lokal) tapi DITOLAK oleh MySQL yang sql_mode-nya include
+		// ONLY_FULL_GROUP_BY (default di MySQL 5.7+/8 -- umum di hosting produksi),
+		// bikin query gagal -> 500 di halaman yang pakai pola ini (dosen, daftar
+		// dosen, sidang, dll). 'stricton' di database.php TIDAK menghapus ini (cuma
+		// STRICT_ALL_TABLES/STRICT_TRANS_TABLES), jadi dihapus manual di sini, sekali
+		// per request, sebelum controller mana pun sempat menjalankan query.
+		if (isset($this->db) && $this->db instanceof CI_DB)
+		{
+			$this->db->simple_query("SET SESSION sql_mode = REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '')");
+		}
+	}
+
 	/**
 	 * Takes mixed data and optionally a status code, then creates the response
 	 *
