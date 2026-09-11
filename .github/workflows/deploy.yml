@@ -116,13 +116,11 @@ jobs:
           chown -R www-data:www-data application/logs uploads
           chmod -R 775 application/logs uploads
 
-          # Composer hanya kalau lockfile berubah / vendor belum ada.
-          if [ ! -f vendor/autoload.php ] || [ composer.lock -nt vendor/composer/installed.json ]; then
-            echo ">> composer.lock berubah — menjalankan composer install"
-            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-          else
-            echo ">> dependency tidak berubah — skip composer install"
-          fi
+          # vendor/ sengaja di-exclude dari rsync dan composer install TIDAK
+          # dijalankan: composer.json proyek ini masih memakai nama paket
+          # uppercase (mikey179/vfsStream) yang ditolak Composer modern,
+          # sehingga `composer install` selalu gagal. Vendor di VPS dibiarkan
+          # apa adanya.
 
           echo ">> Deploy OK: $(date -u +%FT%TZ)"
           REMOTE

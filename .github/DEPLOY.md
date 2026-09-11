@@ -11,7 +11,6 @@ via GitHub Actions (`.github/workflows/deploy.yml`).
    `/var/www/tugas-akhir`, lalu post-deploy di VPS:
    - `application/logs` & `uploads` di-`chown www-data` + `chmod 775`
      (sekaligus memperbaiki log error yang selama ini tidak bisa ditulis).
-   - `composer install --no-dev` **hanya** kalau `composer.lock` berubah.
 
 ## File yang TIDAK ikut ter-deploy (aman, tidak ketimpa)
 
@@ -99,8 +98,11 @@ Push tersebut otomatis men-deploy ulang versi sebelumnya.
 - `rsync` memakai `--delete`: file di VPS yang **tidak ada di repo dan tidak
   masuk daftar exclude** akan dihapus. Kalau ada file khusus produksi lain,
   tambahkan ke `--exclude` di workflow.
-- `vendor/` di-exclude; sinkronisasi dependensi ditangani `composer install`
-  saat `composer.lock` berubah.
+- `vendor/` di-exclude dan **tidak** dijalankan `composer install`; `composer.json`
+  proyek ini masih memakai nama paket uppercase (`mikey179/vfsStream`) yang
+  ditolak Composer modern, jadi vendor di VPS dibiarkan apa adanya. Kalau
+  dependensi berubah, perbaiki dulu `composer.json` (pakai `vfsstream` huruf
+  kecil) lalu tambahkan kembali step composer.
 - OPcache PHP-FPM (`validate_timestamps=On`, `revalidate_freq=2`) otomatis
   mengambil file baru dalam ~2 detik, jadi tidak perlu reload FPM.
 - Rekomendasi hardening (belum dilakukan): pakai user `deploy` khusus +
