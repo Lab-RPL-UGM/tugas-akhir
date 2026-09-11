@@ -252,8 +252,11 @@ class Login_model extends CI_Model
 
     public function getSidangCount($id_dosen)
     {
-        $this->db->select('j.tanggal, j.waktu, j.ruang, m.nim, m.nama, v.path, 
-        p.id_penilaian, s.nilai_akhir_sidang, p.nilai_akhir_dosen, a.id_sidang');
+        // This method only needs the number of matching students. Selecting
+        // every joined column while grouping by one column breaks on MySQL's
+        // ONLY_FULL_GROUP_BY mode and can count duplicate panel rows.
+        $this->db->select('m.id_mahasiswa');
+        $this->db->distinct();
         $this->db->from('sidang s');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = s.id_mahasiswa');
         $this->db->join('jadwal_sidang j', 'j.id_sidang = s.id_sidang');
