@@ -1,0 +1,128 @@
+name: Deploy — Tugas Akhir
+
+# Auto-deploy ke vps-trpl (https://tugas-akhir.trpl.space) setiap push/merge ke main.
+# Bisa juga dijalankan manual dari tab Actions (workflow_dispatch).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Jangan sampai dua deploy jalan bareng.
+concurrency:
+  group: deploy-tugas-akhir
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PHP_VERSION: "8.3"
+
+jobs:
+  ci:
+    name: CI — lint & validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+
+      # Non-blocking: composer.json lama ini masih pakai nama paket uppercase
+      # (mikey179/vfsStream) sehingga `composer validate` selalu exit 1.
+      # Jangan sampai menghalangi deploy; cukup jadi peringatan.
+      - name: Validate composer.json
+        continue-on-error: true
+        run: composer validate --no-check-publish --no-interaction
+
+      - name: PHP syntax check (php -l)
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(find application index.php default.php -type f -name '*.php' -not -path 'application/logs/*')
+          printf '%s\0' "${files[@]}" | xargs -0 -n1 -P4 php -l > /tmp/php-lint.log 2>&1 || {
+            echo "::error::PHP syntax check gagal"
+            cat /tmp/php-lint.log
+            exit 1
+          }
+          echo "OK: ${#files[@]} file PHP lolos syntax check."
+
+  deploy:
+    name: Deploy — SSH + rsync
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      # Kirim source code. File produksi (config/database/casdoor, uploads,
+      # logs, vendor) sengaja di-exclude supaya tidak ketimpa.
+      - name: Rsync source ke VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_PATH: ${{ secrets.VPS_PATH }}
+        run: |
+          set -euo pipefail
+          rsync -rlptD --delete --no-owner --no-group \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.idea/' \
+            --exclude='.vscode/' \
+            --exclude='.DS_Store' \
+            --exclude='application/config/config.php' \
+            --exclude='application/config/database.php' \
+            --exclude='application/config/casdoor.php' \
+            --exclude='application/logs/' \
+            --exclude='uploads/' \
+            --exclude='vendor/' \
+            -e "ssh -i ~/.ssh/id_ed25519 -p ${VPS_PORT} -o StrictHostKeyChecking=yes" \
+            ./ "${VPS_USER}@${VPS_HOST}:${VPS_PATH}/"
+
+      - name: Post-deploy di VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_PATH: ${{ secrets.VPS_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ed25519 -p "${VPS_PORT}" -o StrictHostKeyChecking=yes \
+            "${VPS_USER}@${VPS_HOST}" "VPS_PATH='${VPS_PATH}' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$VPS_PATH"
+
+          # Runtime dir harus writable oleh www-data (PHP-FPM).
+          mkdir -p application/logs uploads
+          chown -R www-data:www-data application/logs uploads
+          chmod -R 775 application/logs uploads
+
+          # Composer hanya kalau lockfile berubah / vendor belum ada.
+          if [ ! -f vendor/autoload.php ] || [ composer.lock -nt vendor/composer/installed.json ]; then
+            echo ">> composer.lock berubah — menjalankan composer install"
+            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+          else
+            echo ">> dependency tidak berubah — skip composer install"
+          fi
+
+          echo ">> Deploy OK: $(date -u +%FT%TZ)"
+          REMOTE
