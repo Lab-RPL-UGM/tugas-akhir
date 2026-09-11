@@ -78,8 +78,16 @@ class User_model extends CI_Model{
 
     function insert_multiple($data){
         $this->db->trans_start();
-        $count = count($data);
-        $all_data_user = array();
+
+        // Sebelumnya insert_batch('user', ...) sekali lalu id_user tiap baris
+        // ditebak dari insert_id() + offset (asumsi AUTO_INCREMENT kontigu).
+        // Asumsi itu pecah begitu insert_batch mem-split jadi beberapa statement
+        // (default CI: tiap 100 baris) -- insert_id() cuma balikin id dari
+        // statement TERAKHIR, jadi baris² sebelumnya kepasang id_user yang salah
+        // (data nyasar ke akun lain / FK constraint gagal -> seluruh import
+        // di-rollback). Insert satu-satu di sini supaya id_user yang dipasang ke
+        // mahasiswa/dosen/akademik selalu benar, berapapun jumlah barisnya.
+        $data_another_table = array();
         foreach ($data as $result_excel) {
             $data_user = array(
                 'nama' => $result_excel['nama'],
@@ -87,53 +95,45 @@ class User_model extends CI_Model{
                 'password' => $result_excel['password'],
                 'id_user_role' => $result_excel['id_user_role']
             );
-            array_push($all_data_user,$data_user);
+            $this->db->insert('user', $data_user);
+            $id = $this->db->insert_id();
+
+            if ($result_excel['id_user_role'] == ROLE_MAHASISWA) {
+                $data_another_table[] = array(
+                    'id_user' => $id,
+                    'nama' => $result_excel['nama'],
+                    'nim' => $result_excel['nomor_induk'],
+                    'email' => isset($result_excel['email']) ? $result_excel['email'] : null
+                );
+            } elseif ($result_excel['id_user_role'] == ROLE_DOSEN) {
+                $data_another_table[] = array(
+                    'id_user' => $id,
+                    'nama' => $result_excel['nama'],
+                    'nid' => $result_excel['nomor_induk'],
+                    'gelar_depan' => isset($result_excel['gelar_depan']) ? $result_excel['gelar_depan'] : null,
+                    'gelar_belakang' => isset($result_excel['gelar_belakang']) ? $result_excel['gelar_belakang'] : null,
+                    'kuota_mahasiswa' => isset($result_excel['kuota_mahasiswa']) ? $result_excel['kuota_mahasiswa'] : null
+                );
+            } elseif ($result_excel['id_user_role'] == ROLE_AKADEMIK) {
+                $data_another_table[] = array(
+                    'id_user' => $id,
+                    'nama' => $result_excel['nama']
+                );
+            }
         }
-        $this->db->insert_batch('user', $all_data_user);
-        $first_id = $this->db->insert_id();
-        $last_id = $first_id + ($count-1);
-        $i = 0;
-        $data_another_table = array();
-        if($data[0]['id_user_role'] == ROLE_MAHASISWA){    
-            for ($id=$first_id; $id<=$last_id ; $id++) { 
-                $data_person = array(
-                    'id_user' => $id,
-                    'nama' => $data[$i]['nama'],
-                    'nim' => $data[$i]['nomor_induk']
-                );
-                array_push($data_another_table,$data_person);
-                $i++;
-            }
+
+        $role = $data[0]['id_user_role'];
+        if ($role == ROLE_MAHASISWA) {
             $this->db->insert_batch('mahasiswa', $data_another_table);
-        } elseif($data[0]['id_user_role'] == ROLE_DOSEN){
-            for ($id=$first_id; $id<=$last_id ; $id++) { 
-                $data_person = array(
-                    'id_user' => $id,
-                    'nama' => $data[$i]['nama'],
-                    'nid' => $data[$i]['nomor_induk'],
-                    'gelar_depan' => $data['gelar_depan'],
-                    'gelar_belakang' => $data['gelar_belakang'],
-                    'kuota_mahasiswa' => $data['kuota_mahasiswa']
-                );
-                array_push($data_another_table,$data_person);
-                $i++;
-            }    
+        } elseif ($role == ROLE_DOSEN) {
             $this->db->insert_batch('dosen', $data_another_table);
-        } elseif($data[0]['id_user_role'] == ROLE_AKADEMIK){
-            for ($id=$first_id; $id<=$last_id ; $id++) { 
-                $data_person = array(
-                    'id_user' => $id,
-                    'nama' => $data[$i]['nama']
-                );
-                array_push($data_another_table,$data_person);
-                $i++;
-            }
+        } elseif ($role == ROLE_AKADEMIK) {
             $this->db->insert_batch('akademik', $data_another_table);
         }
-        
+
         $this->db->trans_complete();
         $result = $this->db->trans_status();
-        
+
         return $result;
     }
 

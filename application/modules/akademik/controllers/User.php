@@ -96,6 +96,7 @@ class User extends BaseController
 
     public function upload_data_user($role)
     {
+        set_time_limit(300);
         date_default_timezone_set("Asia/Jakarta");
         if ($_FILES["file_excel"]) {
             $new_name = date("YmdHis") . "-" . $_FILES["file_excel"]['name'];
@@ -163,10 +164,16 @@ class User extends BaseController
 
     public function upload_submit()
     {
+        // Import besar (100+ baris) butuh lebih dari 30 detik default PHP kalau
+        // koneksi DB lagi lambat -- tanpa ini request bisa mati di tengah baca
+        // spreadsheet / insert tanpa pesan error yang jelas ke user.
+        set_time_limit(300);
+
         $filename = str_replace(" ", "_", $this->input->post('file_name'));
         $file_extension = $this->input->post('file_extension');
         $column_fname = $this->input->post('fname');
         $column_username = $this->input->post('username');
+        $column_email = $this->input->post('email');
         $prodi = $this->input->post('prodi');
         $data = array();
         $this->load->model('User_model');
@@ -195,6 +202,12 @@ class User extends BaseController
                     'password' => getHashedPassword(trim($username)),
                     'id_user_role' => $role
                 );
+                if ($role == ROLE_MAHASISWA && !empty($column_email)) {
+                    // Wajib -- login SSO mahasiswa dicocokkan lewat mahasiswa.email
+                    // (lihat Login_model::findUserByEmail()). Tanpa ini akun hasil
+                    // import tidak akan pernah bisa login.
+                    $dataUser['email'] = trim($worksheet->getCell($column_email . $row)->getValue());
+                }
                 array_push($data, $dataUser);
             }
         }

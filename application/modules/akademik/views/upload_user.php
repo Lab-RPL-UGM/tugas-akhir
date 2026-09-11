@@ -111,6 +111,30 @@
                                 </select>
                             </div>
                         </div>
+                        <?php if($role == ROLE_MAHASISWA) { ?>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Email
+                                <span class="required">*</span>
+                            </label>
+                            <small>
+                                <strong>Email ini dipakai untuk login SSO mahasiswa</strong>
+                            </small>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select name="email" id="email" class="form-control col-md-7 col-xs-12">
+                                    <option value="">Pilih Kolom untuk email...</option>
+                                    <?php
+                                        foreach ($dataThead as $data) {
+                                            foreach ($data as $column => $columnValue) {
+                                                if($columnValue != NULL){
+                                                    echo "<option value=\"" . $column . "\">" . $columnValue ."</option>";
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                </select>
+                            </div>
+                        </div>
+                        <?php } ?>
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <input id="role" type="hidden" name="role" class="form-control col-md-7 col-xs-12" value="<?php echo $role?>">
                             <input id="file_name" type="hidden" name="file_name" class="form-control col-md-7 col-xs-12" value="<?php echo $file_name?>">

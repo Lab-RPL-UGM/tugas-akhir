@@ -14,6 +14,9 @@ $(document).ready(function () {
 			},
 			username: {
 				required: true
+			},
+			email: {
+				required: true
 			}
 		},
 		messages: {
@@ -22,7 +25,10 @@ $(document).ready(function () {
 			},
 			username: {
 				required: "Username harus diisi"
-            }
+            },
+			email: {
+				required: "Email harus diisi"
+			}
         }
 	});
 });
