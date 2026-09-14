@@ -259,13 +259,15 @@ $renderPilihanBlock = function ($n) use ($dataDosen, $proyekInfo, $existingPilih
                                                                     <?php echo $record->tools ?>
                                                                 </span>
                                                             </div>
-                                                            <div class="clearfix" style="margin-bottom: 2%"></div>
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Dosen Pembimbing Proyek</label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                <span>
-                                                                    <?php echo $record->nama_dosen_proyek ?>
-                                                                </span>
-                                                            </div>
+                                                            <?php
+                                                            // Nama dosen pemilik proyek SENGAJA tidak ditampilkan di sini --
+                                                            // pengajuan masih berstatus pending/menunggu, belum resmi
+                                                            // di-plotting oleh akademik (beda dari $taDosbing di bawah, yang
+                                                            // memang sudah dosen pembimbing resmi & wajar diketahui
+                                                            // mahasiswa). Mahasiswa memilih proyek dari judul, bukan dari
+                                                            // nama dosennya, jadi identitas dosen tidak perlu bocor di
+                                                            // tahap ini.
+                                                            ?>
                                                             <div class="clearfix" style="margin-bottom: 2%"></div>
                                                         </div>
                                                     </div>
