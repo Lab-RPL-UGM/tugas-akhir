@@ -33,7 +33,9 @@ class BaseController extends CI_Controller
 		// per request, sebelum controller mana pun sempat menjalankan query.
 		if (isset($this->db) && $this->db instanceof CI_DB)
 		{
-			$this->db->simple_query("SET SESSION sql_mode = REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', '')");
+			$this->db->simple_query(
+				"SET SESSION sql_mode = REPLACE(REPLACE(REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''), 'NO_ZERO_IN_DATE', ''), 'NO_ZERO_DATE', '')"
+			);
 		}
 	}
 

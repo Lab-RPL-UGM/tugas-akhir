@@ -54,6 +54,11 @@ $route['default_controller'] = "login";
 $route['404_override'] = 'error_404';
 $route['translate_uri_dashes'] = FALSE;
 
+// Keep the OAuth endpoints explicit so the callback remains stable when the
+// application is served without index.php rewriting.
+$route['login/ssoLogin'] = 'login/ssoLogin';
+$route['login/ssoCallback'] = 'login/ssoCallback';
+
 
 /*********** USER DEFINED ROUTES *******************/
 
