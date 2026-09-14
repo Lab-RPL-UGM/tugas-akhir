@@ -31,7 +31,7 @@
 <!-- jQuery autocomplete -->
 <script src="<?php echo base_url()?>elusistatic/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
 <!-- Custom Theme Scripts -->
-<script src="<?php echo base_url()?>elusistatic/build/js/custom.js"></script>
+<script src="<?php echo base_url()?>elusistatic/build/js/custom.js?v=<?php echo filemtime(FCPATH . 'elusistatic/build/js/custom.js'); ?>"></script>
 <!-- Datatables -->
 <script src="<?php echo base_url()?>elusistatic/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo base_url()?>elusistatic/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>

@@ -591,13 +591,111 @@ p.detail-field-value {
 }
 
 @media (max-width: 991px) {
-    .left_col {
+    /* Di layar sempit sidebar jadi off-canvas: sembunyi di luar layar secara
+       default, lalu slide masuk sebagai overlay begitu tombol hamburger
+       di-tap. Sengaja pakai class BARU "mobile-sidebar-open" (di-toggle oleh
+       #menu_toggle di custom.js), BUKAN nav-md/nav-sm bawaan tema -- nav-sm
+       sudah punya arti lain (mode collapse ikon di desktop) dan dipakai
+       banyak rule CSS lama punya tema, jadi gampang kebentur rule desktop
+       yang tidak terduga kalau dipakai ulang untuk keperluan berbeda ini.
+       Semua properti !important karena custom.min.css (tema dasar) punya
+       selector berantai (.nav-md .container.body .col-md-3.left_col) yang
+       spesifisitasnya tinggi -- tanpa !important gampang kalah diam-diam. */
+    /* PENTING: markup sidebar punya DUA elemen ber-class "left_col" bertumpuk
+       -- pembungkus luar (class "col-md-3 left_col") dan div konten di
+       dalamnya (class "left_col scroll-view"). Rule sebelumnya menyasar
+       ".left_col" polos, jadi kena DUA-DUANYA -- begitu elemen luar dikasih
+       transform, dia jadi containing block buat elemen dalam yang position:
+       fixed, sehingga transform elemen dalam ikut "menumpuk" di atas
+       transform elemen luar (bergeser dobel). Makanya sebelum-sesudah klik
+       jadi berantakan. Fix: cuma elemen LUAR (".col-md-3.left_col") yang
+       digeser/di-fixed; elemen dalam dibuat statis biasa supaya cuma ikut
+       menempel di dalam elemen luar tanpa positioning-nya sendiri. */
+    .col-md-3.left_col {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
         width: var(--sidebar-width) !important;
+        max-width: 85vw !important;
+        height: 100% !important;
+        min-height: 100% !important;
+        z-index: 2000 !important;
+        overflow-y: auto !important;
+        transform: translateX(-100%) !important;
+        transition: transform .25s ease !important;
     }
+    .col-md-3.left_col > .left_col.scroll-view {
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 100% !important;
+        max-width: none !important;
+        z-index: auto !important;
+        overflow-y: visible !important;
+        transform: none !important;
+    }
+    body.mobile-sidebar-open .col-md-3.left_col {
+        transform: translateX(0) !important;
+    }
+    /* Selector di sini SENGAJA diulang persis mengikuti punya custom.min.css
+       (.nav-md .container.body .right_col dst, 4 class) -- kalau cuma
+       ".container.body .right_col" (3 class) makanya kalah spesifisitas
+       walau sudah !important, dan margin-left bawaan desktop (250px pas
+       nav-md, 70px pas nav-sm) tetap kepakai, bikin konten ke-geser padahal
+       sidebar-nya sendiri sudah benar off-canvas -- itu penyebab tampilan
+       kacau sebelum & sesudah tombol hamburger di-tap. */
     .nav-md .container.body .right_col,
     .nav-md .top_nav,
     .nav-sm .container.body .right_col,
     .nav-sm .top_nav {
         margin-left: 0 !important;
+    }
+    /* Tombol hamburger harus tetap di atas overlay sidebar, kalau tidak
+       begitu sidebar terbuka tombolnya ketutup dan tidak bisa ditutup lagi. */
+    #menu_toggle {
+        position: relative !important;
+        z-index: 2001 !important;
+    }
+    /* Begitu sidebar terbuka, tombol hamburger (yang posisi normalnya nempel
+       di pojok kiri-atas, sama seperti logo di dalam sidebar) tumpang tindih
+       persis dengan logo/ikon topi wisuda di sidebar -- geser ke kanan
+       sidebar supaya tidak saling timpa, tapi tetap kelihatan & bisa ditap
+       lagi untuk menutup. */
+    body.mobile-sidebar-open #menu_toggle {
+        position: fixed !important;
+        top: 6px !important;
+        left: calc(var(--sidebar-width) + 12px) !important;
+    }
+    /* Backdrop redup di belakang sidebar saat lagi dibuka -- ditutup lagi
+       dengan tap tombol hamburger yang sama. */
+    body.mobile-sidebar-open .container.body::before {
+        content: "" !important;
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, .5) !important;
+        z-index: 1999 !important;
+    }
+}
+
+/* ============ TABEL — bisa di-scroll horizontal di layar sempit ============
+   Sebagian besar halaman list (daftar mahasiswa/dosen, bimbingan, sidang,
+   yudisium, dll) pakai <table class="table"> polos tanpa pembungkus
+   .table-responsive, jadi kalau tidak begini tabelnya kepotong/overflow
+   diam-diam di HP tanpa cara untuk lihat kolom yang kepotong. */
+@media (max-width: 767px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    /* Kalau tabelnya sudah dibungkus .table-responsive (cara resmi Bootstrap),
+       jangan ikut di-display:block-kan juga -- nanti malah teksnya dipaksa
+       wrap sempit di dalam kolom yang menyempit, bukan di-scroll rapi
+       seperti maksud .table-responsive itu sendiri. */
+    .table-responsive .table {
+        display: table;
     }
 }

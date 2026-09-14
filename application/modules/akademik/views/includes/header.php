@@ -56,8 +56,10 @@
         var baseURL = "<?php echo base_url(); ?>";
     </script>
 
-    <!-- Tema modern -- dimuat paling akhir supaya override semua CSS di atas -->
-    <link href="<?php echo base_url() ?>elusistatic/css/theme-modern.css" rel="stylesheet">
+    <!-- Tema modern -- dimuat paling akhir supaya override semua CSS di atas.
+         Query ?v= pakai filemtime supaya browser selalu ambil versi terbaru
+         begitu file ini diedit, bukan versi lama yang ke-cache. -->
+    <link href="<?php echo base_url() ?>elusistatic/css/theme-modern.css?v=<?php echo filemtime(FCPATH . 'elusistatic/css/theme-modern.css'); ?>" rel="stylesheet">
 </head>
 
 <body class="nav-md">

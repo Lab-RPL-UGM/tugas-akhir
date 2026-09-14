@@ -32,7 +32,7 @@
 <!-- jQuery autocomplete -->
 <script src="<?php echo base_url()?>elusistatic/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
 <!-- Custom Theme Scripts -->
-<script src="<?php echo base_url()?>elusistatic/build/js/custom.js"></script>
+<script src="<?php echo base_url()?>elusistatic/build/js/custom.js?v=<?php echo filemtime(FCPATH . 'elusistatic/build/js/custom.js'); ?>"></script>
 <!-- Custom Radio Button -->
 <script src="<?php echo base_url()?>elusistatic/vendors/iCheck/icheck.min.js"></script>
 

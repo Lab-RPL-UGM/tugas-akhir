@@ -1,32 +1,32 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <title>Dashboard - Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <style>
-        /* Rapikan spacing dan tampilan panel */
-        .page-title { margin-bottom: 12px; }
-        .top_tiles .tile-stats { border: 1px solid #e5e7eb; border-radius: 6px; }
-        .tile-stats .count { font-size: 28px; font-weight: 600; }
-        .x_panel { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 20px; background: #fff; }
-        .x_title { margin-bottom: 12px; }
-        .x_title h3 { margin: 0; font-weight: 700; }
-        /* Hindari whitespace berlebih: jangan pakai height:100vh di wrapper */
-        #grafik-container { height: 420px; }
-        #grafikPengajuanTA { width: 100%; height: 100%; }
-        table.table { width: 100%; border-collapse: collapse; }
-        table.table th, table.table td { padding: 8px 10px; border: 1px solid #e5e7eb; }
-        table.table th { background: #f8fafc; }
-        .text-center { text-align: center; }
-        .muted { color: #6b7280; }
-        .periode-filter { margin: 12px 0 20px; }
-        .periode-filter label { font-weight: 600; margin-right: 8px; }
-        .periode-filter select { padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
-    </style>
-</head>
-<body>
+<?php
+/* Fragment ini di-render DI DALAM <html>/<body> yang sudah dibuka oleh
+   includes/header.php (lihat BaseController::loadViews()) -- makanya TIDAK
+   boleh punya <!DOCTYPE>/<html>/<head>/<body> sendiri. Sebelumnya file ini
+   ikut menulis dokumen HTML lengkapnya sendiri, jadi browser menerima DUA
+   <html>/<head>/<body> bertumpuk (satu dari header.php, satu dari sini) --
+   HTML tidak valid, walau browser "memperbaiki"-nya sendiri secara diam-diam
+   dengan cara yang tidak selalu konsisten. */
+?>
+<style>
+    /* Rapikan spacing dan tampilan panel */
+    .page-title { margin-bottom: 12px; }
+    .top_tiles .tile-stats { border: 1px solid #e5e7eb; border-radius: 6px; }
+    .tile-stats .count { font-size: 28px; font-weight: 600; }
+    .x_panel { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 20px; background: #fff; }
+    .x_title { margin-bottom: 12px; }
+    .x_title h3 { margin: 0; font-weight: 700; }
+    /* Hindari whitespace berlebih: jangan pakai height:100vh di wrapper */
+    #grafik-container { height: 420px; }
+    #grafikPengajuanTA { width: 100%; height: 100%; }
+    table.table { width: 100%; border-collapse: collapse; }
+    table.table th, table.table td { padding: 8px 10px; border: 1px solid #e5e7eb; }
+    table.table th { background: #f8fafc; }
+    .text-center { text-align: center; }
+    .muted { color: #6b7280; }
+    .periode-filter { margin: 12px 0 20px; }
+    .periode-filter label { font-weight: 600; margin-right: 8px; }
+    .periode-filter select { padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; }
+</style>
 
 <div role="main">
     <div class="">
@@ -133,7 +133,14 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div style="overflow:auto;">
+                        <!-- ".table-responsive" (bukan cuma "overflow:auto" polos) supaya
+                             ke-exempt dari rule global ".table { display:block; overflow-x:
+                             auto }" di theme-modern.css (dipakai buat tabel LAIN yang tidak
+                             ada pembungkus responsive-nya) -- kalau tidak, tabel ini malah
+                             dipaksa display:block juga, bentrok sama lebar kolom yang sudah
+                             dihitung DataTables (yang asumsinya display:table), bikin header
+                             dan data kolom tidak sejajar/rapi di layar sempit. -->
+                        <div class="table-responsive">
                             <table id="rekap-dosen" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -169,20 +176,19 @@
     </div><!-- /.wrapper -->
 </div><!-- /role=main -->
 
-<!-- Canvas untuk grafik -->
-<canvas id="grafikPengajuanTA" style="height:400px;"></canvas>
-<!-- Chart.js CDN -->
+<!-- Chart.js -- jQuery, Bootstrap, dan DataTables (dipakai di bawah untuk
+     #rekap-dosen) sudah dimuat sekali lewat includes/header.php dan
+     includes/footer.php, tidak perlu dimuat ulang di sini. Sebelumnya ada
+     beberapa <script> CDN duplikat/rusak (jQuery & Chart.js versi lain
+     dengan URL tanpa "https://" sehingga selalu gagal dimuat) -- semuanya
+     cuma bikin request gagal (404) di console tanpa efek fungsional. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
-<!-- jQuery & DataTables (opsional) -->
-<script src="jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<!-- Chart.js -->
-<script src="cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
 <script>
-(function () {
+// DataTables & Chart butuh footer.php sudah selesai dimuat -- makanya
+// dibungkus $(document).ready(), bukan langsung dieksekusi (IIFE polos
+// sebelumnya jalan SEBELUM DataTables dari footer.php sempat termuat).
+$(function ($) {
   // Data dari controller (DIJAMIN sinkron karena sumbernya dari $rekapDipilih yang sama)
   const labels          = <?= json_encode($chartLabels ?? [], JSON_UNESCAPED_UNICODE); ?>;
   const proyekVals      = <?= json_encode($chartProyekVals ?? [], JSON_NUMERIC_CHECK); ?>;
@@ -250,7 +256,5 @@
       zeroRecords: 'Tidak ada data yang cocok'
     }
   });
-})();
+});
 </script>
-</body>
-</html>

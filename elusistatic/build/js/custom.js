@@ -118,6 +118,32 @@ $MENU_TOGGLE.on('click', function() {
 	$('.dataTable').each ( function () { $(this).dataTable().fnDraw(); });
 });
 
+// Toggle sidebar off-canvas di layar sempit (HP/tablet). Sengaja pakai class
+// baru ("mobile-sidebar-open"), BUKAN nav-md/nav-sm di atas -- nav-sm sudah
+// punya arti lain (mode collapse ikon di desktop) dan dipakai banyak rule CSS
+// lama, jadi kalau dipakai ulang gampang ketiban rule desktop yang tidak
+// terduga. Class baru ini murni terpisah, jadi hasilnya konsisten.
+$MENU_TOGGLE.on('click', function() {
+	$BODY.toggleClass('mobile-sidebar-open');
+
+	// Ikon hamburger -> X begitu sidebar terbuka, biar jelas tombolnya buat
+	// nutup lagi. Class awalnya cuma "fa-bars", jadi toggleClass dua nama
+	// sekaligus ini otomatis saling-gantian (persis seperti toggle nav-md/
+	// nav-sm di atas).
+	$MENU_TOGGLE.find('i').toggleClass('fa-bars fa-times');
+
+	// Handler LAMA di atas (yang toggle nav-md/nav-sm) tetap jalan bareng klik
+	// yang sama -- itu untuk mode "collapse jadi ikon doang" di desktop, TAPI
+	// rule CSS-nya (mis. .nav-sm .nav.side-menu li a i { width:100% }) ikut
+	// aktif juga kalau nav-sm nempel pas mobile-sidebar-open lagi dibuka,
+	// bikin ikon melebar & teks sidebar jadi berantakan/keliatan rata kanan.
+	// Di layar sempit paksa balik ke nav-md supaya rule collapse desktop itu
+	// tidak pernah ikut nyala bareng mode off-canvas mobile.
+	if ($(window).width() <= 991) {
+		$BODY.removeClass('nav-sm').addClass('nav-md');
+	}
+});
+
 	// check active menu
 	$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
 
@@ -1963,13 +1989,20 @@ if (typeof NProgress != 'undefined') {
 				console.log('run_charts  typeof [' + typeof (Chart) + ']');
 			
 				if( typeof (Chart) === 'undefined'){ return; }
-				
+
 				console.log('init_charts');
-			
-				
-				Chart.defaults.global.legend = {
-					enabled: false
-				};
+
+				// Chart.js 3+ (dipakai halaman dashboard akademik untuk grafikPengajuanTA)
+				// tidak punya Chart.defaults.global lagi -- strukturnya beda dari v2 yang
+				// kode demo bawaan tema ini masih asumsikan. Tanpa guard ini, baris di
+				// bawah lempar "Cannot set properties of undefined (setting 'legend')"
+				// dan bikin sisa init_charts() (termasuk chart lain di halaman ini) tidak
+				// pernah jalan.
+				if (Chart.defaults && Chart.defaults.global) {
+					Chart.defaults.global.legend = {
+						enabled: false
+					};
+				}
 				
 				
 

@@ -48,7 +48,7 @@
 <!-- starrr -->
 <script src="<?php echo base_url()?>elusistatic/vendors/starrr/dist/starrr.js"></script>
 <!-- Custom Theme Scripts -->
-<script src="<?php echo base_url()?>elusistatic/build/js/custom.js"></script>
+<script src="<?php echo base_url()?>elusistatic/build/js/custom.js?v=<?php echo filemtime(FCPATH . 'elusistatic/build/js/custom.js'); ?>"></script>
 <!-- ECharts -->
 <script src="<?php echo base_url()?>elusistatic/vendors/echarts/dist/echarts.min.js"></script>
 <!-- Datatables -->

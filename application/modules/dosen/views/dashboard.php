@@ -165,16 +165,11 @@
 </div>
 
 
-<!-- jQuery & DataTables (opsional) -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" src="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<!-- jQuery versi kompatibel dengan Bootstrap lama -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
-<!-- Inisialisasi yang aman -->
+<!-- jQuery, Bootstrap, dan DataTables SUDAH dimuat sekali lewat includes/header.php
+     dan includes/footer.php -- versi CDN yang sebelumnya ada di sini menimpa jQuery
+     global dengan versi 3.x, yang bikin bootstrap.min.js (Bootstrap 3, butuh jQuery
+     <3) berhenti jalan di seluruh halaman ini ("Bootstrap's JavaScript requires
+     jQuery version 1.9.1 or higher, but lower than version 3" di console). -->
 <script>
   jQuery(function($){
     // Tooltip dari Bootstrap sekarang aktif
