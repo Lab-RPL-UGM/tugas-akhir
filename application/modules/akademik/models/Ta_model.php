@@ -4,20 +4,51 @@ class Ta_model extends CI_Model
 {
     public function getTA($id = NULL)
     {
-        $this->db->select("*");
+        // ta.createdDtm/updatedDtm di-alias eksplisit -- mahasiswa & periode (di-join
+        // di bawah) SAMA-SAMA punya kolom createdDtm/updatedDtm sendiri, jadi kalau
+        // dibiarkan ikut "*" polos, nilainya bisa ketiban/tertimpa kolom periode (yang
+        // di-join paling akhir) alih-alih punya tugas_akhir yang dimaksud.
+        $this->db->select("*, ta.createdDtm as tanggal_mengajukan, ta.updatedDtm as tanggal_update");
         $this->db->from('tugas_akhir ta');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa', 'inner');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode', 'inner');
-    
+
         // Filter mahasiswa yang tidak dihapus
         $this->db->where('m.isDeleted', 0);
-    
+
         if ($id != NULL) {
             $this->db->where('id_ta', $id);
         } else {
-            $this->db->order_by('ta.createdDtm DESC');
+            // Yang sudah terplotting (sudah di-ACC) punya tabel sendiri di view --
+            // lihat getTASudahAcc() -- jadi di sini murni yang belum, diurutkan
+            // tanggal perbarui terbaru tanpa perlu di-grup lagi.
+            $this->db->where('ta.status_pengambilan !=', 'terplotting');
+            // updatedDtm default-nya '0000-00-00 00:00:00' selama baris belum pernah
+            // di-UPDATE sejak dibuat (lihat catatan di view) -- kalau diurutkan pakai
+            // nilai mentahnya, baris yang justru baru diajukan (createdDtm baru) malah
+            // tenggelam ke paling bawah karena '0000-00-00' dianggap tanggal paling tua.
+            // Pakai createdDtm sebagai fallback supaya konsisten dengan yang ditampilkan.
+            $this->db->order_by("IF(ta.updatedDtm = '0000-00-00 00:00:00', ta.createdDtm, ta.updatedDtm)", 'DESC', FALSE);
         }
-    
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // Mahasiswa yang sudah di-ACC/terplotting -- ditampilkan di tabel terpisah
+    // (di bawah tabel utama) supaya tabel utama bisa murni diurutkan tanggal
+    // perbarui tanpa baris yang sudah selesai ikut bercampur di urutan atas.
+    public function getTASudahAcc()
+    {
+        $this->db->select("*, ta.createdDtm as tanggal_mengajukan, ta.updatedDtm as tanggal_update");
+        $this->db->from('tugas_akhir ta');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa', 'inner');
+        $this->db->join('periode p', 'p.id_periode = ta.id_periode', 'inner');
+        $this->db->where('m.isDeleted', 0);
+        $this->db->where('ta.status_pengambilan', 'terplotting');
+        // Fallback yang sama seperti getTA() -- lihat catatan di sana.
+        $this->db->order_by("IF(ta.updatedDtm = '0000-00-00 00:00:00', ta.createdDtm, ta.updatedDtm)", 'DESC', FALSE);
+
         $query = $this->db->get();
         return $query->result();
     }

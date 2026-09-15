@@ -14,6 +14,7 @@ class Tugas_akhir extends BaseController
     public function index()
     {
         $data['dataTable'] = $this->Ta_model->getTA();
+        $data['dataTableAcc'] = $this->Ta_model->getTASudahAcc();
         $this->global['pageTitle'] = "TA-TRPL : Tugas Akhir";
         $this->loadViews("dashboard_ta", $this->global, $data);
     }
