@@ -114,7 +114,7 @@ class Tugas_akhir extends BaseController
             }
         }
         $data['dataPengajuanTA'] = $pilihan_ta;
-        $this->global['pageTitle'] = "Elusi : Plotting Tugas Akhir";
+        $this->global['pageTitle'] = "TA-TRPL : Plotting Tugas Akhir";
         $this->loadViews("plotting_ta", $this->global, $data);
     }
 

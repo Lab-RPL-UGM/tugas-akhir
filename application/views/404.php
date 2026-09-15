@@ -7,7 +7,7 @@
  */
 ?>
 <!DOCTYPE html>
-<title>eLusi - 404 Not Found</title>
+<title>TA-TRPL : 404 - Page Not Found</title>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

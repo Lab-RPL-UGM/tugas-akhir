@@ -134,7 +134,7 @@ class User extends BaseController
                 redirect('akademik/akun_mahasiswa/add_form');
             }
         } else {
-            $this->global['pageTitle'] = "Elusi : Add New User";
+            $this->global['pageTitle'] = "TA-TRPL : Add New User";
             $file_extension = $this->upload->data('file_ext');
             $data['file_extension'] = $file_extension;
             $data['dataThead'] = array();
@@ -443,7 +443,7 @@ class User extends BaseController
 
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }

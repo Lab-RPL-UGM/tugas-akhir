@@ -63,7 +63,7 @@ class Pendadaran extends BaseController
             $data['penilaianInfo'] = $this->pendadaran_model->getPenilaian($idSidang);
             $data['penilaianRataInfo'] = $this->pendadaran_model->getPenilaianRata($idSidang);
 
-            $this->global['pageTitle'] = "Elusi : Sidang";
+            $this->global['pageTitle'] = "TA-TRPL : Sidang";
             $this->loadViews("nilai", $this->global, $data, NULL);
         }
     }
@@ -278,7 +278,7 @@ class Pendadaran extends BaseController
      */
     function pageNotFound()
     {
-        $this->global['pageTitle'] = 'Elusi : 404 - Page Not Found';
+        $this->global['pageTitle'] = 'TA-TRPL : 404 - Page Not Found';
         $this->loadViews("404", $this->global, NULL, NULL);
     }
 }
