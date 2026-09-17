@@ -53,6 +53,55 @@ class Ta_model extends CI_Model
         return $query->result();
     }
 
+    // Mahasiswa yang belum pernah punya baris tugas_akhir sama sekali -- ditampilkan
+    // di tabel ketiga (dashboard_ta) supaya akademik bisa langsung mem-plotting
+    // mahasiswa yang belum mengajukan sendiri (mis. keburu lewat masa registrasi).
+    public function getMahasiswaBelumMengajukan()
+    {
+        $this->db->select('m.id_mahasiswa, m.nim, m.nama, m.email');
+        $this->db->from('mahasiswa m');
+        $this->db->join('user u', 'u.id_user = m.id_user', 'inner');
+        $this->db->where('u.id_user_role', ROLE_MAHASISWA);
+        $this->db->where('u.isDeleted', 0);
+        $this->db->where('m.isDeleted', 0);
+        $this->db->where('NOT EXISTS (SELECT 1 FROM tugas_akhir t WHERE t.id_mahasiswa = m.id_mahasiswa)', NULL, FALSE);
+        $this->db->order_by('m.nama', 'ASC');
+
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // Buka pendaftaran TA atas nama mahasiswa (dipakai akademik lewat tombol
+    // "Plotting" di tabel belum-mengajukan) supaya bisa langsung masuk ke halaman
+    // plotting() yang sudah ada -- tanpa perlu jalur/form terpisah. Kalau mahasiswa
+    // ini ternyata sudah lebih dulu punya baris tugas_akhir (mis. tombol diklik
+    // dua kali), reuse baris itu saja alih-alih bikin duplikat.
+    public function bukaPendaftaranTA($id_mahasiswa)
+    {
+        $this->db->select('id_ta');
+        $this->db->from('tugas_akhir');
+        $this->db->where('id_mahasiswa', $id_mahasiswa);
+        $existing = $this->db->get()->result();
+        if (!empty($existing)) {
+            return $existing[0]->id_ta;
+        }
+
+        $this->db->select('id_periode');
+        $this->db->from('periode');
+        $this->db->where('status_periode', 1);
+        $periode = $this->db->get()->result();
+        if (empty($periode)) {
+            return NULL;
+        }
+
+        $this->db->insert('tugas_akhir', array(
+            'id_mahasiswa' => $id_mahasiswa,
+            'id_periode' => $periode[0]->id_periode,
+        ));
+
+        return $this->db->insert_id();
+    }
+
 
     function getDosenTA()
     {
@@ -343,8 +392,13 @@ class Ta_model extends CI_Model
             if ($id_pengajuan_ta != NULL) {
                 // menerima pilihan usulan mahasiswa yang sudah ada -- update dosen di
                 // baris usulan itu (akademik boleh mengganti dosen yang diusulkan).
+                // id_dosen2 HARUS ikut ditulis di sini juga -- sebelumnya cuma id_dosen
+                // yang di-update, jadi dosbing pembimbing-2 yang akademik tentukan saat
+                // menerima (bukan yang diusulkan mahasiswa sendiri) tidak pernah
+                // tercatat di usulan.id_dosen2, bikin rekap "Diusulkan sbg Pembimbing 2"
+                // di dashboard akademik meleset (tidak menghitung kasus ini).
                 $this->db->where('id_pengajuan_ta', $id_pengajuan_ta);
-                $this->db->update('usulan', array('id_dosen' => $id_dosen));
+                $this->db->update('usulan', array('id_dosen' => $id_dosen, 'id_dosen2' => $id_dosen2));
 
                 $result = $this->getUsulan($id_pengajuan_ta);
                 $judul_ta = !empty($result) ? $result[0]->judul : '(Belum ada judul)';

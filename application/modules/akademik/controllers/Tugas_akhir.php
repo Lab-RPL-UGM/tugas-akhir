@@ -15,8 +15,25 @@ class Tugas_akhir extends BaseController
     {
         $data['dataTable'] = $this->Ta_model->getTA();
         $data['dataTableAcc'] = $this->Ta_model->getTASudahAcc();
+        $data['dataTableBelumMengajukan'] = $this->Ta_model->getMahasiswaBelumMengajukan();
         $this->global['pageTitle'] = "TA-TRPL : Tugas Akhir";
         $this->loadViews("dashboard_ta", $this->global, $data);
+    }
+
+    /* Dipanggil dari tombol "Plotting" di tabel mahasiswa yang belum mengajukan --
+       buka baris tugas_akhir atas nama mahasiswa itu lalu lempar ke halaman
+       plotting() yang sudah ada supaya akademik bisa langsung menentukan
+       proyek/dosen pembimbingnya. */
+    public function plot_langsung($id_mahasiswa)
+    {
+        $id_ta = $this->Ta_model->bukaPendaftaranTA($id_mahasiswa);
+
+        if ($id_ta) {
+            redirect('akademik/tugas_akhir/plotting/' . $id_ta);
+        } else {
+            $this->session->set_flashdata('error', 'Tidak ada periode tugas akhir yang aktif, plotting tidak bisa dilakukan');
+            redirect('akademik/tugas_akhir');
+        }
     }
 
     public function detail($id)

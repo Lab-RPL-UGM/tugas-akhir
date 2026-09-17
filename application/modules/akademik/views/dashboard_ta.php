@@ -248,6 +248,59 @@
                 </div>
             </div>
         </div>
+
+        <!--tabel mahasiswa yang belum mengajukan tugas akhir-->
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Daftar Mahasiswa Belum Mengajukan Tugas Akhir
+                        </h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <table id="tabelBelumMengajukan" class="table table-striped table-bordered dt-responsive">
+                            <thead>
+                                <tr style="vertical-align:middle">
+                                    <th class="col-md-2" style="vertical-align:middle">
+                                        <center>NIM</center>
+                                    </th>
+                                    <th class="col-md-4" style="vertical-align:middle">
+                                        <center>Nama</center>
+                                    </th>
+                                    <th class="col-md-4" style="vertical-align:middle">
+                                        <center>Email</center>
+                                    </th>
+                                    <th class="col-md-2" style="vertical-align:middle">
+                                        <center>Aksi</center>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dataTableBelumMengajukan as $data) { ?>
+                                    <tr>
+                                        <td style="vertical-align:middle">
+                                            <?php echo $data->nim; ?>
+                                        </td>
+                                        <td style="vertical-align:middle">
+                                            <?php echo $data->nama; ?>
+                                        </td>
+                                        <td style="vertical-align:middle">
+                                            <?php echo $data->email ?: '-'; ?>
+                                        </td>
+                                        <td align="center" style="vertical-align:middle">
+                                            <a data-toggle="tooltip" title="Plotting" href="<?php echo base_url(); ?>akademik/tugas_akhir/plot_langsung/<?php echo $data->id_mahasiswa; ?>" class="btn btn-primary">
+                                                <i class="fa fa-random"></i> Plotting
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -272,6 +325,15 @@
             'order': [],
             'info': true,
             'autoWidth': true
+        })
+        $('#tabelBelumMengajukan').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': true,
+            'columnDefs': [{ 'orderable': false, 'targets': [3] }]
         })
     })
 </script>

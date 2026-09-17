@@ -21,8 +21,31 @@ class Dashboard_model extends CI_Model
         }
     }
 
-    /** Total bimbingan mahasiswa */
-    public function getCountBimbingan($userId)
+    public function getAllPeriode()
+    {
+        $this->db->select('*');
+        $this->db->from('periode');
+        $this->db->order_by('id_periode', 'DESC');
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    /** Total bimbingan mahasiswa
+     * Kalau $isPeriodeAktif true (default/periode aktif dipilih di filter): tampilkan
+     * bimbingan yang SEDANG berjalan SEKARANG, lintas periode registrasi manapun --
+     * tugas_akhir.id_periode diisi sekali saat mahasiswa pertama daftar dan tidak
+     * pernah diperbarui walau bimbingannya lanjut ke periode berikutnya, jadi
+     * mencocokkan persis ke id_periode akan menghilangkan mahasiswa lama yang masih
+     * aktif dibimbing (lihat catatan yang sama di
+     * akademik/models/Dashboard_model.php::getRekapDipilihMahasiswaPerDosen).
+     * Kalau periode HISTORIS yang dipilih manual dari dropdown: tampilkan siapa saja
+     * yang DAFTAR di periode itu (cohort), apapun status_pengambilan-nya sekarang.
+     */
+    public function getCountBimbingan($userId, $idPeriode = null, $isPeriodeAktif = true)
     {
         $this->db->select('d.*, ds.id_user');
         $this->db->from('dosbing d');
@@ -36,9 +59,13 @@ class Dashboard_model extends CI_Model
         $this->db->group_by('m.nama');
         $this->db->where('ds.isDeleted', 0);
         $this->db->where('m.isDeleted', 0);
-        $this->db->where('ta.status_pengambilan', 'terplotting');
-        $this->db->where('y.id_yudisium IS NULL');
         $this->db->where('ds.id_user', $userId);
+        if (!$isPeriodeAktif && !empty($idPeriode)) {
+            $this->db->where('ta.id_periode', (int)$idPeriode);
+        } else {
+            $this->db->where('ta.status_pengambilan', 'terplotting');
+            $this->db->where('y.id_yudisium IS NULL');
+        }
         $query = $this->db->get();
         return count($query->result());
     }
@@ -65,8 +92,11 @@ class Dashboard_model extends CI_Model
         return count($query->result());
     }
 
-    /** Total yudisium mahasiswa */
-    public function getCountYudisium($userId)
+    /** Total yudisium mahasiswa. $idPeriode dipakai buat lihat berapa dari batch
+     * periode tertentu yang sudah yudisium -- diabaikan kalau periode aktif yang
+     * dipilih (tampilkan total yudisium apa adanya, tidak dibatasi periode).
+     */
+    public function getCountYudisium($userId, $idPeriode = null, $isPeriodeAktif = true)
     {
         $this->db->select('d.*, ds.id_user');
         $this->db->from('dosbing d');
@@ -82,6 +112,9 @@ class Dashboard_model extends CI_Model
         $this->db->where('m.isDeleted', 0);
         $this->db->where('y.id_yudisium IS NOT NULL');
         $this->db->where('ds.id_user', $userId);
+        if (!$isPeriodeAktif && !empty($idPeriode)) {
+            $this->db->where('ta.id_periode', (int)$idPeriode);
+        }
         $query = $this->db->get();
         return count($query->result());
     }
@@ -98,8 +131,22 @@ class Dashboard_model extends CI_Model
         return count($query->result());
     }
 
-    public function getPermohonanTAListByUser($userId)
+    /** $idPeriode dipakai HANYA kalau periode historis (bukan periode aktif) yang
+     * dipilih di dropdown filter -- lihat catatan periode aktif vs historis di
+     * getCountBimbingan() di atas. Diabaikan (tampilkan semua periode, seperti
+     * semula) kalau periode aktif yang dipilih.
+     */
+    public function getPermohonanTAListByUser($userId, $idPeriode = null, $isPeriodeAktif = true)
     {
+        // $idPeriode divalidasi is_numeric lalu di-cast (int) sebelum diselipkan
+        // langsung ke SQL (bukan lewat placeholder ?) -- aman dari injection, dan
+        // lebih sederhana daripada menyisipkan 1 placeholder tambahan di 3 blok
+        // UNION yang masing-masing sudah punya jumlah placeholder ?userId berbeda.
+        $periodeCond = '';
+        if (!$isPeriodeAktif && !empty($idPeriode) && is_numeric($idPeriode)) {
+            $periodeCond = ' AND ta.id_periode = ' . (int)$idPeriode . ' ';
+        }
+
         $sql = "
             /* 1) MEMILIH PROYEK milik dosen ini */
             SELECT DISTINCT
@@ -108,6 +155,7 @@ class Dashboard_model extends CI_Model
                 ta.id_ta                                                         AS id_ta,
                 p.nama                                                           AS judul,
                 'proyek'                                                         AS jenis,
+                pt.status                                                        AS status_pengajuan,
                 COALESCE(
                     NULLIF(CAST(pt.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
@@ -120,7 +168,8 @@ class Dashboard_model extends CI_Model
             JOIN proyek p       ON p.id_proyek   = pt.id_proyek
             WHERE LOWER(TRIM(pt.jenis)) = 'proyek'
               AND p.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
-    
+              {$periodeCond}
+
             UNION ALL
     
             /* 2) MEMBAWA USULAN (terima: usulan.id_dosen ATAU pembimbing I dari dosbing) */
@@ -137,6 +186,7 @@ class Dashboard_model extends CI_Model
                     THEN 'usul_pembimbing2'
                     ELSE 'usul'
                 END                                                              AS jenis,
+                pt.status                                                        AS status_pengajuan,
                 COALESCE(
                     NULLIF(CAST(pt.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
@@ -167,7 +217,8 @@ class Dashboard_model extends CI_Model
                     /* ATAU, bila usulan belum dicatat dosennya, tapi dosbing pertama adalah dosen login */
                  OR db1.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
               )
-    
+              {$periodeCond}
+
             UNION ALL
     
             /* 3) PEMBIMBING KE-2 (judul & tanggal dari pengajuan TA TERAKHIR untuk TA tsb) */
@@ -177,6 +228,10 @@ class Dashboard_model extends CI_Model
                 ta.id_ta                                                         AS id_ta,
                 COALESCE(u_last.judul, p_last.nama, NULL)                        AS judul,
                 'pembimbing_ke2'                                                 AS jenis,
+                -- baris ini SELALU berarti sudah di-ACC -- keberadaan baris dosbing
+                -- kedua (db2) cuma mungkin terjadi lewat terima_ta() (lihat
+                -- akademik/models/Ta_model.php), jadi tidak perlu baca pt_last.status.
+                'diterima'                                                       AS status_pengajuan,
                 COALESCE(
                     NULLIF(CAST(pt_last.createdDtm AS CHAR), '0000-00-00 00:00:00'),
                     NULLIF(CAST(ta.updatedDtm AS CHAR), '0000-00-00 00:00:00'),
@@ -209,6 +264,7 @@ class Dashboard_model extends CI_Model
             LEFT JOIN proyek p_last ON p_last.id_proyek       = pt_last.id_proyek
     
             WHERE db2.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+              {$periodeCond}
             ORDER BY tanggal_pengajuan DESC
         ";
     

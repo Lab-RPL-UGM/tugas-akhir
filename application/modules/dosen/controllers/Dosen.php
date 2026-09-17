@@ -33,9 +33,20 @@ class Dosen extends BaseController
 
         // --- Ringkasan & periode (sesuai model yang sudah ada) ---
         $data['dataPeriode']     = $this->dashboard_model->getPeriodeAktif();
-        $data['countBimbingan']  = $this->dashboard_model->getCountBimbingan($userId);
+        $data['arrayAllPeriode'] = $this->dashboard_model->getAllPeriode();
+
+        // Filter Periode: dari dropdown (?id_periode=), default ke periode aktif --
+        // sama seperti akademik/dashboard (lihat Akademik\Dashboard::index()).
+        $idPeriodeFilter = $this->input->get('id_periode');
+        if (empty($idPeriodeFilter) && $data['dataPeriode']) {
+            $idPeriodeFilter = $data['dataPeriode'][0]->id_periode;
+        }
+        $data['idPeriodeFilter'] = $idPeriodeFilter;
+        $isPeriodeAktif = $data['dataPeriode'] && (int)$idPeriodeFilter === (int)$data['dataPeriode'][0]->id_periode;
+
+        $data['countBimbingan']  = $this->dashboard_model->getCountBimbingan($userId, $idPeriodeFilter, $isPeriodeAktif);
         $data['countPendadaran'] = $this->dashboard_model->getCountPendadaran($userId);
-        $data['countYudisium']   = $this->dashboard_model->getCountYudisium($userId);
+        $data['countYudisium']   = $this->dashboard_model->getCountYudisium($userId, $idPeriodeFilter, $isPeriodeAktif);
         $data['countProyek']     = $this->dashboard_model->getCountProyek($userId);
 
         // Kuota mahasiswa (aman jika profil kosong, tidak bikin fatal)
@@ -45,8 +56,16 @@ class Dosen extends BaseController
                             : 0;
 
         // --- Tabel permohonan TA (judul dari proyek/usulan) ---
-        // Pastikan Dashboard_model sudah punya getPermohonanTAListByUser($userId) (SQL final kita tadi)
-        $data['permohonanTA'] = $this->dashboard_model->getPermohonanTAListByUser($userId);
+        // Dipisah jadi 2 tabel di view: yang masih menunggu keputusan ('proses') dan
+        // yang sudah di-ACC/disetujui ('diterima') -- lebih jelas dibanding 1 tabel
+        // campur seperti sebelumnya.
+        $permohonanTA = $this->dashboard_model->getPermohonanTAListByUser($userId, $idPeriodeFilter, $isPeriodeAktif);
+        $data['permohonanBelumAcc'] = array_values(array_filter($permohonanTA, function ($row) {
+            return $row['status_pengajuan'] === 'proses';
+        }));
+        $data['permohonanSudahAcc'] = array_values(array_filter($permohonanTA, function ($row) {
+            return $row['status_pengajuan'] === 'diterima';
+        }));
 
         // Render view dashboard
         // CATATAN: pastikan file ini ada → application/views/dashboard.php

@@ -33,6 +33,24 @@
         <p><?php echo DateTime::createFromFormat('Y-m-d', date('Y-m-d'))->format('j F Y'); ?></p>
     </center>
 
+    <!-- Filter Periode: sama seperti akademik/dashboard -- data di bawah (bimbingan,
+         yudisium, daftar permohonan) disaring per periode terpilih. -->
+    <?php if (!empty($arrayAllPeriode)) : ?>
+        <div class="periode-filter text-center" style="margin: 12px 0 20px;">
+            <form method="get" action="<?php echo base_url('dosen'); ?>" id="formFilterPeriode">
+                <label for="id_periode" style="font-weight:600; margin-right:8px;">Filter Periode:</label>
+                <select name="id_periode" id="id_periode" style="padding:6px 10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px;" onchange="document.getElementById('formFilterPeriode').submit()">
+                    <?php foreach ($arrayAllPeriode as $p) : ?>
+                        <option value="<?php echo (int)$p->id_periode; ?>" <?php echo ((int)$p->id_periode === (int)$idPeriodeFilter) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars(ucfirst($p->semester) . ' ' . $p->tahun_ajaran, ENT_QUOTES, 'UTF-8'); ?>
+                            <?php echo ((int)$p->status_periode === 1) ? ' (Aktif)' : ''; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+        </div>
+    <?php endif; ?>
+
     <!-- Tiles Ringkasan -->
     <div class="row top_tiles">
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -100,13 +118,43 @@
         </div>
     </div>
 
-    <!-- ====== Tabel: Mahasiswa Mengajukan Permohonan TA ====== -->
+    <?php
+        // Baris rendering dipakai bareng oleh 2 tabel di bawah (belum & sudah di-ACC)
+        // supaya label/warna badge-nya konsisten -- lihat pemanggilannya di masing2 tabel.
+        $renderBarisPermohonan = function ($row) {
+            $jenis = strtolower(trim($row['jenis'] ?? ''));
+            $label = $jenis === 'proyek' ? 'Memilih Proyek Dosen'
+                    : ($jenis === 'usul' ? 'Mengusulkan Judul (Pembimbing 1)'
+                    : ($jenis === 'usul_pembimbing2' ? 'Diusulkan sebagai Pembimbing 2 (Menunggu Keputusan)'
+                    : ($jenis === 'pembimbing_ke2' ? 'Mengusulkan Judul (Pembimbing 2)' : ucfirst($jenis))));
+
+            $badgeClass = $jenis === 'proyek' ? 'label label-primary'
+                        : ($jenis === 'usul' ? 'label label-success'
+                        : ($jenis === 'usul_pembimbing2' ? 'label label-info'
+                        : ($jenis === 'pembimbing_ke2' ? 'label label-warning' : 'label label-default')));
+
+            $namaMhs = $row['nama_mahasiswa'] ?? '—';
+            $judul   = $row['judul'] ?? '—';
+            $tgl     = $row['tanggal_pengajuan'] ?? null;
+            $tglFmt  = $tgl ? date('d M Y', strtotime($tgl)) : '—';
+        ?>
+            <tr>
+                <td><?php echo ucwords(strtolower(trim($namaMhs))); ?></td>
+                <td><span class="<?php echo $badgeClass; ?>"><?php echo $label; ?></span></td>
+                <td><?php echo ucwords(strtolower(trim($judul))); ?></td>
+                <td><?php echo $tglFmt; ?></td>
+            </tr>
+        <?php
+        };
+    ?>
+
+    <!-- ====== Tabel 1: Mahasiswa MASIH MENGAJUKAN (belum di-ACC) ====== -->
     <div class="row">
         <div class="col-md-12">
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
-                        Daftar Mahasiswa yang Mengajukan Permohonan TA
+                        Daftar Mahasiswa Masih Mengajukan (Belum Di-ACC)
                         <small>Jenis: Proyek · Usul (Pembimbing ke-1) · Pembimbing ke‑2</small>
                     </h2>
                     <div class="clearfix"></div>
@@ -114,7 +162,7 @@
 
                 <div class="x_content">
                     <div class="table-responsive">
-                        <table id="rekap-dosen" class="table table-striped table-hover">
+                        <table id="rekap-dosen-belum-acc" class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Nama Mahasiswa</th>
@@ -124,35 +172,54 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($permohonanTA)) : ?>
-                                    <?php foreach ($permohonanTA as $row) : ?>
-                                        <?php
-                                            $jenis = strtolower(trim($row['jenis'] ?? ''));
-                                            $label = $jenis === 'proyek' ? 'Memilih Proyek Dosen'
-                                                    : ($jenis === 'usul' ? 'Mengusulkan Judul (Pembimbing 1)'
-                                                    : ($jenis === 'usul_pembimbing2' ? 'Diusulkan sebagai Pembimbing 2 (Menunggu Keputusan)'
-                                                    : ($jenis === 'pembimbing_ke2' ? 'Mengusulkan Judul (Pembimbing 2)' : ucfirst($jenis))));
-
-                                            $badgeClass = $jenis === 'proyek' ? 'label label-primary'
-                                                        : ($jenis === 'usul' ? 'label label-success'
-                                                        : ($jenis === 'usul_pembimbing2' ? 'label label-info'
-                                                        : ($jenis === 'pembimbing_ke2' ? 'label label-warning' : 'label label-default')));
-
-                                            $namaMhs = $row['nama_mahasiswa'] ?? '—';
-                                            $judul   = $row['judul'] ?? '—';
-                                            $tgl     = $row['tanggal_pengajuan'] ?? null;
-                                            $tglFmt  = $tgl ? date('d M Y', strtotime($tgl)) : '—';
-                                        ?>
-                                        <tr>
-                                            <td><?php echo ucwords(strtolower(trim($namaMhs))); ?></td>
-                                            <td><span class="<?php echo $badgeClass; ?>"><?php echo $label; ?></span></td>
-                                            <td><?php echo ucwords(strtolower(trim($judul))); ?></td>
-                                            <td><?php echo $tglFmt; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                <?php if (!empty($permohonanBelumAcc)) : ?>
+                                    <?php foreach ($permohonanBelumAcc as $row) {
+                                        $renderBarisPermohonan($row);
+                                    } ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Belum ada permohonan TA.</td>
+                                        <td colspan="4" class="text-center text-muted">Tidak ada permohonan yang masih menunggu keputusan.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== Tabel 2: Mahasiswa SUDAH DI-ACC/DISETUJUI ====== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>
+                        Daftar Mahasiswa Sudah Di-ACC (Disetujui)
+                        <small>Jenis: Proyek · Usul (Pembimbing ke-1) · Pembimbing ke‑2</small>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table id="rekap-dosen-sudah-acc" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nama Mahasiswa</th>
+                                    <th>Jenis Pengajuan</th>
+                                    <th>Judul TA/Proyek</th>
+                                    <th>Tanggal Pengajuan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($permohonanSudahAcc)) : ?>
+                                    <?php foreach ($permohonanSudahAcc as $row) {
+                                        $renderBarisPermohonan($row);
+                                    } ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">Belum ada permohonan yang di-ACC.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -175,20 +242,22 @@
     // Tooltip dari Bootstrap sekarang aktif
     $('[data-toggle="tooltip"]').tooltip();
 
-    // Inisialisasi DataTables spesifik ke tabelnya
-    $('#rekap-dosen').DataTable({
+    // Inisialisasi DataTables spesifik ke tabelnya -- sekarang 2 tabel terpisah
+    // (belum & sudah di-ACC), pakai bahasa & urutan yang sama seperti sebelumnya.
+    var dtLanguage = {
+      search: "Cari:",
+      zeroRecords: "Tidak ditemukan data yang cocok",
+      info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+      infoEmpty: "Menampilkan 0 data",
+      infoFiltered: "(difilter dari _MAX_ total data)",
+      paginate: { next: "Berikutnya", previous: "Sebelumnya" }
+    };
+    $('#rekap-dosen-belum-acc, #rekap-dosen-sudah-acc').DataTable({
       pageLength: 10,
       lengthChange: false,
       ordering: true,
       order: [[3, 'desc']],
-      language: {
-        search: "Cari:",
-        zeroRecords: "Tidak ditemukan data yang cocok",
-        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
-        infoEmpty: "Menampilkan 0 data",
-        infoFiltered: "(difilter dari _MAX_ total data)",
-        paginate: { next: "Berikutnya", previous: "Sebelumnya" }
-      }
+      language: dtLanguage
     });
   });
 </script>

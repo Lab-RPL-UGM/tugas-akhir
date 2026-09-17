@@ -148,7 +148,7 @@
                                         <th>Mahasiswa Memilih Proyek</th>
                                         <th>Mengajukan Usulan sbg Pembimbing 1</th>
                                         <th>Diusulkan sbg Pembimbing 2</th>
-                                        <th>Total Dipilih Mahasiswa (unik)</th>
+                                        <th>Total Pengajuan</th>
                                     </tr>
                                 </thead>
                                 <tbody>

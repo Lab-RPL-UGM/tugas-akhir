@@ -202,10 +202,42 @@ class Dashboard_model extends CI_Model{
         // Versi sebelumnya keliru: kolom "usulan" & "pembimbing ke-2" di sini malah
         // membaca dosbing (jadi baru muncul SETELAH diterima, bukan saat baru diajukan),
         // dan pembimbing ke-2 yang diusulkan (usulan.id_dosen2) tidak pernah dihitung.
+        //
+        // Semua COUNT di sini DIHITUNG APA ADANYA per baris pengajuan_ta, BUKAN
+        // COUNT(DISTINCT m.id_mahasiswa) -- sebelumnya di-dedupe per mahasiswa,
+        // tapi itu bikin angkanya tidak sebanding dengan daftar mentah di
+        // dosen/models/Dashboard_model.php::getPermohonanTAListByUser() (yang
+        // menampilkan 1 baris per pengajuan, bukan 1 baris per mahasiswa) -- kalau
+        // 1 mahasiswa mengajukan lebih dari sekali ke dosen yang sama, sekarang
+        // kehitung tiap baris di kedua tempat, bukan cuma di salah satunya.
+        //
+        // MAKNA "periode aktif": tugas_akhir.id_periode diisi SEKALI saat mahasiswa
+        // pertama daftar dan TIDAK PERNAH diperbarui walau bimbingannya lanjut ke
+        // periode-periode berikutnya (SOP: bimbingan tidak didaftar ulang tiap
+        // semester). Kalau filter periode aktif dicocokkan persis ke id_periode itu,
+        // mahasiswa lama yang bimbingannya masih berjalan (belum lulus) akan hilang
+        // dari rekap begitu periode baru dibuka -- padahal dosennya masih benar-benar
+        // membimbing mereka (inilah sebabnya rekap ini sempat terlihat jauh lebih
+        // kecil dari beranda dosen, yang tidak memfilter periode sama sekali).
+        // Jadi: kalau periode yang dipilih adalah periode yang SEDANG AKTIF, rekap
+        // ini menjawab "siapa yang SEDANG berjalan bimbingannya SEKARANG" (semua
+        // status kecuali lulus, lintas periode manapun mereka dulu mendaftar).
+        // Kalau yang dipilih periode LAIN (histori), rekap tetap berarti "siapa yang
+        // MENDAFTAR di periode itu" (cocokkan id_periode persis) -- berguna untuk
+        // menengok riwayat pendaftaran periode tertentu.
         $periodeFilterTa = '';
         if (!empty($id_periode) && is_numeric($id_periode)) {
             $idPeriode = (int)$id_periode;
-            $periodeFilterTa = " AND ta.id_periode = {$idPeriode} ";
+
+            $this->db->select('status_periode');
+            $this->db->from('periode');
+            $this->db->where('id_periode', $idPeriode);
+            $periodeRow = $this->db->get()->result();
+            $isPeriodeAktif = !empty($periodeRow) && (int)$periodeRow[0]->status_periode === 1;
+
+            $periodeFilterTa = $isPeriodeAktif
+                ? " AND ta.status_pengambilan != 'lulus' "
+                : " AND ta.id_periode = {$idPeriode} ";
         }
 
         $sql = "
@@ -219,7 +251,7 @@ class Dashboard_model extends CI_Model{
         FROM dosen AS d
 
         LEFT JOIN (
-          SELECT p.id_dosen, COUNT(DISTINCT m.id_mahasiswa) AS jml
+          SELECT p.id_dosen, COUNT(*) AS jml
           FROM pengajuan_ta pt
           JOIN proyek p       ON p.id_proyek = pt.id_proyek
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
@@ -232,7 +264,7 @@ class Dashboard_model extends CI_Model{
         -- Mengajukan usulan dengan dosen ini diusulkan sbg Pembimbing 1
         -- (usulan.id_dosen) -- terlepas sudah diputuskan akademik atau belum.
         LEFT JOIN (
-          SELECT u.id_dosen, COUNT(DISTINCT m.id_mahasiswa) AS jml
+          SELECT u.id_dosen, COUNT(*) AS jml
           FROM pengajuan_ta pt
           JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
@@ -244,7 +276,7 @@ class Dashboard_model extends CI_Model{
 
         -- Diusulkan sbg Pembimbing 2 (usulan.id_dosen2, opsional).
         LEFT JOIN (
-          SELECT u.id_dosen2 AS id_dosen, COUNT(DISTINCT m.id_mahasiswa) AS jml
+          SELECT u.id_dosen2 AS id_dosen, COUNT(*) AS jml
           FROM pengajuan_ta pt
           JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
@@ -254,10 +286,14 @@ class Dashboard_model extends CI_Model{
         ) AS mk
           ON mk.id_dosen = d.id_dosen
 
-        -- Total mahasiswa UNIK yang memilih dosen ini lewat cara apapun (proyek,
-        -- diusulkan pembimbing 1, atau diusulkan pembimbing 2).
+        -- Total pengajuan mentah (BUKAN mahasiswa unik) yang memilih dosen ini lewat
+        -- cara apapun (proyek, diusulkan pembimbing 1, atau diusulkan pembimbing 2)
+        -- -- UNION ALL supaya 1 mahasiswa yang mengajukan lebih dari sekali (mis. 2
+        -- proyek berbeda ke dosen yang sama) tetap kehitung tiap baris, konsisten
+        -- dengan cara dosen/models/Dashboard_model.php::getPermohonanTAListByUser()
+        -- menampilkan daftarnya (1 baris per pengajuan, bukan di-dedupe per mahasiswa).
         LEFT JOIN (
-          SELECT id_dosen, COUNT(DISTINCT id_mahasiswa) AS jml
+          SELECT id_dosen, COUNT(*) AS jml
           FROM (
             SELECT p.id_dosen, m.id_mahasiswa
             FROM pengajuan_ta pt
@@ -266,7 +302,7 @@ class Dashboard_model extends CI_Model{
             JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
             WHERE LOWER(TRIM(pt.jenis)) = 'proyek' {$periodeFilterTa}
 
-            UNION
+            UNION ALL
 
             SELECT u.id_dosen, m.id_mahasiswa
             FROM pengajuan_ta pt
@@ -275,7 +311,7 @@ class Dashboard_model extends CI_Model{
             JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
             WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen IS NOT NULL {$periodeFilterTa}
 
-            UNION
+            UNION ALL
 
             SELECT u.id_dosen2, m.id_mahasiswa
             FROM pengajuan_ta pt
