@@ -65,6 +65,13 @@
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    &nbsp;&nbsp;
+                    <label for="hanya_pilihan_1" style="font-weight:600; margin-right:4px;">
+                        <input type="checkbox" name="hanya_pilihan_1" id="hanya_pilihan_1" value="1"
+                               <?= $hanyaPilihanPertama ? 'checked' : ''; ?>
+                               onchange="document.getElementById('formFilterPeriode').submit()">
+                        Hanya Pilihan ke-1
+                    </label>
                 </form>
             </div>
         <?php endif; ?>

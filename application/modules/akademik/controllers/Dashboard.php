@@ -20,9 +20,15 @@ class Dashboard extends BaseController {
         }
         $data['idPeriodeFilter'] = $idPeriodeFilter;
 
+        // Filter opsional: kalau dicentang, rekap cuma menghitung pengajuan dengan
+        // pilihan ke-1 (pt.pilihan = 1) -- "siapa yang benar-benar menjadikan dosen
+        // ini pilihan utama", bukan gabungan pilihan 1-3.
+        $hanyaPilihanPertama = $this->input->get('hanya_pilihan_1') == '1';
+        $data['hanyaPilihanPertama'] = $hanyaPilihanPertama;
+
         $data['countProyek'] = $this->Dashboard_model->getProyekCount();
         $data['dataPengajuanDosen'] = $this->Dashboard_model->getPengajuanPerDosen($idPeriodeFilter);
-        $data['rekapDipilih'] = $this->Dashboard_model->getRekapDipilihMahasiswaPerDosen(null, $idPeriodeFilter);
+        $data['rekapDipilih'] = $this->Dashboard_model->getRekapDipilihMahasiswaPerDosen(null, $idPeriodeFilter, $hanyaPilihanPertama);
         // Gunakan data tabel rekap sebagai sumber grafik (agar 100% sinkron)
         $chartLabels        = [];
         $chartProyekVals    = [];

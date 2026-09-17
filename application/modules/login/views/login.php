@@ -13,7 +13,7 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             min-height: 100vh;
             background: linear-gradient(135deg, #E8D5F2 0%, #FCD2D1 25%, #FFE5E5 50%, #FFEDD1 75%, #E8F3F5 100%);
             background-size: 400% 400%;
@@ -82,41 +82,98 @@
             75% { transform: translate(-50px, -30px) rotate(270deg); }
         }
 
-        /* Main Container */
+        /* Main Container -- tinggi dikunci ke layar (bukan min-height) supaya 3 kolom
+           di bawah (login/grafik/tabel) muat dalam 1 layar tanpa scroll di monitor
+           desktop; di layar sempit (lihat media query di bawah) dikembalikan jadi
+           scrollable karena 1 layar tidak realistis untuk 3 panel ditumpuk vertikal. */
         .main-container {
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
             position: relative;
             z-index: 1;
+            overflow: hidden;
         }
 
+        /* 2 kolom: kiri = Login + Kuota Dosen ditumpuk jadi 1 kolom (login sendirian
+           kelihatan kosong/kurang bagus), kanan = Grafik (dapat ruang lebih lega).
+           TIDAK dipaksa height:100%/max-height lagi -- tinggi 1 baris grid ini
+           sekarang mengikuti tinggi ASLI kolom kiri (login+gap+kuota), lalu kartu
+           Grafik di kanan otomatis diregangkan menyamainya (default grid
+           align-items: stretch) -- dulu grafik dipaksa penuh 1 layar (94vh) padahal
+           kolom kiri isinya jauh lebih pendek, jadi kelihatan tidak sama tinggi. */
         .content-wrapper {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1500px;
+            max-height: 94vh;
             display: grid;
-            grid-template-columns: 450px 1fr;
-            gap: 30px;
-            align-items: start;
+            grid-template-columns: 360px 1fr;
+            gap: 20px;
         }
 
-        /* Glass Card Effect */
+        .left-column {
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Glass Card Effect -- background dulunya rgba(255,255,255,0.1) (nyaris putih
+           bening), jadi teks putih di dalamnya (judul, footer, label grafik) nabrak
+           background gradient halaman yang terang -- nyaris tidak kebaca. Diganti tint
+           gelap supaya teks putih kontras, tetap efek "glass" (blur + border tipis). */
         .glass-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(45, 28, 62, 0.55);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 24px;
             transition: all 0.3s ease;
         }
 
         .glass-card.table-card {
-            padding: 25px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
         }
+
+        /* Login secukupnya (natural height, tidak diregangkan) -- Kuota Dosen mengisi
+           SISA tinggi kolom kiri lewat flex:1 (lihat .left-column di atas), dengan
+           scroll internal sendiri kalau datanya panjang. Grafik (kolom kanan) tetap
+           diregangkan penuh 1 baris grid seperti sebelumnya. */
+        .login-section { display: flex; }
+        .login-section .glass-card { width: 100%; }
+
+        /* Tabel Kuota TIDAK di-flex:1 lagi -- kalau dipaksa mengisi SISA tinggi kolom
+           kiri, di layar besar (mis. laptop 16") isinya cuma segelintir dosen jadi
+           nyisa ruang kosong panjang di bawah baris terakhir. Sekarang secukupnya
+           (auto height sampai batas max-height), dan .left-column men-tengahkan
+           pasangan login+tabel ini kalau sisa ruangnya masih ada (lihat justify-content
+           di atas). Kalau dosennya BANYAK, dibatasi max-height & scroll sendiri. */
+        .table-section {
+            min-height: 0;
+            max-height: 65vh;
+            display: flex;
+        }
+        .table-section .glass-card {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+        }
+
+        .chart-section {
+            height: 100%;
+            min-height: 0;
+            display: flex;
+        }
+        .chart-section .glass-card { width: 100%; }
 
         .glass-card:hover {
             transform: translateY(-5px);
@@ -142,15 +199,15 @@
 
         .login-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 16px;
         }
 
         .login-header h1 {
             color: white;
             font-size: 2rem;
-            font-weight: 600;
+            font-weight: 800;
+            letter-spacing: 0.05em;
             margin-bottom: 8px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .login-header p {
@@ -243,24 +300,97 @@
 
         .table-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .table-header h2 {
             color: white;
-            font-size: 1.6rem;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
         }
 
+        /* Filter mode pilihan (dipakai grafik) & subtitle -- sama pola dengan
+           akademik/dashboard: <select> auto-submit, bukan checkbox, supaya nilainya
+           SELALU ikut terkirim di query string (checkbox yang tidak dicentang tidak
+           terkirim sama sekali, jadi tidak bisa dibedakan dari "belum pernah disentuh"
+           kalau defaultnya justru true). */
+        .chart-subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .filter-mode-pilihan select {
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 0.82rem;
+        }
+
+        .filter-mode-pilihan select option {
+            color: #2d1c3e;
+        }
+
+        .chart-canvas-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 320px;
+        }
+
+        .table-responsive {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        /* Tabel Kuota Dosen dikecilkan (font & padding) -- kolomnya sekarang lebih
+           sempit (berbagi dengan kartu Login di .left-column), jadi nama dosen +
+           badge kuota perlu pas tanpa bikin baris terlalu tinggi/lebar. */
+        /* table-layout:fixed + lebar kolom pasti supaya nama dosen SELALU wrap di
+           dalam kolomnya sendiri (bukan meluber/kepotong ke kanan) di lebar layar
+           manapun -- table-layout:auto (default) bisa bikin tabel melebar ngikutin
+           teks terpanjang, dan itu yang bikin nama & kolom Kuota kepotong di layar
+           yang lebih sempit. */
         .modern-table {
             width: 100%;
+            table-layout: fixed;
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            font-size: 0.9rem;
+            font-size: 0.76rem;
+        }
+
+        .modern-table th:first-child, .modern-table td:first-child {
+            width: 74%;
+            text-align: left;
+        }
+
+        .modern-table th:last-child, .modern-table td:last-child {
+            width: 26%;
+        }
+
+        /* Nama dosen dipaksa 1 baris (bukan wrap ke bawah seperti sebelumnya) --
+           font-size-nya di-auto-shrink lewat JS (lihat script di bawah) supaya nama
+           yang kepanjangan tetap muat tanpa bikin baris tabel jadi tinggi/berantakan.
+           text-overflow:ellipsis cuma jaring pengaman kalau JS gagal jalan atau nama
+           masih kepanjangan walau sudah di-shrink sampai batas minimum. */
+        .modern-table tbody td:first-child {
+            overflow: hidden;
+        }
+
+        .modern-table tbody td:first-child strong {
+            display: inline-block;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: middle;
         }
 
         .modern-table thead {
@@ -269,11 +399,12 @@
 
         .modern-table thead th {
             color: white;
-            padding: 14px 12px;
+            padding: 8px 8px;
             font-weight: 500;
             text-align: center;
             border: none;
-            font-size: 0.95rem;
+            font-size: 0.72rem;
+            white-space: nowrap;
         }
 
         .modern-table tbody tr {
@@ -283,22 +414,23 @@
 
         .modern-table tbody tr:hover {
             background: rgba(200, 177, 219, 0.08);
-            transform: scale(1.01);
         }
 
         .modern-table tbody td {
-            padding: 12px 10px;
+            padding: 6px 8px;
             text-align: center;
             border: none;
-            font-size: 0.88rem;
+            font-size: 0.74rem;
+            line-height: 1.25;
         }
 
         .quota-badge {
             display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 3px 9px;
+            border-radius: 14px;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
+            white-space: nowrap;
         }
 
         .quota-available {
@@ -354,14 +486,16 @@
         /* Footer */
         .login-footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .login-footer h3 {
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
             margin-bottom: 10px;
         }
 
@@ -370,11 +504,38 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive Design */
+        /* Responsive Design -- di bawah 1200px, 3 kolom ditumpuk jadi 1 kolom vertikal.
+           Muat semuanya dalam 1 layar (height:100vh, overflow:hidden di .main-container)
+           tidak realistis lagi untuk 3 panel bertumpuk, jadi dikembalikan scrollable. */
         @media (max-width: 1200px) {
+            .main-container {
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
+                padding: 20px;
+            }
+
             .content-wrapper {
                 grid-template-columns: 1fr;
                 max-width: 800px;
+                height: auto;
+                max-height: none;
+            }
+
+            .left-column {
+                height: auto;
+            }
+
+            .login-section, .chart-section, .table-section {
+                height: auto;
+            }
+
+            .glass-card.table-card {
+                height: auto;
+            }
+
+            .table-responsive {
+                max-height: 45vh;
             }
         }
 
@@ -440,97 +601,116 @@
 
     <div class="main-container">
         <div class="content-wrapper">
-            <!-- Login Section -->
-            <div class="login-section">
-                <div class="glass-card">
-                    <div class="login-header">
-                        <br/><br/><br/><br/>
-                        <h1>LOGIN</h1>
-                        <p><i class="fas fa-graduation-cap" style="font-size: 1rem;"></i> Masuk pakai akun UGM Anda</p>
-                    </div>
-
-                    <!-- Alerts -->
-                    <?php
-                    $error = $this->session->flashdata('error');
-                    if ($error) {
-                    ?>
-                        <div class="custom-alert alert-danger">
-                            <button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="alert"></button>
-                            <?php echo $error; ?>
+            <!-- Kolom kiri: Login + Kuota Dosen ditumpuk -->
+            <div class="left-column">
+                <div class="login-section">
+                    <div class="glass-card">
+                        <div class="login-header">
+                            <h1>LOGIN</h1>
+                            <p><i class="fas fa-graduation-cap" style="font-size: 1rem;"></i> Masuk pakai akun UGM Anda</p>
                         </div>
-                    <?php }
-                    $success = $this->session->flashdata('success');
-                    if ($success) {
-                    ?>
-                        <div class="custom-alert alert-success">
-                            <button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="alert"></button>
-                            <?php echo $success; ?>
+
+                        <!-- Alerts -->
+                        <?php
+                        $error = $this->session->flashdata('error');
+                        if ($error) {
+                        ?>
+                            <div class="custom-alert alert-danger">
+                                <button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="alert"></button>
+                                <?php echo $error; ?>
+                            </div>
+                        <?php }
+                        $success = $this->session->flashdata('success');
+                        if ($success) {
+                        ?>
+                            <div class="custom-alert alert-success">
+                                <button type="button" class="btn-close btn-close-white float-end" data-bs-dismiss="alert"></button>
+                                <?php echo $success; ?>
+                            </div>
+                        <?php } ?>
+
+                        <a href="<?php echo base_url(); ?>login/ssoLogin" class="btn-login" style="display:block; text-align:center; text-decoration:none;">
+                            <i class="fas fa-shield-alt"></i> Login dengan SSO TRPL
+                        </a>
+
+                        <div class="login-footer">
+                            <h3><i class="fas fa-graduation-cap pulse" style="font-size: 1rem;"></i> Proyek Akhir TRPL</h3>
+                            <p>©2022 All Rights Reserved.</p>
                         </div>
-                    <?php } ?>
-
-                    <a href="<?php echo base_url(); ?>login/ssoLogin" class="btn-login" style="display:block; text-align:center; text-decoration:none;">
-                        <i class="fas fa-shield-alt"></i> Login dengan SSO TRPL
-                    </a>
-
-                    <div class="login-footer">
-                        <h3><i class="fas fa-graduation-cap pulse" style="font-size: 1rem;"></i> Proyek Akhir TRPL</h3>
-                        <p>©2022 All Rights Reserved.</p>
                     </div>
-                    <br/><br/><br/>
+                </div>
+
+                <!-- Table Section -->
+                <div class="table-section">
+                    <div class="glass-card table-card">
+                        <div class="table-header">
+                            <h2><i class="fas fa-users" style="font-size: 1.1rem;"></i> Kuota Dosen Pembimbing</h2>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-user-tie" style="font-size: 0.7rem;"></i> Nama Dosen</th>
+                                        <th><i class="fas fa-chart-pie" style="font-size: 0.7rem;"></i> Kuota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($dataTable as $data) { ?>
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    <?php echo $data['gelar_depan']; ?>
+                                                    <?php echo $data['nama_dosen']; ?>
+                                                    <?php echo $data['gelar_belakang']; ?>
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                if (!isset($data['bimbingan']) || is_null($data['bimbingan'])) {
+                                                    echo '<span class="quota-badge quota-available"><i class="fas fa-info-circle" style="font-size: 0.65rem;"></i> N/A</span>';
+                                                } else {
+                                                    $bimbingan = intval($data['bimbingan']);
+                                                    $kuota = intval($data['kuota_mahasiswa']);
+                                                    $percentage = ($kuota > 0) ? ($bimbingan / $kuota * 100) : 0;
+
+                                                    if ($percentage >= 100) {
+                                                        echo '<span class="quota-badge quota-full">';
+                                                    } elseif ($percentage >= 50) {
+                                                        echo '<span class="quota-badge quota-partial">';
+                                                    } else {
+                                                        echo '<span class="quota-badge quota-available">';
+                                                    }
+
+                                                    echo $bimbingan . ' / ' . $kuota;
+                                                    echo '</span>';
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Table Section -->
-            <div class="table-section">
+            <!-- Grafik Pemilihan Dosen -->
+            <div class="chart-section">
                 <div class="glass-card table-card">
                     <div class="table-header">
-                        <h2><i class="fas fa-users" style="font-size: 1.4rem;"></i> Kuota Dosen Pembimbing</h2>
+                        <h2><i class="fas fa-chart-column" style="font-size: 1.2rem;"></i> Grafik Pemilihan Dosen</h2>
+                        <p class="chart-subtitle">Mahasiswa yang bimbingannya masih berjalan (belum lulus)</p>
+                        <form method="get" action="<?php echo base_url(); ?>" class="filter-mode-pilihan">
+                            <select name="mode_pilihan" onchange="this.form.submit()">
+                                <option value="pertama" <?php echo $hanyaPilihanPertama ? 'selected' : ''; ?>>Hanya Pilihan ke-1</option>
+                                <option value="semua" <?php echo !$hanyaPilihanPertama ? 'selected' : ''; ?>>Semua Pilihan (1-3)</option>
+                            </select>
+                        </form>
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="modern-table">
-                            <thead>
-                                <tr>
-                                    <th><i class="fas fa-user-tie" style="font-size: 0.9rem;"></i> Nama Dosen</th>
-                                    <th><i class="fas fa-chart-pie" style="font-size: 0.9rem;"></i> Kuota Bimbingan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dataTable as $data) { ?>
-                                    <tr data-aos="fade-up" data-aos-delay="100">
-                                        <td>
-                                            <strong>
-                                                <?php echo $data['gelar_depan']; ?>
-                                                <?php echo $data['nama_dosen']; ?>
-                                                <?php echo $data['gelar_belakang']; ?>
-                                            </strong>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            if (!isset($data['bimbingan']) || is_null($data['bimbingan'])) {
-                                                echo '<span class="quota-badge quota-available"><i class="fas fa-info-circle" style="font-size: 0.8rem;"></i> Tidak ada data</span>';
-                                            } else {
-                                                $bimbingan = intval($data['bimbingan']);
-                                                $kuota = intval($data['kuota_mahasiswa']);
-                                                $percentage = ($kuota > 0) ? ($bimbingan / $kuota * 100) : 0;
-
-                                                if ($percentage >= 100) {
-                                                    echo '<span class="quota-badge quota-full">';
-                                                } elseif ($percentage >= 50) {
-                                                    echo '<span class="quota-badge quota-partial">';
-                                                } else {
-                                                    echo '<span class="quota-badge quota-available">';
-                                                }
-
-                                                echo '<i class="fas fa-user-graduate" style="font-size: 0.8rem;"></i> ' . $bimbingan . ' / ' . $kuota;
-                                                echo '</span>';
-                                            }
-                                            ?>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="grafikPemilihDosen"></canvas>
                     </div>
                 </div>
             </div>
@@ -540,12 +720,99 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
     <script>
         // Initialize AOS
         AOS.init({
             duration: 800,
             once: true
+        });
+
+        // Nama dosen dipaksa 1 baris (CSS: white-space:nowrap) -- kalau nama+gelarnya
+        // kepanjangan buat muat di kolomnya, kecilkan font bertahap sampai pas,
+        // dibatasi font minimum biar tetap kebaca. text-overflow:ellipsis di CSS jadi
+        // jaring pengaman terakhir kalau masih kepanjangan walau sudah di font minimum.
+        //
+        // HARUS nunggu document.fonts.ready dulu -- kalau langsung jalan, lebar teks
+        // masih dihitung pakai font fallback (Google Font "Plus Jakarta Sans" belum
+        // selesai dimuat), jadi hasil shrink-nya cocok buat font fallback tapi jadi
+        // kependekan lagi begitu font aslinya masuk & teks melebar ulang.
+        function shrinkNamaDosenAgarMuat() {
+            document.querySelectorAll('.modern-table tbody td:first-child strong').forEach(function (el) {
+                var fontSize = parseFloat(getComputedStyle(el).fontSize);
+                var minFontSize = 7;
+                while (el.scrollWidth > el.clientWidth && fontSize > minFontSize) {
+                    fontSize -= 0.5;
+                    el.style.fontSize = fontSize + 'px';
+                }
+            });
+        }
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(shrinkNamaDosenAgarMuat);
+        } else {
+            shrinkNamaDosenAgarMuat();
+        }
+
+        // Grafik Pemilihan Dosen -- data dari controller (Login::isLoggedIn()), sama
+        // sumbernya (getRekapDipilihMahasiswaPerDosen) dengan grafik di akademik/dashboard,
+        // cuma dikunci ke "hanya pilihan ke-1" karena ini halaman publik/sekilas info.
+        const grafikLabels          = <?= json_encode($chartLabels ?? [], JSON_UNESCAPED_UNICODE); ?>;
+        const grafikProyekVals      = <?= json_encode($chartProyekVals ?? [], JSON_NUMERIC_CHECK); ?>;
+        const grafikUsulVals        = <?= json_encode($chartUsulVals ?? [], JSON_NUMERIC_CHECK); ?>;
+        const grafikPembimbing2Vals = <?= json_encode($chartPembimbing2Vals ?? [], JSON_NUMERIC_CHECK); ?>;
+
+        new Chart(document.getElementById('grafikPemilihDosen').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: grafikLabels,
+                datasets: [
+                    {
+                        label: 'Mahasiswa Memilih Proyek',
+                        data: grafikProyekVals,
+                        backgroundColor: 'rgba(200, 177, 219, 0.7)',
+                        borderColor: 'rgba(200, 177, 219, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Mengusulkan Judul (Pembimbing 1)',
+                        data: grafikUsulVals,
+                        backgroundColor: 'rgba(242, 196, 206, 0.7)',
+                        borderColor: 'rgba(242, 196, 206, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Diusulkan sbg Pembimbing 2',
+                        data: grafikPembimbing2Vals,
+                        backgroundColor: 'rgba(212, 230, 241, 0.7)',
+                        borderColor: 'rgba(212, 230, 241, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                // Beri sedikit ruang ekstra di bawah supaya nama dosen yang dirotasi
+                // di sumbu-x punya tempat cukup -- tanpa ini Chart.js bisa memotong
+                // labelnya dengan "..." kalau ruangnya pas-pasan.
+                layout: { padding: { bottom: 8 } },
+                plugins: {
+                    legend: { display: true, position: 'top', labels: { color: '#fff' } },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        // autoSkip:false + rotasi tetap 60° supaya SEMUA nama dosen
+                        // selalu ditampilkan penuh (bukan di-skip/dipotong "...")
+                        // walau jumlah dosennya banyak.
+                        ticks: { color: '#fff', autoSkip: false, maxRotation: 60, minRotation: 60 },
+                        grid: { color: 'rgba(255,255,255,0.15)' }
+                    },
+                    y: { stacked: true, beginAtZero: true, ticks: { color: '#fff', precision: 0 }, grid: { color: 'rgba(255,255,255,0.15)' } }
+                }
+            }
         });
 
         // Auto-hide alerts after 5 seconds

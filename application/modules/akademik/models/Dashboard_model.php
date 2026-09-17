@@ -187,7 +187,7 @@ class Dashboard_model extends CI_Model{
         }
     }
     
-    public function getRekapDipilihMahasiswaPerDosen($dosen_id = null, $id_periode = null)
+    public function getRekapDipilihMahasiswaPerDosen($dosen_id = null, $id_periode = null, $hanyaPilihanPertama = false)
     {
         // $id_periode divalidasi is_numeric lalu di-cast (int) sebelum interpolasi ke SQL,
         // jadi aman dari injection meski disisipkan langsung (bukan lewat placeholder ?)
@@ -225,6 +225,16 @@ class Dashboard_model extends CI_Model{
         // Kalau yang dipilih periode LAIN (histori), rekap tetap berarti "siapa yang
         // MENDAFTAR di periode itu" (cocokkan id_periode persis) -- berguna untuk
         // menengok riwayat pendaftaran periode tertentu.
+        //
+        // $hanyaPilihanPertama: mahasiswa boleh mengajukan sampai 3 pilihan (lihat
+        // pengajuan_ta.pilihan) -- kalau true, rekap cuma menghitung pilihan ke-1
+        // ("dosen ini jadi pilihan UTAMA"), bukan gabungan pilihan 1-3.
+        // Pakai "<= 1", BUKAN "= 1" -- data lama (usulan dari periode sebelum fitur
+        // 3-pilihan ada) nyimpen pilihan tunggalnya sebagai 0, bukan 1 (lihat
+        // pengajuan_ta.jenis='usul' periode lama). Keduanya sama-sama berarti
+        // "pilihan satu-satunya/utama mahasiswa itu", jadi harus ikut terhitung.
+        $pilihanFilter = $hanyaPilihanPertama ? ' AND pt.pilihan <= 1 ' : '';
+
         $periodeFilterTa = '';
         if (!empty($id_periode) && is_numeric($id_periode)) {
             $idPeriode = (int)$id_periode;
@@ -256,7 +266,7 @@ class Dashboard_model extends CI_Model{
           JOIN proyek p       ON p.id_proyek = pt.id_proyek
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
           JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-          WHERE LOWER(TRIM(pt.jenis)) = 'proyek' {$periodeFilterTa}
+          WHERE LOWER(TRIM(pt.jenis)) = 'proyek' {$periodeFilterTa} {$pilihanFilter}
           GROUP BY p.id_dosen
         ) AS mp
           ON mp.id_dosen = d.id_dosen
@@ -269,7 +279,7 @@ class Dashboard_model extends CI_Model{
           JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
           JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-          WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen IS NOT NULL {$periodeFilterTa}
+          WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen IS NOT NULL {$periodeFilterTa} {$pilihanFilter}
           GROUP BY u.id_dosen
         ) AS mu
           ON mu.id_dosen = d.id_dosen
@@ -281,7 +291,7 @@ class Dashboard_model extends CI_Model{
           JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
           JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
           JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-          WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen2 IS NOT NULL {$periodeFilterTa}
+          WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen2 IS NOT NULL {$periodeFilterTa} {$pilihanFilter}
           GROUP BY u.id_dosen2
         ) AS mk
           ON mk.id_dosen = d.id_dosen
@@ -300,7 +310,7 @@ class Dashboard_model extends CI_Model{
             JOIN proyek p       ON p.id_proyek = pt.id_proyek
             JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
             JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-            WHERE LOWER(TRIM(pt.jenis)) = 'proyek' {$periodeFilterTa}
+            WHERE LOWER(TRIM(pt.jenis)) = 'proyek' {$periodeFilterTa} {$pilihanFilter}
 
             UNION ALL
 
@@ -309,7 +319,7 @@ class Dashboard_model extends CI_Model{
             JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
             JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
             JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-            WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen IS NOT NULL {$periodeFilterTa}
+            WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen IS NOT NULL {$periodeFilterTa} {$pilihanFilter}
 
             UNION ALL
 
@@ -318,7 +328,7 @@ class Dashboard_model extends CI_Model{
             JOIN usulan u       ON u.id_pengajuan_ta = pt.id_pengajuan_ta
             JOIN tugas_akhir ta ON ta.id_ta = pt.id_ta
             JOIN mahasiswa m    ON m.id_mahasiswa = ta.id_mahasiswa AND m.isDeleted = 0
-            WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen2 IS NOT NULL {$periodeFilterTa}
+            WHERE LOWER(TRIM(pt.jenis)) = 'usul' AND u.id_dosen2 IS NOT NULL {$periodeFilterTa} {$pilihanFilter}
           ) x
           GROUP BY id_dosen
         ) AS tt

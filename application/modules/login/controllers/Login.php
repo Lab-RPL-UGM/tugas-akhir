@@ -56,7 +56,38 @@ class Login extends CI_Controller
                     array_push($data['dataTable'], $array);
                 }
             }
-            
+
+            // Grafik pemilihan dosen (sama seperti di akademik/dashboard) -- reuse
+            // langsung model akademik (framework HMVC-nya mendukung load lintas modul)
+            // supaya tidak duplikasi query rekap yang cukup kompleks. Halaman login ini
+            // publik/belum login, jadi tidak ada dropdown periode seperti di akademik
+            // (cukup sekilas info periode aktif) -- tapi toggle "hanya pilihan ke-1"
+            // tetap ada, pakai <select> (bukan checkbox) supaya nilainya selalu ikut
+            // terkirim di query string walau usernya memilih opsi default.
+            $modePilihan = $this->input->get('mode_pilihan');
+            $hanyaPilihanPertama = ($modePilihan !== 'semua');
+            $data['hanyaPilihanPertama'] = $hanyaPilihanPertama;
+
+            $this->load->model('akademik/Dashboard_model', 'akademikDashboardModel');
+            $periodeAktif = $this->akademikDashboardModel->getPeriodeAktif();
+            $idPeriodeAktif = !empty($periodeAktif) ? $periodeAktif[0]->id_periode : null;
+            $rekapDipilih = $this->akademikDashboardModel->getRekapDipilihMahasiswaPerDosen(null, $idPeriodeAktif, $hanyaPilihanPertama);
+
+            $chartLabels = [];
+            $chartProyekVals = [];
+            $chartUsulVals = [];
+            $chartPembimbing2Vals = [];
+            foreach ($rekapDipilih as $r) {
+                $chartLabels[] = $r['nama'];
+                $chartProyekVals[] = (int)$r['jumlah_mhs_proyek'];
+                $chartUsulVals[] = (int)$r['jumlah_mhs_usul'];
+                $chartPembimbing2Vals[] = (int)$r['jumlah_mhs_pembimbing_ke2'];
+            }
+            $data['chartLabels'] = $chartLabels;
+            $data['chartProyekVals'] = $chartProyekVals;
+            $data['chartUsulVals'] = $chartUsulVals;
+            $data['chartPembimbing2Vals'] = $chartPembimbing2Vals;
+
             $this->load->view('login', $data);
         }
         else
