@@ -129,6 +129,10 @@ $array_usulan = [];
                                     </div>
                                 </div>
                                 <form action="<?php echo base_url(); ?>akademik/tugas_akhir/plotting_ta" method="post" onSubmit="return confirm('Apakah anda yakin dengan pilihan anda? (Aksi yang sudah dilakukan tidak bisa dikembalikan lagi)');">
+                                    <!-- fieldset disabled mematikan SEMUA kontrol form (radio/select) di dalamnya
+                                         sekaligus kalau bimbingan sudah mulai -- lebih sederhana daripada
+                                         menambahkan disabled satu-satu di tiap radio/select. -->
+                                    <fieldset <?php echo !empty($sudahBimbingan) ? 'disabled' : ''; ?>>
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <p>
                                             <span class="badge">Pilihan Tugas Akhir Mahasiswa</span>
@@ -264,6 +268,7 @@ $array_usulan = [];
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
+                                    </fieldset>
                                     <!-- Modal -->
                                     <div class="modal fade" id="modalRevisi" tabindex="-1" role="dialog" aria-labelledby="modalRevisiLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -291,10 +296,19 @@ $array_usulan = [];
                                         <h4><i>(Tugas Akhir di Revisi dengan Alasan : </i><b><?= $dataTA[0]->reason ?></b><i>)</i></h4>
                                     <?php } ?>
                                     <a href="<?php echo base_url() ?>akademik/tugas_akhir" class="btn btn-warning pull-right">Kembali</a>
+                                    <?php if (!empty($sudahBimbingan)) { ?>
+                                        <!-- Bimbingan sudah dimulai -- plotting dikunci, tidak bisa diubah lagi
+                                             lewat sini (penjaga yang sama juga ada di server, lihat
+                                             Tugas_akhir::plotting_ta()). -->
+                                        <div class="alert alert-warning pull-right" style="margin-right:10px;">
+                                            <i class="fa fa-lock"></i> Mahasiswa ini sudah memulai bimbingan, plotting tidak bisa diubah lagi.
+                                        </div>
+                                    <?php } else { ?>
                                         <input class="btn btn-success pull-right" name="pilihan" value="Setujui" type="submit">
                                         <button class="btn btn-danger pull-right" data-toggle="modal" data-target="#modalRevisi" type="button">
                                             Revisi
                                         </button>
+                                    <?php } ?>
                                     <!--
                                     <?php if (!$isMasaRegis) { ?>
                                         <input class="btn btn-success pull-right" name="pilihan" value="Setujui" type="submit">

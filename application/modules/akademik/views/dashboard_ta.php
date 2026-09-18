@@ -239,6 +239,15 @@
                                             <a data-toggle="tooltip" title="Lihat" href="<?php echo base_url(); ?>akademik/tugas_akhir/detail/<?php echo $data->id_ta; ?>" class="btn btn-primary">
                                                 <i class="fa fa-eye"></i>
                                             </a>
+                                            <?php if ((int)$data->jumlah_bimbingan === 0) { ?>
+                                                <a data-toggle="tooltip" title="Edit Plotting (belum ada bimbingan)" href="<?php echo base_url(); ?>akademik/tugas_akhir/plotting/<?php echo $data->id_ta; ?>" class="btn btn-warning">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            <?php } else { ?>
+                                                <a data-toggle="tooltip" title="Sudah ada bimbingan, tidak bisa diubah lagi" class="btn btn-default disabled">
+                                                    <i class="fa fa-lock"></i>
+                                                </a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>

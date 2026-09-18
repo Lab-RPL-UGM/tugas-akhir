@@ -40,7 +40,11 @@ class Ta_model extends CI_Model
     // perbarui tanpa baris yang sudah selesai ikut bercampur di urutan atas.
     public function getTASudahAcc()
     {
-        $this->db->select("*, ta.createdDtm as tanggal_mengajukan, ta.updatedDtm as tanggal_update");
+        // jumlah_bimbingan dipakai view buat munculkan/sembunyikan tombol Edit --
+        // akademik cuma boleh ubah plotting SELAMA mahasiswa belum pernah upload
+        // catatan bimbingan sama sekali (lihat catatan sudahBimbingan() di bawah).
+        $this->db->select("*, ta.createdDtm as tanggal_mengajukan, ta.updatedDtm as tanggal_update,
+            (SELECT COUNT(*) FROM bimbingan b WHERE b.id_ta = ta.id_ta) AS jumlah_bimbingan", false);
         $this->db->from('tugas_akhir ta');
         $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa', 'inner');
         $this->db->join('periode p', 'p.id_periode = ta.id_periode', 'inner');
@@ -51,6 +55,19 @@ class Ta_model extends CI_Model
 
         $query = $this->db->get();
         return $query->result();
+    }
+
+    // Sudah ada catatan bimbingan (mahasiswa pernah upload minimal 1x lewat
+    // mahasiswa/pengajuan/updateBimbingan) untuk id_ta ini? Dipakai sebagai penjaga
+    // di server (bukan cuma sembunyikan tombol di UI) supaya plotting yang SUDAH
+    // berjalan bimbingannya tidak bisa diubah lagi lewat plotting_ta() -- akademik
+    // cuma boleh "berubah pikiran" SEBELUM bimbingan benar-benar dimulai.
+    public function sudahBimbingan($id_ta)
+    {
+        $this->db->select('id');
+        $this->db->from('bimbingan');
+        $this->db->where('id_ta', $id_ta);
+        return $this->db->get()->num_rows() > 0;
     }
 
     // Mahasiswa yang belum pernah punya baris tugas_akhir sama sekali -- ditampilkan

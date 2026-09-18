@@ -88,6 +88,11 @@ class Tugas_akhir extends BaseController
         $data['dataDosen'] = $this->Ta_model->getDosen();
         $data['dataProyek'] = $this->Ta_model->getProyek();
         $data['isMasaRegis'] = $this->Ta_model->isMasaRegisTA();
+        // Kalau statusnya SUDAH terplotting DAN bimbingannya sudah mulai, form
+        // pemilihan proyek/dosen di halaman ini harus dikunci -- lihat penjaga yang
+        // sama di plotting_ta() (server-side, ini cuma buat UI-nya).
+        $data['sudahBimbingan'] = ($data['dataTA'][0]->status_pengambilan == 'terplotting')
+            && $this->Ta_model->sudahBimbingan($id);
         /* Mendapatkan informasi tentang pilihan tugas akhir yang diambil */
         $data_pengajuan = $this->Ta_model->getPengajuanTA($id);
 
@@ -144,6 +149,20 @@ class Tugas_akhir extends BaseController
             redirect('akademik/tugas_akhir/plotting/' . $this->input->post('id_ta'));
         } else {
             $id_ta = $this->input->post('id_ta');
+
+            // Kalau id_ta ini SUDAH terplotting sebelumnya dan mahasiswanya sudah
+            // pernah upload catatan bimbingan, plotting tidak boleh diubah lagi lewat
+            // sini -- penjaga di SERVER (bukan cuma sembunyikan tombol Edit di UI),
+            // supaya tidak bisa dilewati dengan submit form langsung. Akademik cuma
+            // boleh "berubah pikiran" SEBELUM bimbingan benar-benar dimulai (lihat
+            // Ta_model::sudahBimbingan()).
+            $taSaatIni = $this->Ta_model->getTA($id_ta);
+            if (!empty($taSaatIni) && $taSaatIni[0]->status_pengambilan == 'terplotting' && $this->Ta_model->sudahBimbingan($id_ta)) {
+                $this->session->set_flashdata('error', 'Tugas akhir ini sudah mulai bimbingan, plotting tidak bisa diubah lagi');
+                redirect('akademik/tugas_akhir');
+                return;
+            }
+
             if ($this->input->post('pilihan') == 'Revisi') {
 
                 $result = $this->Ta_model->revisi_ta($id_ta, $this->input->post('reason'));
