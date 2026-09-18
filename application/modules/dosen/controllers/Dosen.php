@@ -73,6 +73,36 @@ class Dosen extends BaseController
     }
 
     /**
+     * Detail 1 mahasiswa yang mengajukan/sudah di-ACC -- tombol "Lihat Detail" di
+     * tabel permohonan pada dashboard. Menampilkan profil mahasiswa, SEMUA pilihan
+     * (proyek/usulan) yang diajukan untuk id_ta ini, dan lampiran proposal usulan.
+     */
+    public function detailPermohonan($id_ta)
+    {
+        $userId = isset($this->vendorId) ? (int)$this->vendorId
+                                         : (int)$this->session->userdata('id_user');
+
+        // Cegah dosen intip detail mahasiswa/proposal punya dosen lain cuma dengan
+        // menebak-nebak id_ta di url -- harus benar2 terkait ke pengajuan ini.
+        if (!$this->dashboard_model->isDosenTerkaitTa($id_ta, $userId)) {
+            show_404();
+            return;
+        }
+
+        $dataMahasiswa = $this->dashboard_model->getDetailMahasiswaTa($id_ta);
+        if (empty($dataMahasiswa)) {
+            show_404();
+            return;
+        }
+
+        $data['dataMahasiswa'] = $dataMahasiswa;
+        $data['dataPilihan'] = $this->dashboard_model->getPilihanTa($id_ta);
+
+        $this->global['pageTitle'] = "TA-TRPL : Detail Permohonan TA";
+        $this->loadViews("detail_permohonan", $this->global, $data, NULL);
+    }
+
+    /**
      * 404 manual (jika butuh)
      */
     public function pageNotFound()

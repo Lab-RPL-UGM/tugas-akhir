@@ -137,12 +137,20 @@
             $judul   = $row['judul'] ?? '—';
             $tgl     = $row['tanggal_pengajuan'] ?? null;
             $tglFmt  = $tgl ? date('d M Y', strtotime($tgl)) : '—';
+            $idTa    = $row['id_ta'] ?? null;
         ?>
             <tr>
                 <td><?php echo ucwords(strtolower(trim($namaMhs))); ?></td>
                 <td><span class="<?php echo $badgeClass; ?>"><?php echo $label; ?></span></td>
                 <td><?php echo ucwords(strtolower(trim($judul))); ?></td>
                 <td><?php echo $tglFmt; ?></td>
+                <td class="text-center">
+                    <?php if ($idTa) { ?>
+                        <a href="<?php echo base_url() . 'dosen/detailPermohonan/' . $idTa; ?>" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Detail">
+                            <i class="fa fa-eye"></i> Lihat
+                        </a>
+                    <?php } ?>
+                </td>
             </tr>
         <?php
         };
@@ -169,6 +177,7 @@
                                     <th>Jenis Pengajuan</th>
                                     <th>Judul TA/Proyek</th>
                                     <th>Tanggal Pengajuan</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -178,7 +187,7 @@
                                     } ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Tidak ada permohonan yang masih menunggu keputusan.</td>
+                                        <td colspan="5" class="text-center text-muted">Tidak ada permohonan yang masih menunggu keputusan.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -210,6 +219,7 @@
                                     <th>Jenis Pengajuan</th>
                                     <th>Judul TA/Proyek</th>
                                     <th>Tanggal Pengajuan</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,7 +229,7 @@
                                     } ?>
                                 <?php else : ?>
                                     <tr>
-                                        <td colspan="4" class="text-center text-muted">Belum ada permohonan yang di-ACC.</td>
+                                        <td colspan="5" class="text-center text-muted">Belum ada permohonan yang di-ACC.</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>

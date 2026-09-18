@@ -282,4 +282,66 @@ class Dashboard_model extends CI_Model
     
         return $query->result_array();
     }
+
+    /** Dosen (via $userId) benar-benar terkait ke pengajuan_ta milik $id_ta ini?
+     * (proyek miliknya, diusulkan sbg pembimbing 1/2, atau sudah jadi pembimbing
+     * ke-2 lewat dosbing) -- dipakai buat cegah dosen intip detail mahasiswa/
+     * proposal punya dosen lain cuma dengan menebak-nebak id_ta di url.
+     */
+    public function isDosenTerkaitTa($id_ta, $userId)
+    {
+        $sql = "
+            SELECT 1
+            FROM tugas_akhir ta
+            JOIN mahasiswa m ON m.id_mahasiswa = ta.id_mahasiswa
+            LEFT JOIN pengajuan_ta pt ON pt.id_ta = ta.id_ta
+            LEFT JOIN proyek p ON p.id_proyek = pt.id_proyek AND LOWER(TRIM(pt.jenis)) = 'proyek'
+            LEFT JOIN usulan u ON u.id_pengajuan_ta = pt.id_pengajuan_ta AND LOWER(TRIM(pt.jenis)) = 'usul'
+            LEFT JOIN dosbing db ON db.id_mahasiswa = m.id_mahasiswa
+            LEFT JOIN dosen dpb ON dpb.id_dosen = db.id_dosen
+            WHERE ta.id_ta = ?
+              AND (
+                    p.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                 OR u.id_dosen IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                 OR u.id_dosen2 IN (SELECT d.id_dosen FROM dosen d WHERE d.id_user = ?)
+                 OR dpb.id_user = ?
+              )
+            LIMIT 1
+        ";
+        $query = $this->db->query($sql, [(int)$id_ta, (int)$userId, (int)$userId, (int)$userId, (int)$userId]);
+        return $query->num_rows() > 0;
+    }
+
+    /** Data mahasiswa (profil + status TA) untuk 1 id_ta -- dipakai header halaman
+     * detail permohonan.
+     */
+    public function getDetailMahasiswaTa($id_ta)
+    {
+        $this->db->select('m.*, ta.id_ta, ta.status_pengambilan, ta.reason');
+        $this->db->from('tugas_akhir ta');
+        $this->db->join('mahasiswa m', 'm.id_mahasiswa = ta.id_mahasiswa');
+        $this->db->where('ta.id_ta', $id_ta);
+        $query = $this->db->get();
+        return $query->num_rows() > 0 ? $query->row() : null;
+    }
+
+    /** SEMUA pilihan (1-3, proyek dan/atau usulan) yang diajukan mahasiswa untuk
+     * 1 id_ta -- termasuk file_persetujuan (lampiran proposal) buat pilihan usulan.
+     */
+    public function getPilihanTa($id_ta)
+    {
+        $this->db->select("pt.id_pengajuan_ta, pt.pilihan, pt.jenis, pt.status,
+            p.nama AS nama_proyek, p.deskripsi AS deskripsi_proyek, p.tools AS tools_proyek, dp.nama AS nama_dosen_proyek,
+            u.judul, u.deskripsi AS deskripsi_usulan, u.mitra, u.file_persetujuan,
+            du.nama AS nama_dosen_usulan, du2.nama AS nama_dosen_usulan2", false);
+        $this->db->from('pengajuan_ta pt');
+        $this->db->join('proyek p', 'p.id_proyek = pt.id_proyek', 'left');
+        $this->db->join('dosen dp', 'dp.id_dosen = p.id_dosen', 'left');
+        $this->db->join('usulan u', 'u.id_pengajuan_ta = pt.id_pengajuan_ta', 'left');
+        $this->db->join('dosen du', 'du.id_dosen = u.id_dosen', 'left');
+        $this->db->join('dosen du2', 'du2.id_dosen = u.id_dosen2', 'left');
+        $this->db->where('pt.id_ta', $id_ta);
+        $this->db->order_by('pt.pilihan', 'ASC');
+        return $this->db->get()->result();
+    }
 }
