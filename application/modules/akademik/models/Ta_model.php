@@ -351,6 +351,18 @@ class Ta_model extends CI_Model
 
     public function terima_ta($id_ta, $id_pengajuan_ta = NULL, $id_mahasiswa, $data, $id_proyek = NULL, $id_dosen = NULL, $id_dosen2 = NULL)
     {
+        // Form HTML kirim string kosong '' (bukan literal NULL) kalau sebuah <select>
+        // dibiarkan di opsi placeholder-nya (mis. Dosen Pembimbing 2 tidak diisi).
+        // Kalau '' ini lolos sampai ke INSERT usulan.id_dosen2 (kolom int + FK ke
+        // dosen.id_dosen), MySQL/MariaDB constraint-nya gagal ("Cannot add or update
+        // a child row: a foreign key constraint fails" / "Incorrect integer value")
+        // karena '' dianggap menunjuk id_dosen=0 yang tidak ada -- bukan "tidak diisi".
+        // Normalisasi ke NULL beneran di sini supaya SEMUA pemakaian $id_dosen/
+        // $id_dosen2/$id_proyek di bawah (insert dosbing, insert usulan, dst) konsisten.
+        $id_proyek = !empty($id_proyek) ? $id_proyek : null;
+        $id_dosen = !empty($id_dosen) ? $id_dosen : null;
+        $id_dosen2 = !empty($id_dosen2) ? $id_dosen2 : null;
+
         $this->db->trans_start();
         $idPengajuanTaBaru = null;
 
